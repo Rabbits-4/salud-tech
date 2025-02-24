@@ -1,6 +1,9 @@
 from aeroalpes.seedwork.aplicacion.dto import Mapeador as AppMap
 from aeroalpes.seedwork.dominio.repositorios import Mapeador as RepMap
+
 from salud_tech.modulos.procesamiento.dominio.entidades import DatasetMedico
+from salud_tech.modulos.procesamiento.dominio.objetos_valor import Estado, RegistroDeDiagnostico, Metadata
+
 from aeroalpes.modulos.vuelos.dominio.objetos_valor import Itinerario, Odo, Segmento, Leg
 from .dto import ReservaDTO, ItinerarioDTO, OdoDTO, SegmentoDTO, LegDTO, DatasetMedicoDTO
 
@@ -113,5 +116,17 @@ class MapeadorReserva(RepMap):
         
         return dataset
 
+class MapeadorDataset(AppMap):
+    
+    def dto_a_entidad(self, dto: DatasetMedicoDTO) -> DatasetMedico:
+        dataset = DatasetMedico()
+        dataset.registro_de_diagnostico = RegistroDeDiagnostico(
+            region_anatomica = dto.metadata.get('registro_de_diagnostico'),
+            modalidad = dto.metadata.get('modalidad'),
+            patologia = dto.metadata.get('patologia')
+        )
 
+        dataset.estado = Estado(dto.metadata.get('estado'))
+        
+        return dataset
 

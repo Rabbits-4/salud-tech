@@ -1,6 +1,6 @@
 from aeroalpes.seedwork.aplicacion.comandos import Comando
 from aeroalpes.modulos.vuelos.aplicacion.dto import ItinerarioDTO, ReservaDTO
-from .base import CrearReservaBaseHandler
+from .base import CrearBaseHandler
 from dataclasses import dataclass, field
 from aeroalpes.seedwork.aplicacion.comandos import ejecutar_commando as comando
 
@@ -22,7 +22,7 @@ class CrearDataset(Comando):
     id: str
 
 
-class CrearReservaHandler(CrearReservaBaseHandler):
+class CrearReservaHandler(CrearBaseHandler):
     
     def handle(self, comando: CrearReserva):
         reserva_dto = ReservaDTO(
@@ -31,11 +31,10 @@ class CrearReservaHandler(CrearReservaBaseHandler):
             ,   id=comando.id
             ,   itinerarios=comando.itinerarios)
 
-        reserva: Reserva = self.fabrica_vuelos.crear_objeto(reserva_dto, MapeadorReserva())
+        reserva: Reserva = self.fabrica_procesamiento.crear_objeto(reserva_dto, MapeadorReserva())
         reserva.crear_reserva(reserva)
 
         repositorio = self.fabrica_repositorio.crear_objeto(RepositorioReservas.__class__)
-
 
         UnidadTrabajoPuerto.registrar_batch(repositorio.agregar, reserva)
         UnidadTrabajoPuerto.savepoint()

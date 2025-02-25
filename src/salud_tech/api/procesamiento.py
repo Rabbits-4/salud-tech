@@ -1,7 +1,7 @@
-import aeroalpes.seedwork.presentacion.api as api
+import salud_tech.seedwork.presentacion.api as api
 
 bp = api.crear_blueprint('procesamiento', '/procesamiento')
 
-@bp.route('/reserva-comando', methods=('POST',))
-def hanble_imagen():
+@bp.route('/procesar-dataset', methods=('POST',))
+def handle_procesar_dataset():
     ...

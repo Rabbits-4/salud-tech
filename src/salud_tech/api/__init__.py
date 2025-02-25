@@ -1,53 +1,38 @@
 import os
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_swagger import swagger
+import threading
+
+from salud_tech.config.db import init_db, db
+from salud_tech.modulos.procesamiento.aplicacion.servicios import ServicioDatasetMedico
+from salud_tech.modulos.procesamiento.aplicacion.dto import DatasetMedicoDto
+from salud_tech.modulos.procesamiento.infraestructura.consumidores import suscribirse_a_eventos, suscribirse_a_comandos
+from salud_tech.modulos.procesamiento.infraestructura.dto import *
 
 # Identifica el directorio base
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 def registrar_handlers():
-    # Importa los handlers
     import salud_tech.modulos.procesamiento.aplicacion
 
 def importar_modelos_alchemy():
-    # Import SQLAlchemy models
     import salud_tech.modulos.procesamiento.infraestructura.dto
 
 def comenzar_consumidor():
-    """
-    Este es un código de ejemplo. Aunque esto sea funcional puede ser un poco peligroso tener 
-    threads corriendo por si solos. Mi sugerencia es en estos casos usar un verdadero manejador
-    de procesos y threads como Celery.
-    """
-
-    import threading
-    import salud_tech.modulos.procesamiento.infraestructura.consumidores as procesamiento
-
-    # Suscripción a eventos
-    threading.Thread(target=procesamiento.suscribirse_a_eventos).start()
-
-    # Suscripción a comandos
-    threading.Thread(target=procesamiento.suscribirse_a_comandos).start()
+    threading.Thread(target=suscribirse_a_eventos).start()
+    threading.Thread(target=suscribirse_a_comandos).start()
 
 def create_app(configuracion={}):
-    # Init la aplicacion de Flask
     app = Flask(__name__, instance_relative_config=True)
     
-    app.config['SQLALCHEMY_DATABASE_URI'] =\
-            'sqlite:///' + os.path.join(basedir, 'database.db')
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'database.db')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-    app.secret_key = '9d58f98f-3ae8-4149-a09f-3a8c2012e32c'
+    app.secret_key = os.getenv('SECRET_KEY', 'default-secret-key')
     app.config['SESSION_TYPE'] = 'filesystem'
-    app.config['TESTING'] = configuracion.get('TESTING')
+    app.config['TESTING'] = configuracion.get('TESTING', False)
 
-     # Inicializa la DB
-    from salud_tech.config.db import init_db
     init_db(app)
-
-    from salud_tech.config.db import db
-
     importar_modelos_alchemy()
     registrar_handlers()
 
@@ -56,10 +41,7 @@ def create_app(configuracion={}):
         if not app.config.get('TESTING'):
             comenzar_consumidor()
 
-     # Importa Blueprints
     from . import procesamiento
-
-    # Registro de Blueprints
     app.register_blueprint(procesamiento.bp)
 
     @app.route("/spec")
@@ -72,5 +54,18 @@ def create_app(configuracion={}):
     @app.route("/health")
     def health():
         return {"status": "up"}
+    
+    @app.route("/procesamiento/procesar-dataset", methods=['POST'])
+    def procesar_dataset():
+        datos = request.get_json()
+        dataset_dto = DatasetMedicoDto(
+            packet_id=datos.get('packet_id'),
+            entorno_clinico=datos.get('entorno_clinico'),
+            metadata=datos.get('metadata'),
+            data=datos.get('data')
+        )
+        servicio = ServicioDatasetMedico()
+        resultado = servicio.crear_dataset_medico(dataset_dto)
+        return jsonify({"mensaje": "Dataset procesado exitosamente", "id": resultado.packet_id}), 201
 
     return app

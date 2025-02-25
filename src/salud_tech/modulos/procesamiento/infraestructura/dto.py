@@ -1,50 +1,31 @@
-"""DTOs para la capa de infrastructura del dominio de vuelos
+"""DTOs para la capa de infraestructura del dominio de procesamiento de datos médicos
 
 En este archivo usted encontrará los DTOs (modelos anémicos) de
-la infraestructura del dominio de vuelos
+la infraestructura del dominio de procesamiento de datos médicos
 
 """
 
-from aeroalpes.config.db import db
-from sqlalchemy.orm import declarative_base, relationship
-from sqlalchemy import Column, ForeignKey, Integer, Table
-
+from salud_tech.config.db import db
+from sqlalchemy import Column, String, DateTime, ForeignKey
+from sqlalchemy.orm import relationship
 import uuid
 
-Base = db.declarative_base()
+class DatasetMedicoDTO(db.Model):
+    __tablename__ = "dataset_medico"
 
-# Tabla intermedia para tener la relación de muchos a muchos entre la tabla reservas e itinerarios
-reservas_itinerarios = db.Table(
-    "reservas_itinerarios",
-    db.Model.metadata,
-    db.Column("reserva_id", db.String, db.ForeignKey("reservas.id")),
-    db.Column("odo_orden", db.Integer),
-    db.Column("segmento_orden", db.Integer),
-    db.Column("leg_orden", db.Integer),
-    db.Column("fecha_salida", db.DateTime),
-    db.Column("fecha_llegada", db.DateTime),
-    db.Column("origen_codigo", db.String),
-    db.Column("destino_codigo", db.String),
-    db.ForeignKeyConstraint(
-        ["odo_orden", "segmento_orden", "leg_orden", "fecha_salida", "fecha_llegada", "origen_codigo", "destino_codigo"],
-        ["itinerarios.odo_orden", "itinerarios.segmento_orden", "itinerarios.leg_orden", "itinerarios.fecha_salida", "itinerarios.fecha_llegada", "itinerarios.origen_codigo", "itinerarios.destino_codigo"]
-    )
-)
+    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
+    fecha_creacion = Column(DateTime, nullable=False)
+    fecha_actualizacion = Column(DateTime, nullable=False)
+    historial_paciente_id = Column(String, nullable=False)
+    contexto_procesal = Column(String, nullable=False)
+    notas_clinicas = Column(String, nullable=False)
+    estado = Column(String, nullable=False)
+    registro_de_diagnostico = Column(String, nullable=False)
+    metadata_id = Column(String, ForeignKey("metadata.id"))
+    metadata = relationship("MetadataDTO", backref="dataset_medico")
 
-class Itinerario(db.Model):
-    __tablename__ = "itinerarios"
-    odo_orden = db.Column(db.Integer, primary_key=True, nullable=False)
-    segmento_orden = db.Column(db.Integer, primary_key=True, nullable=False)
-    leg_orden = db.Column(db.Integer, primary_key=True, nullable=False)
-    fecha_salida = db.Column(db.DateTime, nullable=False, primary_key=True)
-    fecha_llegada = db.Column(db.DateTime, nullable=False, primary_key=True)
-    origen_codigo = db.Column(db.String, nullable=False, primary_key=True)
-    destino_codigo= db.Column(db.String, nullable=False, primary_key=True)
+class MetadataDTO(db.Model):
+    __tablename__ = "metadata"
 
-
-class Reserva(db.Model):
-    __tablename__ = "reservas"
-    id = db.Column(db.String, primary_key=True)
-    fecha_creacion = db.Column(db.DateTime, nullable=False)
-    fecha_actualizacion = db.Column(db.DateTime, nullable=False)
-    itinerarios = db.relationship('Itinerario', secondary=reservas_itinerarios, backref='reservas')
+    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
+    detalles = Column(String, nullable=False)

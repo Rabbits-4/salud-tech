@@ -1,10 +1,10 @@
 from pulsar.schema import *
 from dataclasses import dataclass, field
-from aeroalpes.seedwork.infraestructura.schema.v1.comandos import (ComandoIntegracion)
+from salud_tech.seedwork.infraestructura.schema.v1.comandos import ComandoIntegracion
 
-class ComandoCrearReservaPayload(ComandoIntegracion):
+class ComandoCrearDatasetPayload(ComandoIntegracion):
     id_usuario = String()
-    # TODO Cree los records para itinerarios
+    dataset_metadata = String()
 
-class ComandoCrearReserva(ComandoIntegracion):
-    data = ComandoCrearReservaPayload()
+class ComandoCrearDataset(ComandoIntegracion):
+    data = ComandoCrearDatasetPayload()

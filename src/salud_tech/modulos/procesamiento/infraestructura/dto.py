@@ -48,3 +48,17 @@ class Reserva(db.Model):
     fecha_creacion = db.Column(db.DateTime, nullable=False)
     fecha_actualizacion = db.Column(db.DateTime, nullable=False)
     itinerarios = db.relationship('Itinerario', secondary=reservas_itinerarios, backref='reservas')
+
+class DatasetMedico(db.Model):
+    __tablename__ = "datasets_medicos"
+    id = db.Column(db.String, primary_key=True)
+    fecha_creacion = db.Column(db.DateTime, nullable=False)
+    region_anatomica = db.Column(db.String, nullable=False)
+    modalidad = db.Column(db.String, nullable=False)
+    patologia = db.Column(db.String, nullable=False)
+    entorno_clinico = db.Column(db.String, nullable=False)
+    notas_clinicas = db.Column(db.String, nullable=False)
+    historial_paciente_id = db.Column(db.String, nullable=False)
+    condiciones_previas_paciente = db.Column(db.String, nullable=False)
+    tipo_contexto_procesal = db.Column(db.String, nullable=False)
+    estado = db.Column(db.String, nullable=False)

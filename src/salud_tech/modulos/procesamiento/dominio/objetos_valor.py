@@ -1,27 +1,27 @@
-"""Objetos valor del dominio de vuelos
+"""Objetos valor del dominio de procesamiento médico
 
-En este archivo usted encontrará los objetos valor del dominio de vuelos
+En este archivo usted encontrará los objetos valor del dominio de procesamiento médico
 
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from aeroalpes.seedwork.dominio.objetos_valor import ObjetoValor, Codigo, Ruta, Locacion
+from salud_tech.seedwork.dominio.objetos_valor import ObjetoValor
 from datetime import datetime
 from enum import Enum
 
 @dataclass(frozen=True)
 class RegionAnatomica(ObjetoValor):
-    ...
+    nombre: str
 
 @dataclass(frozen=True)
 class Modalidad(ObjetoValor):
-    ...
+    tipo: str
 
 @dataclass(frozen=True)
 class Patologia(ObjetoValor):
-    ...
+    nombre: str
 
 @dataclass(frozen=True)
 class RegistroDeDiagnostico(ObjetoValor):
@@ -29,23 +29,22 @@ class RegistroDeDiagnostico(ObjetoValor):
     modalidad: Modalidad
     patologia: Patologia
 
-
-
 @dataclass(frozen=True)
 class EntornoClinico(ObjetoValor):
-    ...
+    tipo: str
 
 @dataclass(frozen=True)
 class NotasClinicas(ObjetoValor):
-    ...
+    descripcion: str
 
 @dataclass(frozen=True)
 class HistorialPaciente(ObjetoValor):
-    ...
+    historial_id: str
+    condiciones_previas: list[str]
 
 @dataclass(frozen=True)
 class ContextoProcesal(ObjetoValor):
-    ...
+    tipo: str
 
 @dataclass(frozen=True)
 class Imagen(ObjetoValor):
@@ -60,7 +59,7 @@ class Metadata(ObjetoValor):
     contexto_procesal: ContextoProcesal
     imagen: Imagen
 
-
-@dataclass(frozen=True)
-class Estado(ObjetoValor):
-    name: str
+class Estado(Enum):
+    PENDIENTE = "Pendiente"
+    EN_PROCESO = "En Proceso"
+    FINALIZADO = "Finalizado"

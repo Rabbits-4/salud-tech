@@ -1,15 +1,20 @@
-"""Mixins del dominio de vuelos
+"""Mixins del dominio de procesamiento de datos médicos
 
-En este archivo usted encontrará las Mixins con capacidades 
-reusables en el dominio de vuelos
+En este archivo usted encontrará Mixins con capacidades 
+reusables en el dominio de procesamiento de datos médicos
 
 """
 
-from .entidades import Itinerario
+from datetime import datetime
 
-class FiltradoItinerariosMixin:
+class MixinAuditable:
+    """ Proporciona atributos de auditoría a las entidades """
+    fecha_creacion: datetime
+    fecha_actualizacion: datetime
 
-    def filtrar_mejores_itinerarios(self, itinerarios: list[Itinerario]) -> list[Itinerario]:
-        # Logica compleja para filtrar itinerarios
-        # TODO
-        return itinerarios
+    def actualizar_fecha(self):
+        self.fecha_actualizacion = datetime.now()
+
+# Placeholder para futuras implementaciones de mixins
+class PlaceholderMixin:
+    pass

@@ -5,9 +5,7 @@ la infraestructura del dominio de vuelos
 
 """
 
-from aeroalpes.config.db import db
-from sqlalchemy.orm import declarative_base, relationship
-from sqlalchemy import Column, ForeignKey, Integer, Table
+from salud_tech.config.db import db
 
 import uuid
 

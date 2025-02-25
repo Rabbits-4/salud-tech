@@ -33,9 +33,13 @@ def comenzar_consumidor():
 def create_app(configuracion={}):
     # Init la aplicacion de Flask
     app = Flask(__name__, instance_relative_config=True)
+    db_user = os.getenv('POSTGRES_USER', 'salud_tech')
+    db_password = os.getenv('POSTGRES_PASSWORD', 'salud_tech_123')
+    db_name = os.getenv('POSTGRES_DB', 'rabbit_salud_tech')
+    db_host = os.getenv('POSTGRES_HOST', 'localhost')
     
     app.config['SQLALCHEMY_DATABASE_URI'] =\
-            'sqlite:///' + os.path.join(basedir, 'database.db')
+            f'postgresql://{db_user}:{db_password}@{db_host}/{db_name}'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     app.secret_key = '9d58f98f-3ae8-4149-a09f-3a8c2012e32c'

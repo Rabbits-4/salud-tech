@@ -11,10 +11,8 @@ def crear_dataset_medico():
         map_dataset = MapeadorDatasetDTOJson()
         dataset_dto = map_dataset.externo_a_dto(dataset_dict)
 
-        comando = CrearDatasetMedico(dataset_dto.fecha_creacion, dataset_dto.fecha_actualizacion, dataset_dto.id, dataset_dto.pacientes, dataset_dto.medicos, dataset_dto.consultas)
+        comando = CrearDatasetMedico(dataset_dto.fecha_creacion, dataset_dto.fecha_actualizacion, dataset_dto.id, dataset_dto.pacientes, dataset_dto.medicos, dataset_dto.consultas)        
         
-        # TODO Reemplaze es todo código sincrono y use el broker de eventos para propagar este comando de forma asíncrona
-        # Revise la clase Despachador de la capa de infraestructura
         ejecutar_commando(comando)
         
         return Response('{}', status=202, mimetype='application/json')

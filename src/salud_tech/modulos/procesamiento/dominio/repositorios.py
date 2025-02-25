@@ -13,3 +13,6 @@ class RepositorioReservas(Repositorio, ABC):
 
 class RepositorioProveedores(Repositorio, ABC):
     ...
+
+class RepositorioDatasetMedico(Repositorio, ABC):
+    ...

@@ -26,22 +26,22 @@ class MapeadorDatasetMedico(Mapeador):
         return dataset_medico_dto
 
     def dto_a_entidad(self, dto: DatasetMedicoDTO) -> DatasetMedico:
-        reserva = DatasetMedico(dto.id, dto.fecha_creacion, dto.fecha_actualizacion)
+        dataset_medico = DatasetMedico(dto.id, dto.fecha_creacion, dto.fecha_actualizacion)
 
         region_anatomica = RegionAnatomica(dto.region_anatomica)
         modalidad = Modalidad(dto.modalidad)
         patologia = Patologia(dto.patologia)
         entorno_clinico = EntornoClinico(dto.entorno_clinico)
         notas_clinicas = NotasClinicas(dto.notas_clinicas)
-        historial_paciente = HistorialPaciente(dto.historial_paciente)
-        contexto_procesal = ContextoProcesal(dto.contexto_procesal)
+        historial_paciente = HistorialPaciente(dto.historial_paciente_id)
+        contexto_procesal = ContextoProcesal(dto.tipo_contexto_procesal)
 
-        reserva.registro_de_diagnostico = RegistroDeDiagnostico(
+        dataset_medico.registro_de_diagnostico = RegistroDeDiagnostico(
             region_anatomica=region_anatomica,
             modalidad=modalidad,
             patologia=patologia            
         )
-        reserva.metadata = Metadata(
+        dataset_medico.metadata = Metadata(
             entorno_clinico=entorno_clinico,
             notas_clinicas=notas_clinicas,
             historial_paciente=historial_paciente,
@@ -49,4 +49,4 @@ class MapeadorDatasetMedico(Mapeador):
             estado=dto.estado
         )
         
-        return reserva
+        return dataset_medico

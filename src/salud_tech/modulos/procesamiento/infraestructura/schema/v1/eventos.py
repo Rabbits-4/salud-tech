@@ -1,11 +1,9 @@
-from pulsar.schema import *
-from aeroalpes.seedwork.infraestructura.schema.v1.eventos import EventoIntegracion
+from pulsar.schema import String, Long, Record
+from salud_tech.seedwork.infraestructura.schema.v1.eventos import EventoIntegracion
 
-class ReservaCreadaPayload(Record):
-    id_reserva = String()
-    id_cliente = String()
-    estado = String()
+class DatasetMedicoCreadoPayload(Record):
+    id_dataset_medico = String()
     fecha_creacion = Long()
 
-class EventoReservaCreada(EventoIntegracion):
-    data = ReservaCreadaPayload()
+class EventoDatasetMedicoCreado(EventoIntegracion):
+    data = DatasetMedicoCreadoPayload()

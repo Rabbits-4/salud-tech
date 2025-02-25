@@ -6,28 +6,6 @@ from datetime import datetime
 import uuid
 
 @dataclass
-class ReservaCreada(EventoDominio):
-    id_reserva: uuid.UUID = None
-    id_cliente: uuid.UUID = None
-    estado: str = None
-    fecha_creacion: datetime = None
-    
-@dataclass
-class ReservaCancelada(EventoDominio):
-    id_reserva: uuid.UUID = None
-    fecha_actualizacion: datetime = None
-
-@dataclass
-class ReservaAprobada(EventoDominio):
-    id_reserva: uuid.UUID = None
-    fecha_actualizacion: datetime = None
-
-@dataclass
-class ReservaPagada(EventoDominio):
-    id_reserva: uuid.UUID = None
-    fecha_actualizacion: datetime = None
-
-@dataclass
 class DatasetCreado(EventoDominio):
     id_dataset: uuid.UUID = None
     estado: str = None
@@ -35,8 +13,7 @@ class DatasetCreado(EventoDominio):
 
 @dataclass
 class Metadata(OvMetadata):
-    ...    
-
+    ...
 
 @dataclass
 class DatasetCreado(EventoDominio):

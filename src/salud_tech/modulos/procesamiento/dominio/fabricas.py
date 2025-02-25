@@ -8,9 +8,9 @@ objetos complejos del dominio de vuelos
 from .entidades import DatasetMedico
 from .reglas import MinimoUnItinerario, RutaValida 
 from .excepciones import TipoObjetoNoExisteEnDominioVuelosExcepcion
-from aeroalpes.seedwork.dominio.repositorios import Mapeador, Repositorio
-from aeroalpes.seedwork.dominio.fabricas import Fabrica
-from aeroalpes.seedwork.dominio.entidades import Entidad
+from salud_tech.seedwork.dominio.repositorios import Mapeador, Repositorio
+from salud_tech.seedwork.dominio.fabricas import Fabrica
+from salud_tech.seedwork.dominio.entidades import Entidad
 from dataclasses import dataclass
 
 @dataclass

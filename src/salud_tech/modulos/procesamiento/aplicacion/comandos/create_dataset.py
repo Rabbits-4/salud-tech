@@ -2,8 +2,8 @@ from salud_tech.seedwork.aplicacion.comandos import Comando, ComandoHandler
 from datetime import datetime
 from .base import CrearBaseHandler
 
-from salud_tech.modulos.procesamiento.aplicacion.mapeadores import MapeadorDataset
-from salud_tech.modulos.procesamiento.aplicacion.dto import MetadataDto, DatasetDto
+from salud_tech.modulos.procesamiento.aplicacion.mapeadores import MapeadorDatasetMedico
+from salud_tech.modulos.procesamiento.aplicacion.dto import MetadataDto, DatasetMedicoDto
 
 from salud_tech.modulos.procesamiento.dominio.entidades import DatasetMedico
 from salud_tech.seedwork.infraestructura.uow import UnidadTrabajoPuerto
@@ -25,7 +25,7 @@ class CreateDataset(Comando):
 class CreateDatasetHandler(CrearBaseHandler):
 
     def handle(self, comando: CreateDataset):
-        dataset_dto = DatasetDto(
+        dataset_dto = DatasetMedicoDto(
             packet_id=comando.packet_id,
             entorno_clinico=comando.entorno_clinico,
             metadata={
@@ -39,7 +39,7 @@ class CreateDatasetHandler(CrearBaseHandler):
             data=comando.data
         )
 
-        dataset: DatasetMedico = self.fabrica_procesamiento.crear_objeto(dataset_dto, MapeadorDataset())
+        dataset: DatasetMedico = self.fabrica_procesamiento.crear_objeto(dataset_dto, MapeadorDatasetMedico())
         dataset.creat_dataset(dataset)
 
         dataset = self.fabrica_repositorio.crear_objeto(RepositorioDatasetMedico.__class__)

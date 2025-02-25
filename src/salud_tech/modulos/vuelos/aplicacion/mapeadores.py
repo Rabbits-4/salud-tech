@@ -76,8 +76,7 @@ class MapeadorReserva(RepMap):
                 ,   nombre=locacion.nombre
                 ,   fecha_actualizacion=locacion.fecha_actualizacion.strftime(self._FORMATO_FECHA)
                 ,   fecha_creacion=locacion.fecha_creacion.strftime(self._FORMATO_FECHA)
-        )
-        
+        )    
 
     def entidad_a_dto(self, entidad: Reserva) -> ReservaDTO:
         

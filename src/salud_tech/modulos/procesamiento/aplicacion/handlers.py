@@ -3,31 +3,11 @@ from aeroalpes.seedwork.aplicacion.handlers import Handler
 from aeroalpes.modulos.vuelos.infraestructura.despachadores import Despachador
 
 class HandlerReservaIntegracion(Handler):
-
-    @staticmethod
-    def handle_reserva_creada(evento):
-        despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-reserva')
-
-    @staticmethod
-    def handle_reserva_cancelada(evento):
-        despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-reserva')
-
-    @staticmethod
-    def handle_reserva_aprobada(evento):
-        despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-reserva')
-
-    @staticmethod
-    def handle_reserva_pagada(evento):
-        despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-reserva')
     
     @staticmethod
-    def handle_crear_dataset(evento):
+    def handle_crear_dataset_medico(evento):
         despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-dataset')
+        despachador.publicar_evento(evento, 'eventos-dataset-medico')
 
 
     

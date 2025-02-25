@@ -2,9 +2,6 @@ from pydispatch import dispatcher
 
 from .handlers import HandlerReservaIntegracion
 
-from aeroalpes.modulos.vuelos.dominio.eventos import ReservaCreada, ReservaCancelada, ReservaAprobada, ReservaPagada
+from salud_tech.modulos.procesamiento.dominio.eventos import DatasetCreado
 
-dispatcher.connect(HandlerReservaIntegracion.handle_reserva_creada, signal=f'{ReservaCreada.__name__}Integracion')
-dispatcher.connect(HandlerReservaIntegracion.handle_reserva_cancelada, signal=f'{ReservaCancelada.__name__}Integracion')
-dispatcher.connect(HandlerReservaIntegracion.handle_reserva_pagada, signal=f'{ReservaPagada.__name__}Integracion')
-dispatcher.connect(HandlerReservaIntegracion.handle_reserva_aprobada, signal=f'{ReservaAprobada.__name__}Integracion')
+dispatcher.connect(HandlerReservaIntegracion.handle_crear_dataset_medico, signal=f'{DatasetCreado.__name__}Integracion')

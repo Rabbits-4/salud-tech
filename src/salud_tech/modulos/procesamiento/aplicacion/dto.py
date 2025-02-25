@@ -12,39 +12,10 @@ class MetadataDto(DTO):
     notas_clinicas: str = field(default_factory=str)
 
 @dataclass(frozen=True)
-class DatasetDto(DTO):
+class DatasetMedicoDto(DTO):
     packet_id: str = field(default_factory=str)
     entorno_clinico: str = field(default_factory=str)
     metadata: MetadataDto
     data: any = field(default_factory=dict)
 
-@dataclass(frozen=True)
-class LegDTO(DTO):
-    fecha_salida: str
-    fecha_llegada: str
-    origen: dict
-    destino: dict
 
-@dataclass(frozen=True)
-class SegmentoDTO(DTO):
-    legs: list[LegDTO]
-
-@dataclass(frozen=True)
-class OdoDTO(DTO):
-    segmentos: list[SegmentoDTO]
-
-@dataclass(frozen=True)
-class ItinerarioDTO(DTO):
-    odos: list[OdoDTO]
-
-@dataclass(frozen=True)
-class ReservaDTO(DTO):
-    fecha_creacion: str = field(default_factory=str)
-    fecha_actualizacion: str = field(default_factory=str)
-    id: str = field(default_factory=str)
-    itinerarios: list[ItinerarioDTO] = field(default_factory=list)
-
-@dataclass(frozen=True)
-class DatasetMedicoDTO(DTO):
-    metadata: dict
-    id: str = field(default_factory=str)

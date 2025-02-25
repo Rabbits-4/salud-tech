@@ -25,25 +25,26 @@ class CreateDataset(Comando):
 class CreateDatasetHandler(CrearBaseHandler):
 
     def handle(self, comando: CreateDataset):
+        metadata_dto = MetadataDto(
+            registro_de_diagnostico=comando.registro_de_diagnostico,
+            fecha_creacion=datetime.now(),
+            fecha_actualizacion=datetime.now(),
+            historial_paciente_id=comando.historial_paciente_id,
+            contexto_procesal=comando.contexto_procesal,
+            notas_clinicas=comando.notas_clinicas
+        )
+
         dataset_dto = DatasetMedicoDto(
             packet_id=comando.packet_id,
             entorno_clinico=comando.entorno_clinico,
-            metadata={
-                "registro_de_diagnostico": comando.registro_de_diagnostico,
-                "fecha_creacion": datetime.now(),
-                "fecha_actualizacion": datetime.now(),
-                "historial_paciente_id": comando.historial_paciente_id,
-                "contexto_procesal": comando.contexto_procesal,
-                "notas_clinicas": comando.notas_clinicas
-            },
+            metadata=metadata_dto,
             data=comando.data
         )
 
         dataset: DatasetMedico = self.fabrica_procesamiento.crear_objeto(dataset_dto, MapeadorDatasetMedico())
-        dataset.creat_dataset(dataset)
+        dataset.crear_dataset(dataset)
 
-        dataset = self.fabrica_repositorio.crear_objeto(RepositorioDatasetMedico.__class__)
-
-        UnidadTrabajoPuerto.registrar_batch(dataset.agregar_evento, dataset)
+        repositorio_dataset = RepositorioDatasetMedico()
+        UnidadTrabajoPuerto.registrar_batch(repositorio_dataset.guardar, dataset)
         UnidadTrabajoPuerto.savepoint()
         UnidadTrabajoPuerto.commit()

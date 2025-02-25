@@ -12,5 +12,5 @@ class QueryBaseHandler(QueryHandler):
         return self._fabrica_repositorio
     
     @property
-    def fabrica_vuelos(self):
-        return self._fabrica_procesamiento    
+    def fabrica_procesamiento(self):
+        return self._fabrica_procesamiento

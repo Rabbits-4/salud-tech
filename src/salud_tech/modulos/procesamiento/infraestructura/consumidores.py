@@ -5,15 +5,15 @@ import time
 import logging
 import traceback
 
-from aeroalpes.modulos.vuelos.infraestructura.schema.v1.eventos import EventoReservaCreada
-from aeroalpes.modulos.vuelos.infraestructura.schema.v1.comandos import ComandoCrearReserva
-from aeroalpes.seedwork.infraestructura import utils
+from salud_tech.modulos.procesamiento.infraestructura.schema.v1.eventos import EventoDatasetMedicoCreado
+from salud_tech.modulos.procesamiento.infraestructura.schema.v1.comandos import ComandoCrearDatasetMedico
+from salud_tech.seedwork.infraestructura import utils
 
 def suscribirse_a_eventos():
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('eventos-reserva', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='aeroalpes-sub-eventos', schema=AvroSchema(EventoReservaCreada))
+        consumidor = cliente.subscribe('eventos-dataset-medico', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='salud-tech-sub-eventos', schema=AvroSchema(EventoDatasetMedicoCreado))
 
         while True:
             mensaje = consumidor.receive()
@@ -32,7 +32,7 @@ def suscribirse_a_comandos():
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('comandos-reserva', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='aeroalpes-sub-comandos', schema=AvroSchema(ComandoCrearReserva))
+        consumidor = cliente.subscribe('comandos-dataset-medico', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='salud-tech-sub-comandos', schema=AvroSchema(ComandoCrearDatasetMedico))
 
         while True:
             mensaje = consumidor.receive()

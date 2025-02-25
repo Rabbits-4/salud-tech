@@ -1,11 +1,11 @@
-version: '3'
+version: "3"
 networks:
   pulsar:
     driver: bridge
   sidecar:
     driver: bridge
 services:
-# Start zookeeper
+  # Start zookeeper
   zookeeper:
     image: apachepulsar/pulsar:latest
     profiles: ["pulsar"]
@@ -27,7 +27,7 @@ services:
       timeout: 5s
       retries: 30
 
-# Init cluster metadata
+  # Init cluster metadata
   pulsar-init:
     container_name: pulsar-init
     hostname: pulsar-init
@@ -40,7 +40,7 @@ services:
       zookeeper:
         condition: service_healthy
 
-# Start bookie
+  # Start bookie
   bookie:
     image: apachepulsar/pulsar:latest
     profiles: ["pulsar"]
@@ -57,13 +57,13 @@ services:
         condition: service_healthy
       pulsar-init:
         condition: service_completed_successfully
-  # Map the local directory to the container to avoid bookie startup failure due to insufficient container disks.
+    # Map the local directory to the container to avoid bookie startup failure due to insufficient container disks.
     volumes:
       - ./data/bookkeeper:/pulsar/data/bookkeeper
     command: bash -c "bin/apply-config-from-env.py conf/bookkeeper.conf
       && exec bin/pulsar bookie"
 
-# Start broker
+  # Start broker
   broker:
     image: apachepulsar/pulsar:latest
     profiles: ["pulsar"]
@@ -91,22 +91,23 @@ services:
       - "8080:8080"
     command: bash -c "bin/apply-config-from-env.py conf/broker.conf
       &&  exec bin/pulsar broker"
-  
+
   # Servicios de AeroAlpes
-  aeroalpes:
-    container_name: aeroalpes
-    hostname: aeroalpes
-    image: aeroalpes/flask 
-    profiles: ["aeroalpes", "monolito"]
+  salud_tech:
+    container_name: salud_tech
+    hostname: salud_tech
+    image: salud_tech/flask
+    profiles: ["salud_tech", "monolito"]
     networks:
       - sidecar
       - pulsar
+      - db_network
     labels:
       SidecarDiscover: "false"
     depends_on:
       - broker
     environment:
-      - AEROALPES_ADDRESS=aeroalpes
+      - AEROALPES_ADDRESS=salud_tech
       - PULSAR_ADDRESS=broker
     ports:
       - "5000:5000"
@@ -124,12 +125,12 @@ services:
       - PULSAR_ADDRESS=broker
     ports:
       - "50051:50051"
-  
+
   # Servicios de Notificación
   notificacion:
     container_name: notificacion
     hostname: notificacion
-    image: aeroalpes/notificacion 
+    image: aeroalpes/notificacion
     profiles: ["aeroalpes", "notificacion"]
     depends_on:
       - aeroalpes
@@ -143,7 +144,7 @@ services:
   ui:
     container_name: ui
     hostname: ui
-    image: aeroalpes/ui 
+    image: aeroalpes/ui
     profiles: ["aeroalpes", "ui"]
     depends_on:
       - aeroalpes
@@ -155,3 +156,17 @@ services:
       - pulsar
     ports:
       - "5678:5678"
+
+  salud_tech_db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: salud_tech
+      POSTGRES_PASSWORD: salud_tech_123
+      POSTGRES_DB: rabbit_salud_tech
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      timeout: 5s
+      retries: 5
+    networks:
+      - db_network

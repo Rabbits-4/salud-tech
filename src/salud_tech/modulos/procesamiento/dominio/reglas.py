@@ -1,57 +1,18 @@
-"""Reglas de negocio del dominio de cliente
+"""Reglas de negocio del dominio de procesamiento de datos médicos
 
-En este archivo usted encontrará reglas de negocio del dominio de cliente
+En este archivo usted encontrará reglas de negocio del dominio de procesamiento de datos médicos
 
 """
 
-from aeroalpes.seedwork.dominio.reglas import ReglaNegocio
-from .objetos_valor import Ruta
-from .entidades import Pasajero
-from .objetos_valor import TipoPasajero, Itinerario
+from salud_tech.seedwork.dominio.reglas import ReglaNegocio
 
-
-class ImgenConUrlValida(ReglaNegocio):    
+class ImagenConUrlValida(ReglaNegocio):    
     url: str
 
-    def __init__(self, url, mensaje='La url de la imagen no es válida'):
+    def __init__(self, url, mensaje='La URL de la imagen no es válida'):
         super().__init__(mensaje)
         self.url = url
 
     def es_valido(self) -> bool:
         return self.url.startswith('http')
 
-
-class MinimoUnAdulto(ReglaNegocio):
-
-    pasajeros: list[Pasajero]
-
-    def __init__(self, pasajeros, mensaje='Al menos un adulto debe ser parte del itinerario'):
-        super().__init__(mensaje)
-        self.pasajeros = pasajeros
-
-    def es_valido(self) -> bool:
-        for pasajero in self.pasajeros:
-            if pasajero.tipo == TipoPasajero.ADULTO:
-                return True
-        return False
-
-class RutaValida(ReglaNegocio):
-
-    ruta: Ruta
-
-    def __init__(self, ruta, mensaje='La ruta propuesta es incorrecta'):
-        super().__init__(mensaje)
-        self.ruta = ruta
-
-    def es_valido(self) -> bool:
-        return self.ruta.destino != self.ruta.origen
-
-class MinimoUnItinerario(ReglaNegocio):
-    itinerarios: list[Itinerario]
-
-    def __init__(self, itinerarios, mensaje='La lista de itinerarios debe tener al menos un itinerario'):
-        super().__init__(mensaje)
-        self.itinerarios = itinerarios
-
-    def es_valido(self) -> bool:
-        return len(self.itinerarios) > 0 and isinstance(self.itinerarios[0], Itinerario) 

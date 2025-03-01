@@ -4,6 +4,6 @@ from salud_tech.modulos.procesamiento.infraestructura.despachadores import Despa
 class HandlerDatasetMedicoIntegracion(Handler):
     
     @staticmethod
-    def handle_crear_dataset_medico(evento):
+    def handle_dataset_medico_creado(evento):
         despachador = Despachador()
         despachador.publicar_evento(evento, 'eventos-dataset-medico')

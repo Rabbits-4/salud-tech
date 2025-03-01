@@ -43,7 +43,8 @@ class CreateDatasetHandler(CrearBaseHandler):
         dataset: DatasetMedico = self.fabrica_procesamiento.crear_objeto(dataset_dto, MapeadorDatasetMedico())
         dataset.crear_dataset(dataset)
 
-        repositorio_dataset = RepositorioDatasetMedico()
-        UnidadTrabajoPuerto.registrar_batch(repositorio_dataset.guardar, dataset)
+        repositorio_dataset = self.fabrica_repositorio.crear_objeto(RepositorioDatasetMedico.__class__)
+
+        UnidadTrabajoPuerto.registrar_batch(repositorio_dataset.agregar, dataset)
         UnidadTrabajoPuerto.savepoint()
         UnidadTrabajoPuerto.commit()

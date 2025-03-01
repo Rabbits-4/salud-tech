@@ -13,7 +13,7 @@ from google.protobuf.timestamp_pb2 import Timestamp
 TIMESTAMP_FORMAT = '%Y-%m-%dT%H:%M:%SZ'
 
 class Vuelos(VuelosServicer):
-    HOSTNAME_ENV: str = 'AEROALPES_ADDRESS'
+    HOSTNAME_ENV: str = 'HOST_ADDRESS'
     REST_API_HOST: str = f'http://{os.getenv(HOSTNAME_ENV, default="localhost")}:5000'
     REST_API_ENDPOINT: str = '/vuelos/reserva'
 

@@ -92,7 +92,7 @@ services:
     command: bash -c "bin/apply-config-from-env.py conf/broker.conf
       &&  exec bin/pulsar broker"
 
-  # Servicios de AeroAlpes
+  # Servicios de Salud Tech
   salud_tech:
     container_name: salud_tech
     hostname: salud_tech
@@ -107,21 +107,22 @@ services:
     depends_on:
       - broker
     environment:
-      - AEROALPES_ADDRESS=salud_tech
+      - HOST_ADDRESS=salud_tech
       - PULSAR_ADDRESS=broker
     ports:
       - "5000:5000"
+
   adaptador:
-    image: "aeroalpes/adaptador"
-    profiles: ["aeroalpes", "monolito"]
+    image: "salud_tech/adaptador"
+    profiles: ["salud_tech", "monolito"]
     container_name: adaptador
     hostname: adaptador
     depends_on:
-      - aeroalpes
+      - salud_tech
     networks:
       - sidecar
     environment:
-      - AEROALPES_ADDRESS=aeroalpes
+      - HOST_ADDRESS=salud_tech
       - PULSAR_ADDRESS=broker
     ports:
       - "50051:50051"
@@ -130,13 +131,13 @@ services:
   notificacion:
     container_name: notificacion
     hostname: notificacion
-    image: aeroalpes/notificacion
-    profiles: ["aeroalpes", "notificacion"]
+    image: salud_tech/notificacion
+    profiles: ["salud_tech", "notificacion"]
     depends_on:
-      - aeroalpes
+      - salud_tech
       - broker
     environment:
-      - AEROALPES_ADDRESS=aeroalpes
+      - HOST_ADDRESS=salud_tech
       - PULSAR_ADDRESS=broker
     networks:
       - pulsar
@@ -144,13 +145,13 @@ services:
   ui:
     container_name: ui
     hostname: ui
-    image: aeroalpes/ui
-    profiles: ["aeroalpes", "ui"]
+    image: salud_tech/ui
+    profiles: ["salud_tech", "ui"]
     depends_on:
-      - aeroalpes
+      - salud_tech
       - broker
     environment:
-      - AEROALPES_ADDRESS=aeroalpes
+      - HOST_ADDRESS=salud_tech
       - PULSAR_ADDRESS=broker
     networks:
       - pulsar

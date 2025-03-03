@@ -1,4 +1,4 @@
-from salud_tech.seedwork.aplicacion.comandos import Comando, ComandoHandler
+from salud_tech.seedwork.aplicacion.comandos import Comando
 from datetime import datetime
 from .base import CrearBaseHandler
 
@@ -10,21 +10,20 @@ from salud_tech.seedwork.infraestructura.uow import UnidadTrabajoPuerto
 
 from salud_tech.modulos.procesamiento.infraestructura.repositorios import RepositorioDatasetMedico
 
-class CreateDataset(Comando):
+class CreateDatasetMedico(Comando):
     packet_id: str
     entorno_clinico: str
-    metadata: MetadataDto
-    data: any
     registro_de_diagnostico: dict
     fecha_creacion: datetime
     fecha_actualizacion: datetime
     historial_paciente_id: str
     contexto_procesal: str
     notas_clinicas: str
+    data: any
 
 class CreateDatasetHandler(CrearBaseHandler):
 
-    def handle(self, comando: CreateDataset):
+    def handle(self, comando: CreateDatasetMedico):
         metadata_dto = MetadataDto(
             registro_de_diagnostico=comando.registro_de_diagnostico,
             fecha_creacion=datetime.now(),
@@ -44,7 +43,8 @@ class CreateDatasetHandler(CrearBaseHandler):
         dataset: DatasetMedico = self.fabrica_procesamiento.crear_objeto(dataset_dto, MapeadorDatasetMedico())
         dataset.crear_dataset(dataset)
 
-        repositorio_dataset = RepositorioDatasetMedico()
-        UnidadTrabajoPuerto.registrar_batch(repositorio_dataset.guardar, dataset)
-        UnidadTrabajoPuerto.savepoint()
+        repositorio_dataset = self.fabrica_repositorio.crear_objeto(RepositorioDatasetMedico.__class__)
+
+        UnidadTrabajoPuerto.registrar_batch(repositorio_dataset.agregar, dataset)
+        UnidadTrabajoPuerto.savepoint() # que hace?
         UnidadTrabajoPuerto.commit()

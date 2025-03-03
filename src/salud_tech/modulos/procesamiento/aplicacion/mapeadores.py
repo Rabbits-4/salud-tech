@@ -8,6 +8,26 @@ from .dto import DatasetMedicoDto, MetadataDto
 
 from datetime import datetime
 
+class MappeadorDatasetMedicoDTOJson(AppMap):
+    def externo_a_dto(self, externo: dict) -> DatasetMedicoDto:
+        dataset_medico_dto = DatasetMedicoDto(
+            packet_id=externo.get('packet_id'),
+            entorno_clinico=externo.get('entorno_clinico'),
+            metadata=MetadataDto(
+                registro_de_diagnostico=externo.get('registro_de_diagnostico'),
+                fecha_creacion=externo.get('fecha_creacion'),
+                fecha_actualizacion=externo.get('fecha_actualizacion'),
+                historial_paciente_id=externo.get('historial_paciente_id'),
+                contexto_procesal=externo.get('contexto_procesal'),
+                notas_clinicas=externo.get('notas_clinicas'),                
+            ),
+            data=externo.get('data')
+        )
+
+        return dataset_medico_dto
+
+    def dto_a_externo(self, dto: DatasetMedicoDto) -> dict:
+        return dto.__dict__
 
 class MapeadorDatasetMedico(RepMap):
 

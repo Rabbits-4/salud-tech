@@ -5,7 +5,7 @@ persistir objetos dominio (agregaciones) en la capa de infraestructura del domin
 
 """
 
-from aeroalpes.config.db import db
+from salud_tech.config.db import db
 
 from salud_tech.modulos.procesamiento.dominio.fabricas import FabricaProcesamiento
 from salud_tech.modulos.procesamiento.dominio.entidades import DatasetMedico

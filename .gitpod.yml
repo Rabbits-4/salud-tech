@@ -4,7 +4,7 @@
 
 tasks:
   - name: Instalar Python
-    init: > 
+    init: >
       pyenv install 3.10.7 -f &&
       pyenv local 3.10.7 &&
       gp sync-done bundle
@@ -12,21 +12,21 @@ tasks:
     init: gp sync-await bundle
     command: pip install -r requirements.txt && pip install -r sidecar-requirements.txt && pip install -r ui-requirements.txt
   - name: Crear imagenes Docker
-    init: > 
-      docker build . -f aeroalpes.Dockerfile -t aeroalpes/flask &&
+    init: >
+      docker build . -f salud_tech.Dockerfile -t salud_tech/flask &&
       docker build . -f adaptador.Dockerfile -t aeroalpes/adaptador &&
       docker build . -f notificacion.Dockerfile -t aeroalpes/notificacion &&
       docker build . -f ui.Dockerfile -t aeroalpes/ui &&
       gp sync-done images
   - name: Crear folder para datos y asigna permisos
-    init: > 
+    init: >
       mkdir -p data/bookkeeper && 
       mkdir -p data/zookeeper && 
       sudo chmod -R 777 ./data
   - name: Pull el Docker compose
     init: gp sync-await images
     command: docker-compose pull
-  
+
 ports:
   - port: 2181
     onOpen: ignore
@@ -38,4 +38,3 @@ ports:
     onOpen: ignore
   - port: 6650
     onOpen: ignore
-

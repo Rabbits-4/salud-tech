@@ -16,7 +16,7 @@ tasks:
       gp sync-done images
   - name: Crear folder para datos y asigna permisos
     init: >
-      make Delete_Data_Folder && 
+      make clean_folder && 
       make Create_Data_Folder
   # - name: Pull el Docker compose
   #   init: gp sync-await images

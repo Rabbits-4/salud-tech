@@ -1,4 +1,4 @@
-from salud_tech.seedwork.aplicacion.comandos import Comando, ComandoHandler
+from salud_tech.seedwork.aplicacion.comandos import Comando
 from datetime import datetime
 from .base import CrearBaseHandler
 

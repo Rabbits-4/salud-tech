@@ -12,6 +12,7 @@ from salud_tech.seedwork.infraestructura import utils
 def suscribirse_a_eventos():
     cliente = None
     try:
+        print(f'pulsar://{utils.broker_host()}:6650')
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
         consumidor = cliente.subscribe('eventos-dataset-medico', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='salud-tech-sub-eventos', schema=AvroSchema(EventoDatasetMedicoCreado))
 

@@ -82,7 +82,7 @@ services:
       - managedLedgerDefaultWriteQuorum=1
       - managedLedgerDefaultAckQuorum=1
       - advertisedAddress=broker
-      - advertisedListeners=external:pulsar://127.0.0.1:6650
+      - advertisedListeners=external:pulsar://broker:6650
     depends_on:
       zookeeper:
         condition: service_healthy
@@ -111,6 +111,7 @@ services:
     environment:
       - HOST_ADDRESS=salud_tech
       - PULSAR_ADDRESS=broker
+      - BROKER_HOST=broker
     ports:
       - "5000:5000"
 
@@ -134,7 +135,7 @@ services:
     container_name: notificacion
     hostname: notificacion
     image: salud_tech/notificacion
-    profiles: ["salud_tech", "notificacion"]
+    profiles: ["notificacion"]
     depends_on:
       - salud_tech
       # - broker

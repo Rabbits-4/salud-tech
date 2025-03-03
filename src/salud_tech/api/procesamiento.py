@@ -9,7 +9,7 @@ from salud_tech.seedwork.dominio.excepciones import ExcepcionDominio
 
 bp = api.crear_blueprint('procesamiento', '/procesamiento')
 
-@bp.route('/crear-dataset-medico-comando', methods=('POST'))
+@bp.route('/crear-dataset-medico-comando', methods=['POST'])
 def crear_dataset_medico():
     try:
         dataset_dict = request.json

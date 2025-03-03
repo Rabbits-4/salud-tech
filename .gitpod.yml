@@ -18,6 +18,12 @@ tasks:
     init: >
       make clean_folder && 
       make Create_Data_Folder
+  - name: Iniciar db
+    init: >
+      make start_db_container
+  - name: Iniciar pulsar
+    init: >
+      make start_pulsar_containers
   # - name: Pull el Docker compose
   #   init: gp sync-await images
   #   command: docker-compose pull

@@ -4,6 +4,8 @@ networks:
     driver: bridge
   sidecar:
     driver: bridge
+  db_network:
+    driver: bridge
 services:
   # Start zookeeper
   zookeeper:

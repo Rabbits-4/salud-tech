@@ -16,9 +16,8 @@ tasks:
       gp sync-done images
   - name: Crear folder para datos y asigna permisos
     init: >
-      mkdir -p data/bookkeeper && 
-      mkdir -p data/zookeeper && 
-      sudo chmod -R 777 ./data
+      make Delete_Data_Folder && 
+      make Create_Data_Folder
   # - name: Pull el Docker compose
   #   init: gp sync-await images
   #   command: docker-compose pull

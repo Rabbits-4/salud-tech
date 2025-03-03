@@ -16,5 +16,5 @@ class MetadataDto(DTO):
 class DatasetMedicoDto(DTO):
     packet_id: str = field(default_factory=str)
     entorno_clinico: str = field(default_factory=str)
-    metadata: MetadataDto
+    metadata: MetadataDto = field(default_factory=dict)
     data: Optional[Dict] = field(default_factory=dict)

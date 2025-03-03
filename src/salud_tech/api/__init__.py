@@ -39,7 +39,7 @@ def create_app(configuracion={}):
     db_user = os.getenv('POSTGRES_USER', 'salud_tech')
     db_password = os.getenv('POSTGRES_PASSWORD', 'salud_tech_123')
     db_name = os.getenv('POSTGRES_DB', 'rabbit_salud_tech')
-    db_host = os.getenv('POSTGRES_HOST', 'localhost')
+    db_host = os.getenv('POSTGRES_HOST', 'salud_tech_db')
     
     app.config['SQLALCHEMY_DATABASE_URI'] =\
             f'postgresql://{db_user}:{db_password}@{db_host}/{db_name}'
@@ -53,7 +53,7 @@ def create_app(configuracion={}):
     init_db(app)
 
     from salud_tech.config.db import db
-
+    print(db, "db despues de inicializar db")
     importar_modelos_alchemy()
     registrar_handlers()
 

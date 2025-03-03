@@ -19,9 +19,9 @@ tasks:
       mkdir -p data/bookkeeper && 
       mkdir -p data/zookeeper && 
       sudo chmod -R 777 ./data
-  - name: Pull el Docker compose
-    init: gp sync-await images
-    command: docker-compose pull
+  # - name: Pull el Docker compose
+  #   init: gp sync-await images
+  #   command: docker-compose pull
 
 ports:
   - port: 2181

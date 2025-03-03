@@ -35,13 +35,15 @@ class MapeadorDatasetMedico(RepMap):
         return DatasetMedico
     
     def dto_a_entidad(self, dto: DatasetMedicoDto) -> DatasetMedico:
+
+        registro_dict = dto.metadata.registro_de_diagnostico  
         dataset = DatasetMedico()
         dataset.registro_de_diagnostico = RegistroDeDiagnostico(
-            region_anatomica=dto.metadata.registro_de_diagnostico,
-            modalidad=dto.metadata.modalidad,
-            patologia=dto.metadata.patologia
+            region_anatomica=registro_dict.get('region_anatomica'),
+            modalidad=registro_dict.get('modalidad'),
+            patologia=registro_dict.get('patologia')
         )
-        dataset.estado = Estado(dto.metadata.estado)
+        dataset.estado = Estado(dto.metadata.estado) 
         return dataset
     
     def entidad_a_dto(self, entidad: DatasetMedico) -> DatasetMedicoDto:

@@ -9,6 +9,13 @@ from salud_tech.seedwork.dominio.excepciones import ExcepcionDominio
 
 bp = api.crear_blueprint('procesamiento', '/procesamiento')
 
+@bp.route('/test_procesamiento', methods=['GET'])
+def test_procesamiento():
+    response_body = {
+        "message": "Get request processed successfully"
+    }
+    return Response(json.dumps(response_body), status=200, mimetype='application/json')
+
 @bp.route('/crear-dataset-medico-comando', methods=['POST'])
 def crear_dataset_medico():
     try:

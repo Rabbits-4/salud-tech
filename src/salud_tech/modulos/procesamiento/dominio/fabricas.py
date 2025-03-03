@@ -25,7 +25,7 @@ class _FabricaDatasetMedico(Fabrica):
 class FabricaProcesamiento(Fabrica):
     def crear_objeto(self, obj: any, mapeador: Mapeador) -> any:
         if mapeador.obtener_tipo() == DatasetMedico:
-            fabrica_reserva = _FabricaDatasetMedico()
-            return fabrica_reserva.crear_objeto(obj, mapeador)
+            fabrica_dataset = _FabricaDatasetMedico()
+            return fabrica_dataset.crear_objeto(obj, mapeador)
         else:
             raise TipoObjetoNoExisteEnDominioProcesamientoExcepcion()

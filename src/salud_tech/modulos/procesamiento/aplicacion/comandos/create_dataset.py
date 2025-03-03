@@ -1,6 +1,7 @@
 from salud_tech.seedwork.aplicacion.comandos import Comando
 from datetime import datetime
 from .base import CrearBaseHandler
+from dataclasses import dataclass, field
 
 from salud_tech.modulos.procesamiento.aplicacion.mapeadores import MapeadorDatasetMedico
 from salud_tech.modulos.procesamiento.aplicacion.dto import MetadataDto, DatasetMedicoDto
@@ -8,8 +9,11 @@ from salud_tech.modulos.procesamiento.aplicacion.dto import MetadataDto, Dataset
 from salud_tech.modulos.procesamiento.dominio.entidades import DatasetMedico
 from salud_tech.seedwork.infraestructura.uow import UnidadTrabajoPuerto
 
+from salud_tech.seedwork.aplicacion.comandos import ejecutar_commando
+
 from salud_tech.modulos.procesamiento.infraestructura.repositorios import RepositorioDatasetMedico
 
+@dataclass
 class CreateDatasetMedico(Comando):
     packet_id: str
     entorno_clinico: str
@@ -48,3 +52,8 @@ class CreateDatasetHandler(CrearBaseHandler):
         UnidadTrabajoPuerto.registrar_batch(repositorio_dataset.agregar, dataset)
         UnidadTrabajoPuerto.savepoint() # que hace?
         UnidadTrabajoPuerto.commit()
+
+@ejecutar_commando.register(CreateDatasetMedico)
+def ejecutar_commando_create_dataset_medico(comando: CreateDatasetMedico):
+    handler = CreateDatasetHandler()
+    return handler.handle(comando)

@@ -4,6 +4,8 @@ from flask import Flask, jsonify, request
 from flask_swagger import swagger
 from salud_tech.modulos.procesamiento.aplicacion.servicios import ServicioDatasetMedico
 from salud_tech.modulos.procesamiento.aplicacion.dto import DatasetMedicoDto
+from salud_tech.modulos.procesamiento.dominio.entidades import DatasetMedico
+
 
 # Identifica el directorio base
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -49,18 +51,17 @@ def create_app(configuracion={}):
     app.config['TESTING'] = configuracion.get('TESTING')
 
      # Inicializa la DB
-    from salud_tech.config.db import init_db
+    from salud_tech.config.db import init_db, db
     init_db(app)
-
-    from salud_tech.config.db import db
-    print(db, "db despues de inicializar db")
-    importar_modelos_alchemy()
-    registrar_handlers()
-
+     
     with app.app_context():
         db.create_all()
         if not app.config.get('TESTING'):
             comenzar_consumidor()
+
+    print(db, "db despues de inicializar db")
+    importar_modelos_alchemy()
+    registrar_handlers()
 
      # Importa Blueprints
     from . import procesamiento

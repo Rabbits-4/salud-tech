@@ -5,6 +5,7 @@ from salud_tech.modulos.procesamiento.dominio.entidades import DatasetMedico
 from salud_tech.modulos.procesamiento.dominio.objetos_valor import Estado, RegistroDeDiagnostico, Metadata
 
 from .dto import DatasetMedicoDto, MetadataDto
+import logging
 
 from datetime import datetime
 
@@ -32,10 +33,9 @@ class MappeadorDatasetMedicoDTOJson(AppMap):
 class MapeadorDatasetMedico(RepMap):
 
     def obtener_tipo(self) -> type:
-        return DatasetMedico
+        return DatasetMedico.__class__
     
     def dto_a_entidad(self, dto: DatasetMedicoDto) -> DatasetMedico:
-
         registro_dict = dto.metadata.registro_de_diagnostico  
         dataset = DatasetMedico()
         dataset.registro_de_diagnostico = RegistroDeDiagnostico(
@@ -43,7 +43,9 @@ class MapeadorDatasetMedico(RepMap):
             modalidad=registro_dict.get('modalidad'),
             patologia=registro_dict.get('patologia')
         )
-        dataset.estado = Estado(dto.metadata.estado) 
+
+        estado_valor = dto.metadata.estado if hasattr(dto.metadata, 'estado') and dto.metadata.estado else "Pendiente"
+        dataset.estado = Estado(estado_valor)
         return dataset
     
     def entidad_a_dto(self, entidad: DatasetMedico) -> DatasetMedicoDto:

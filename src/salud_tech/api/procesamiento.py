@@ -6,13 +6,14 @@ from salud_tech.modulos.procesamiento.aplicacion.mapeadores import MappeadorData
 from salud_tech.modulos.procesamiento.aplicacion.comandos.create_dataset import CreateDatasetMedico
 from salud_tech.seedwork.aplicacion.comandos import ejecutar_commando
 from salud_tech.seedwork.dominio.excepciones import ExcepcionDominio
+import logging
 
 bp = api.crear_blueprint('procesamiento', '/procesamiento')
 
 @bp.route('/test_procesamiento', methods=['GET'])
 def test_procesamiento():
     response_body = {
-        "message": "Get request processed successfully"
+        "message": "Get request processed succesfully"
     }
     return Response(json.dumps(response_body), status=200, mimetype='application/json')
 
@@ -20,7 +21,7 @@ def test_procesamiento():
 def crear_dataset_medico():
     try:
         dataset_dict = request.json
-
+        logging.info("dto ... ***")
         map_dataset = MappeadorDatasetMedicoDTOJson()
         dataset_dto = map_dataset.externo_a_dto(dataset_dict)
 

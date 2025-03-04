@@ -9,6 +9,7 @@ from salud_tech.seedwork.dominio.repositorios import Mapeador
 from salud_tech.modulos.procesamiento.dominio.objetos_valor import RegionAnatomica, Modalidad, Patologia, EntornoClinico, NotasClinicas, HistorialPaciente, ContextoProcesal, Imagen, Metadata, RegistroDeDiagnostico
 from salud_tech.modulos.procesamiento.dominio.entidades import DatasetMedico
 from .dto import DatasetMedico as DatasetMedicoDTO
+import logging
 
 class MapeadorDatasetMedico(Mapeador):
     _FORMATO_FECHA = '%Y-%m-%dT%H:%M:%SZ'
@@ -17,7 +18,7 @@ class MapeadorDatasetMedico(Mapeador):
         return DatasetMedico.__class__
 
     def entidad_a_dto(self, entidad: DatasetMedico) -> DatasetMedicoDTO:
-        
+        logging.error("**** entidad a DTO", entidad)
         dataset_medico_dto = DatasetMedicoDTO()
         dataset_medico_dto.fecha_creacion = entidad.fecha_creacion
         dataset_medico_dto.fecha_creacion = entidad.fecha_actualizacion
@@ -26,6 +27,7 @@ class MapeadorDatasetMedico(Mapeador):
         return dataset_medico_dto
 
     def dto_a_entidad(self, dto: DatasetMedicoDTO) -> DatasetMedico:
+        logging.error("dto en mapeadores de infraestructura",dto)
         dataset_medico = DatasetMedico(dto.id, dto.fecha_creacion, dto.fecha_actualizacion)
 
         region_anatomica = RegionAnatomica(dto.region_anatomica)

@@ -17,7 +17,7 @@ class RepositorioDatasetMedico(Repositorio, ABC):
         pass
 
     @abstractmethod
-    def guardar(self, dataset: DatasetMedico) -> None:
+    def agregar(self, dataset: DatasetMedico) -> None:
         """Guarda un DatasetMedico en el repositorio"""
         pass
 

@@ -96,9 +96,11 @@ services:
 
   # Servicios de Salud Tech
   salud_tech:
+    build:
+      context: .
+      dockerfile: salud_tech.Dockerfile
     container_name: salud_tech
     hostname: salud_tech
-    image: salud_tech/flask
     profiles: ["salud_tech", "monolito"]
     networks:
       - sidecar
@@ -106,14 +108,15 @@ services:
       - db_network
     labels:
       SidecarDiscover: "false"
-    # depends_on:
-    #    - salud_tech_db
     environment:
       - HOST_ADDRESS=salud_tech
       - PULSAR_ADDRESS=broker
       - BROKER_HOST=broker
+      - FLASK_ENV=development
     ports:
       - "5000:5000"
+    volumes:
+      - .:/app
 
   adaptador:
     image: "salud_tech/adaptador"

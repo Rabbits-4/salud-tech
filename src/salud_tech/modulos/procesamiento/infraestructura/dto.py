@@ -7,12 +7,13 @@ la infraestructura del dominio de procesamiento.
 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, DateTime, JSON, Float, String
+from salud_tech.config.db import db
 
-Base = declarative_base()
+# Base = db.declarative_base() 
 
 import uuid
 
-class DatasetMedico(Base):
+class DatasetMedico(db.Model):
     __tablename__ = "datasets_medicos"
     id = Column(String, primary_key=True)
     fecha_creacion = Column(DateTime, nullable=False)

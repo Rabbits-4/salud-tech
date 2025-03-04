@@ -20,8 +20,7 @@ def test_procesamiento():
 @bp.route('/crear-dataset-medico-comando', methods=['POST'])
 def crear_dataset_medico():
     try:
-        dataset_dict = request.json
-        logging.info("dto ... ***")
+        dataset_dict = request.json        
         map_dataset = MappeadorDatasetMedicoDTOJson()
         dataset_dto = map_dataset.externo_a_dto(dataset_dict)
 

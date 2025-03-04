@@ -19,10 +19,29 @@ class MapeadorDatasetMedico(Mapeador):
 
     def entidad_a_dto(self, entidad: DatasetMedico) -> DatasetMedicoDTO:
         logging.error("**** entidad a DTO", entidad)
-        dataset_medico_dto = DatasetMedicoDTO()
-        dataset_medico_dto.fecha_creacion = entidad.fecha_creacion
-        dataset_medico_dto.fecha_creacion = entidad.fecha_actualizacion
-        dataset_medico_dto.id = str(entidad.id)
+        id = str(entidad.id)
+        region_anatomica= entidad.registro_de_diagnostico.region_anatomica
+        modalidad = entidad.registro_de_diagnostico.modalidad
+        patologia = entidad.registro_de_diagnostico.patologia
+        entorno_clinico = "entidad.metadata.entorno_clinico"
+        notas_clinicas = "entidad.metadata.notas_clinicas"
+        historial_paciente_id = "entidad.metadata.historial_paciente"
+        condiciones_previas_paciente = "jum"
+        tipo_contexto_procesal = "entidad.metadata.contexto_procesal"
+
+
+        dataset_medico_dto = DatasetMedicoDTO(
+            id=id,
+            region_anatomica=region_anatomica,
+            modalidad=modalidad,
+            patologia=patologia,
+            entorno_clinico=entorno_clinico,
+            notas_clinicas=notas_clinicas,
+            historial_paciente_id=historial_paciente_id,
+            condiciones_previas_paciente=condiciones_previas_paciente,
+            tipo_contexto_procesal=tipo_contexto_procesal,
+            estado = "Finalizado"
+        )
 
         return dataset_medico_dto
 

@@ -14,7 +14,7 @@ from salud_tech.seedwork.aplicacion.comandos import ejecutar_commando
 from salud_tech.modulos.procesamiento.infraestructura.repositorios import RepositorioParquet
 
 @dataclass
-class CreateParquet(Comando):
+class CreateDatasetMedico(Comando):
     packet_id: str
     entorno_clinico: str
     registro_de_diagnostico: dict
@@ -25,9 +25,9 @@ class CreateParquet(Comando):
     notas_clinicas: str
     data: any
 
-class CreateParquetHandler(CrearBaseHandler):
+class CreateDatasetHandler(CrearBaseHandler):
 
-    def handle(self, comando: CreateParquet):
+    def handle(self, comando: CreateDatasetMedico):
         metadata_dto = MetadataDto(
             registro_de_diagnostico=comando.registro_de_diagnostico,
             fecha_creacion=datetime.now(),
@@ -53,7 +53,7 @@ class CreateParquetHandler(CrearBaseHandler):
         UnidadTrabajoPuerto.savepoint() # que hace?
         UnidadTrabajoPuerto.commit()
 
-@ejecutar_commando.register(CreateParquet)
-def ejecutar_commando_create_dataset_medico(comando: CreateParquet):
-    handler = CreateParquetHandler()
+@ejecutar_commando.register(CreateDatasetMedico)
+def ejecutar_commando_create_dataset_medico(comando: CreateDatasetMedico):
+    handler = CreateDatasetHandler()
     return handler.handle(comando)

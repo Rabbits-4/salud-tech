@@ -6,7 +6,7 @@ from salud_tech.modulos.procesamiento.infraestructura.repositorios import Reposi
 from salud_tech.seedwork.infraestructura.uow import UnidadTrabajoPuerto
 from .mapeadores import MapeadorDatasetMedico
 
-from .dto import ParquetDto
+from .dto import DatasetMedicoDto
 
 import asyncio
 
@@ -24,7 +24,7 @@ class ServicioDatasetMedico(Servicio):
     def fabrica_procesamiento(self):
         return self._fabrica_procesamiento       
     
-    def crear_dataset_medico(self, dataset_dto: ParquetDto) -> ParquetDto:
+    def crear_dataset_medico(self, dataset_dto: DatasetMedicoDto) -> DatasetMedicoDto:
         dataset: DatasetMedico = self.fabrica_procesamiento.crear_objeto(dataset_dto, MapeadorDatasetMedico())
         dataset.crear_dataset(dataset)
 
@@ -36,6 +36,6 @@ class ServicioDatasetMedico(Servicio):
 
         return self.fabrica_procesamiento.crear_objeto(dataset, MapeadorDatasetMedico())
 
-    def obtener_dataset_medico_por_id(self, id) -> ParquetDto:
+    def obtener_dataset_medico_por_id(self, id) -> DatasetMedicoDto:
         repositorio = self.fabrica_repositorio.crear_objeto(RepositorioParquet.__class__)
         return self.fabrica_procesamiento.crear_objeto(repositorio.obtener_por_id(id), MapeadorDatasetMedico())

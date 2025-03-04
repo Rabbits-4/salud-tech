@@ -4,14 +4,14 @@ from salud_tech.seedwork.dominio.repositorios import Mapeador as RepMap
 from salud_tech.modulos.procesamiento.dominio.entidades import DatasetMedico
 from salud_tech.modulos.procesamiento.dominio.objetos_valor import Estado, RegistroDeDiagnostico, Metadata
 
-from .dto import DatasetMedicoDto, MetadataDto
+from .dto import ParquetDto, MetadataDto
 import logging
 
 from datetime import datetime
 
 class MappeadorDatasetMedicoDTOJson(AppMap):
-    def externo_a_dto(self, externo: dict) -> DatasetMedicoDto:
-        dataset_medico_dto = DatasetMedicoDto(
+    def externo_a_dto(self, externo: dict) -> ParquetDto:
+        dataset_medico_dto = ParquetDto(
             packet_id=externo.get('packet_id'),
             entorno_clinico=externo.get('entorno_clinico'),
             metadata=MetadataDto(
@@ -27,7 +27,7 @@ class MappeadorDatasetMedicoDTOJson(AppMap):
 
         return dataset_medico_dto
 
-    def dto_a_externo(self, dto: DatasetMedicoDto) -> dict:
+    def dto_a_externo(self, dto: ParquetDto) -> dict:
         return dto.__dict__
 
 class MapeadorDatasetMedico(RepMap):
@@ -35,7 +35,7 @@ class MapeadorDatasetMedico(RepMap):
     def obtener_tipo(self) -> type:
         return DatasetMedico.__class__
     
-    def dto_a_entidad(self, dto: DatasetMedicoDto) -> DatasetMedico:
+    def dto_a_entidad(self, dto: ParquetDto) -> DatasetMedico:
         registro_dict = dto.metadata.registro_de_diagnostico  
         dataset = DatasetMedico()
         dataset.registro_de_diagnostico = RegistroDeDiagnostico(
@@ -48,7 +48,7 @@ class MapeadorDatasetMedico(RepMap):
         dataset.estado = Estado(estado_valor)
         return dataset
     
-    def entidad_a_dto(self, entidad: DatasetMedico) -> DatasetMedicoDto:
+    def entidad_a_dto(self, entidad: DatasetMedico) -> ParquetDto:
         metadata_dto = MetadataDto(
             registro_de_diagnostico=entidad.registro_de_diagnostico.region_anatomica,
             fecha_creacion=entidad.fecha_creacion,
@@ -57,7 +57,7 @@ class MapeadorDatasetMedico(RepMap):
             contexto_procesal=entidad.contexto_procesal,
             notas_clinicas=entidad.notas_clinicas
         )
-        return DatasetMedicoDto(
+        return ParquetDto(
             packet_id=entidad.id,
             entorno_clinico=entidad.entorno_clinico,
             metadata=metadata_dto,

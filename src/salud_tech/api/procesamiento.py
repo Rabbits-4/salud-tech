@@ -3,7 +3,7 @@ import json
 
 import salud_tech.seedwork.presentacion.api as api
 from salud_tech.modulos.procesamiento.aplicacion.mapeadores import MappeadorDatasetMedicoDTOJson
-from salud_tech.modulos.procesamiento.aplicacion.comandos.create_dataset import CreateDatasetMedico
+from salud_tech.modulos.procesamiento.aplicacion.comandos.create_dataset import CreateParquet
 from salud_tech.seedwork.aplicacion.comandos import ejecutar_commando
 from salud_tech.seedwork.dominio.excepciones import ExcepcionDominio
 import logging
@@ -24,7 +24,7 @@ def crear_dataset_medico():
         map_dataset = MappeadorDatasetMedicoDTOJson()
         dataset_dto = map_dataset.externo_a_dto(dataset_dict)
 
-        comando = CreateDatasetMedico(
+        comando = CreateParquet(
             packet_id=dataset_dto.packet_id,
             entorno_clinico=dataset_dto.entorno_clinico,
             registro_de_diagnostico=dataset_dto.metadata.registro_de_diagnostico,

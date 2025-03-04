@@ -9,7 +9,7 @@ from abc import ABC, abstractmethod
 from salud_tech.seedwork.dominio.repositorios import Repositorio
 from .entidades import DatasetMedico
 
-class RepositorioDatasetMedico(Repositorio, ABC):
+class RepositorioParquet(Repositorio, ABC):
     
     @abstractmethod
     def obtener_por_id(self, id: str) -> DatasetMedico:

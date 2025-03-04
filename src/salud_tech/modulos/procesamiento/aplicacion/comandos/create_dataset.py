@@ -4,17 +4,17 @@ from .base import CrearBaseHandler
 from dataclasses import dataclass, field
 
 from salud_tech.modulos.procesamiento.aplicacion.mapeadores import MapeadorDatasetMedico
-from salud_tech.modulos.procesamiento.aplicacion.dto import MetadataDto, DatasetMedicoDto
+from salud_tech.modulos.procesamiento.aplicacion.dto import MetadataDto, ParquetDto
 
 from salud_tech.modulos.procesamiento.dominio.entidades import DatasetMedico
 from salud_tech.seedwork.infraestructura.uow import UnidadTrabajoPuerto
 
 from salud_tech.seedwork.aplicacion.comandos import ejecutar_commando
 
-from salud_tech.modulos.procesamiento.infraestructura.repositorios import RepositorioDatasetMedico
+from salud_tech.modulos.procesamiento.infraestructura.repositorios import RepositorioParquet
 
 @dataclass
-class CreateDatasetMedico(Comando):
+class CreateParquet(Comando):
     packet_id: str
     entorno_clinico: str
     registro_de_diagnostico: dict
@@ -25,9 +25,9 @@ class CreateDatasetMedico(Comando):
     notas_clinicas: str
     data: any
 
-class CreateDatasetHandler(CrearBaseHandler):
+class CreateParquetHandler(CrearBaseHandler):
 
-    def handle(self, comando: CreateDatasetMedico):
+    def handle(self, comando: CreateParquet):
         metadata_dto = MetadataDto(
             registro_de_diagnostico=comando.registro_de_diagnostico,
             fecha_creacion=datetime.now(),
@@ -37,7 +37,7 @@ class CreateDatasetHandler(CrearBaseHandler):
             notas_clinicas=comando.notas_clinicas
         )
 
-        dataset_dto = DatasetMedicoDto(
+        dataset_dto = ParquetDto(
             packet_id=comando.packet_id,
             entorno_clinico=comando.entorno_clinico,
             metadata=metadata_dto,
@@ -47,13 +47,13 @@ class CreateDatasetHandler(CrearBaseHandler):
         dataset: DatasetMedico = self.fabrica_procesamiento.crear_objeto(dataset_dto, MapeadorDatasetMedico())
         dataset.crear_dataset(dataset)
 
-        repositorio_dataset = self.fabrica_repositorio.crear_objeto(RepositorioDatasetMedico.__class__)
+        repositorio_dataset = self.fabrica_repositorio.crear_objeto(RepositorioParquet.__class__)
 
         UnidadTrabajoPuerto.registrar_batch(repositorio_dataset.agregar, dataset)
         UnidadTrabajoPuerto.savepoint() # que hace?
         UnidadTrabajoPuerto.commit()
 
-@ejecutar_commando.register(CreateDatasetMedico)
-def ejecutar_commando_create_dataset_medico(comando: CreateDatasetMedico):
-    handler = CreateDatasetHandler()
+@ejecutar_commando.register(CreateParquet)
+def ejecutar_commando_create_dataset_medico(comando: CreateParquet):
+    handler = CreateParquetHandler()
     return handler.handle(comando)

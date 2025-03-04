@@ -185,13 +185,13 @@ docker-compose --profile <pulsar|aeroalpes|ui|notificacion> up
 ```
 
 ## Contribuciones
-1. Realizar un fork del repositorio.
-2. Crear una nueva rama (`feature/nueva-funcionalidad`).
-3. Enviar un **Pull Request** siguiendo el template de contribuciones.
 
-## Licencia
-MIT License. Ver el archivo `LICENSE` para más detalles.
-
+| Miembro           | Actividad                              |
+|------------------|----------------------------------|
+| **Jorge Puyo**    | Desarrollo de microservicios    |
+| **Crithian Delgado** | Implementación de Apache Pulsar |
+| **Fernando Copete** | Desarrollo de microservicios    |
+| **César Forero**  | Documentación y pruebas        |
 
 
 

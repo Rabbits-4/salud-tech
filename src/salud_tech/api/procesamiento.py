@@ -13,7 +13,7 @@ bp = api.crear_blueprint('procesamiento', '/procesamiento')
 @bp.route('/test_procesamiento', methods=['GET'])
 def test_procesamiento():
     response_body = {
-        "message": "Get request processed succesfully"
+        "message": "Get request processed succesfully new 2"
     }
     return Response(json.dumps(response_body), status=200, mimetype='application/json')
 

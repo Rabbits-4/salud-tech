@@ -4,6 +4,8 @@ networks:
     driver: bridge
   db_network:
     driver: bridge
+  db_2_network:
+    driver: bridge
 
 services:
   # Apache Pulsar en modo standalone
@@ -62,3 +64,18 @@ services:
       retries: 5
     networks:
       - db_network
+
+  anonimacion_db:
+    image: postgres:16-alpine
+    profiles: ["db"]
+    environment:
+      POSTGRES_USER: anonimacion
+      POSTGRES_PASSWORD: anonimacion_123
+      POSTGRES_DB: rabbit_anonimacion
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U anonimacion"]
+      interval: 2s
+      timeout: 5s
+      retries: 5
+    networks:
+      - db_2_network

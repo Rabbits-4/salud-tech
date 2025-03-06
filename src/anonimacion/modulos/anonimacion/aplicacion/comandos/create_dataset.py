@@ -1,17 +1,17 @@
-from salud_tech.seedwork.aplicacion.comandos import Comando
+from anonimacion.seedwork.aplicacion.comandos import Comando
 from datetime import datetime
 from .base import CrearBaseHandler
 from dataclasses import dataclass, field
 
-from salud_tech.modulos.procesamiento.aplicacion.mapeadores import MapeadorDatasetMedico
-from salud_tech.modulos.procesamiento.aplicacion.dto import MetadataDto, DatasetMedicoDto
+from anonimacion.modulos.anonimacion.aplicacion.mapeadores import MapeadorDatasetMedico
+from anonimacion.modulos.anonimacion.aplicacion.dto import MetadataDto, DatasetMedicoDto
 
-from salud_tech.modulos.procesamiento.dominio.entidades import DatasetMedico
-from salud_tech.seedwork.infraestructura.uow import UnidadTrabajoPuerto
+from anonimacion.modulos.anonimacion.dominio.entidades import DatasetMedico
+from anonimacion.seedwork.infraestructura.uow import UnidadTrabajoPuerto
 
-from salud_tech.seedwork.aplicacion.comandos import ejecutar_commando
+from anonimacion.seedwork.aplicacion.comandos import ejecutar_commando
 
-from salud_tech.modulos.procesamiento.infraestructura.repositorios import RepositorioDatasetMedico
+from anonimacion.modulos.anonimacion.infraestructura.repositorios import RepositorioDatasetMedico
 
 @dataclass
 class CreateDatasetMedico(Comando):

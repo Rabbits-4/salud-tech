@@ -11,6 +11,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY src/salud_tech /app/src/salud_tech
 
 ENV FLASK_APP=src.salud_tech.api
+ENV FLASK_ENV=development
+ENV FLASK_DEBUG=1
 ENV PYTHONPATH="/app/src"
 
 CMD ["python", "-m", "flask", "run", "--host=0.0.0.0"]

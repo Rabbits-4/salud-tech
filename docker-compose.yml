@@ -40,6 +40,8 @@ services:
       - db_network
     environment:
       - FLASK_APP=src.salud_tech.api
+      - FLASK_ENV=development
+      - FLASK_DEBUG=1
       - HOST_ADDRESS=salud_tech
       - PULSAR_ADDRESS=broker
       - BROKER_HOST=broker

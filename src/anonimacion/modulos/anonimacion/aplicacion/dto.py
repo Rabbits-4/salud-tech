@@ -4,10 +4,9 @@ from datetime import datetime
 from typing import Optional, Dict
 
 @dataclass(frozen=True)
-class DatasetAnonimoDto(DTO):
+class DicomAnonimoDto(DTO):
     packet_id: str = field(default_factory=str)
-    historial_paciente_id: str = field(default_factory=str)
-    img: str = field(default_factory=str)
+    imagen: str = field(default_factory=str)
     entorno_clinico: str = field(default_factory=str)
     registro_de_diagnostico: Dict = field(default_factory=dict)
     fecha_creacion: datetime = field(default_factory=datetime.now)

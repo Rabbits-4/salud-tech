@@ -3,20 +3,19 @@ from datetime import datetime
 from .base import CrearBaseHandler
 from dataclasses import dataclass, field
 
-from anonimacion.modulos.anonimacion.aplicacion.mapeadores import MapeadorDatasetAnonimo
-from anonimacion.modulos.anonimacion.aplicacion.dto import DatasetAnonimoDto
+from anonimacion.modulos.anonimacion.aplicacion.mapeadores import MapeadorDicomAnonimo
+from anonimacion.modulos.anonimacion.aplicacion.dto import DicomAnonimoDto
 
-from anonimacion.modulos.anonimacion.dominio.entidades import DatasetMedico
+from anonimacion.modulos.anonimacion.dominio.entidades import DicomAnonimo
 from anonimacion.seedwork.infraestructura.uow import UnidadTrabajoPuerto
 
 from anonimacion.seedwork.aplicacion.comandos import ejecutar_commando
 
-from anonimacion.modulos.anonimacion.infraestructura.repositorios import RepositorioDatasetAnonimo
+from anonimacion.modulos.anonimacion.infraestructura.repositorios import RepositorioDicomAnonimo
 
 @dataclass
 class Anonimizar(Comando):
-    historial_paciente_id_original: str,  
-    img: str,
+    img: str
     entorno_clinico: str
     registro_de_diagnostico: dict
     fecha_creacion: datetime
@@ -29,9 +28,8 @@ class AnonimizarHandler(CrearBaseHandler):
 
     def handle(self, comando: Anonimizar):
 
-        dataset_anonimo_dto = DatasetAnonimoDto(
-            token=comando.token,
-            img:comando.img,
+        dicom_anonimo_dto = DicomAnonimoDto(
+            imagen=comando.img,
             entorno_clinico=comando.entorno_clinico,
             registro_de_diagnostico=comando.registro_de_diagnostico,
             fecha_creacion=comando.fecha_creacion,
@@ -41,16 +39,16 @@ class AnonimizarHandler(CrearBaseHandler):
             data=comando.data
         )
 
-        dataset_anonimo: Dataset_Anonimo = self.fabrica_anonimacion.crear_objeto(dataset_anonimo_dto, MapeadorDatasetAnonimo())
-        dataset_anonimo.anonimizar(dataset_anonimo)
+        dicom_anonimo: DicomAnonimo = self.fabrica_anonimacion.crear_objeto(dicom_anonimo_dto, MapeadorDicomAnonimo())
+        dicom_anonimo.anonimizar()
 
-        repositorio_dataset_anonimo = self.fabrica_repositorio.crear_objeto(RepositorioDatasetAnonimo.__class__)
+        repositorio_dicom_anonimo = self.fabrica_repositorio.crear_objeto(RepositorioDicomAnonimo.__class__)
 
-        UnidadTrabajoPuerto.registrar_batch(repositorio_dataset_anonimo.agregar, dataset_anonimo)
-        UnidadTrabajoPuerto.savepoint() # que hace?
+        UnidadTrabajoPuerto.registrar_batch(repositorio_dicom_anonimo.agregar, dicom_anonimo)
+        UnidadTrabajoPuerto.savepoint()
         UnidadTrabajoPuerto.commit()
 
 @ejecutar_commando.register(Anonimizar)
-def ejecutar_commando_create_dataset_anonimo(comando: Anonimizar):
+def ejecutar_commando_anonimizar(comando: Anonimizar):
     handler = AnonimizarHandler()
     return handler.handle(comando)

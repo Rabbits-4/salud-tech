@@ -22,3 +22,12 @@ class DicomAnonimo(db.Model):
     contexto_procesal = Column(String, nullable=False)
     notas_clinicas = Column(String, nullable=True)
     data = Column(JSON, nullable=True)
+
+class RelacionPaciente(db.Model):
+    __tablename__ = "relaciones_pacientes"
+
+    token = Column(String, primary_key=True)
+    historial_paciente_id = Column(String, nullable=False)
+    nombre = Column(String, nullable=False)
+    direccion = Column(String, nullable=False)
+    telefono = Column(String, nullable=False)

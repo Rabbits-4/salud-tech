@@ -19,11 +19,13 @@ class Despachador:
         cliente.close()  
 
     def publicar_evento(self, evento, topico="dicom-anonimizado"):  
+        logging.error(f"📡 Intentando publicar evento en el tópico: {topico}")
         # \"\"\"
         # Publica un evento con la información del DicomAnonimo anonmizado.  
         # \"\"\"  
+        logging.error("📦 Creando payload del evento")
         payload = DicomAnonimoCreadoPayload(  
-            id_dicom_anonimo=evento.id,  
+            id_dicom_anonimo=str(evento.id),  
             imagen=evento.imagen,  
             entorno_clinico=evento.entorno_clinico,  
             registro_de_diagnostico=str(evento.registro_de_diagnostico),  
@@ -33,7 +35,7 @@ class Despachador:
             notas_clinicas=evento.notas_clinicas,  
             data=str(evento.data)  
         )  
-
+        logging.error("✅ Evento creado, enviando a Pulsar")
         evento_a_publicar = EventoDicomAnonimoCreado(data=payload)  
 
         self._publicar_mensaje(evento_a_publicar, topico, EventoDicomAnonimoCreado)

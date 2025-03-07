@@ -16,8 +16,8 @@ class MapeadorDicomAnonimoDTOJson(AppMap):
             imagen=externo.get('imagen', ''),
             entorno_clinico=externo.get('entorno_clinico', ''),
             registro_de_diagnostico=externo.get('registro_de_diagnostico', {}),
-            fecha_creacion=datetime.fromisoformat(externo.get('fecha_creacion', datetime.utcnow().isoformat())),
-            fecha_actualizacion=datetime.fromisoformat(externo.get('fecha_actualizacion', datetime.utcnow().isoformat())),
+            fecha_creacion=externo.get('fecha_creacion'),
+            fecha_actualizacion=externo.get('fecha_actualizacion'),
             contexto_procesal=externo.get('contexto_procesal', ''),
             notas_clinicas=externo.get('notas_clinicas', ''),
             data=externo.get('data', {})
@@ -29,34 +29,38 @@ class MapeadorDicomAnonimoDTOJson(AppMap):
             'imagen': dto.imagen,
             'entorno_clinico': dto.entorno_clinico,
             'registro_de_diagnostico': dto.registro_de_diagnostico,
-            'fecha_creacion': dto.fecha_creacion.isoformat(),
-            'fecha_actualizacion': dto.fecha_actualizacion.isoformat(),
+            'fecha_creacion': dto.fecha_creacion,
+            'fecha_actualizacion': dto.fecha_actualizacion,
             'contexto_procesal': dto.contexto_procesal,
             'notas_clinicas': dto.notas_clinicas,
             'data': dto.data
         }
 
+class MapeadorDicomAnonimo(RepMap):
+    def obtener_tipo(self) -> type:
+        return DicomAnonimo.__class__
+    
     def dto_a_entidad(self, dto: DicomAnonimoDto) -> DicomAnonimo:
         return DicomAnonimo(
             id=dto.packet_id,
             imagen=dto.imagen,
             entorno_clinico=dto.entorno_clinico,
             registro_de_diagnostico=dto.registro_de_diagnostico,
-            fecha_creacion=dto.fecha_creacion.isoformat(),
-            fecha_actualizacion=dto.fecha_actualizacion.isoformat(),
+            fecha_creacion=dto.fecha_creacion,
+            fecha_actualizacion=dto.fecha_actualizacion,
             contexto_procesal=dto.contexto_procesal,
             notas_clinicas=dto.notas_clinicas,
             data=dto.data
         )
-
+    
     def entidad_a_dto(self, entidad: DicomAnonimo) -> DicomAnonimoDto:
         return DicomAnonimoDto(
             packet_id=entidad.id,
             imagen=entidad.imagen,
             entorno_clinico=entidad.entorno_clinico,
             registro_de_diagnostico=entidad.registro_de_diagnostico,
-            fecha_creacion=datetime.fromisoformat(entidad.fecha_creacion),
-            fecha_actualizacion=datetime.fromisoformat(entidad.fecha_actualizacion),
+            fecha_creacion=entidad.fecha_creacion,
+            fecha_actualizacion=entidad.fecha_actualizacion,
             contexto_procesal=entidad.contexto_procesal,
             notas_clinicas=entidad.notas_clinicas,
             data=entidad.data

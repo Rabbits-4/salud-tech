@@ -84,7 +84,7 @@ services:
       - PULSAR_ADDRESS=broker
       - BROKER_HOST=broker
     ports:
-      - "5001:5001"
+      - "5001:5000"
 
   anonimacion_db:
     image: postgres:16-alpine

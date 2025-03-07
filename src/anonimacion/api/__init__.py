@@ -51,11 +51,11 @@ def create_app(configuracion={}):
     init_db(app)
      
     with app.app_context():
+        importar_modelos_alchemy()
         db.create_all()
         if not app.config.get('TESTING'):
             comenzar_consumidor()
 
-    importar_modelos_alchemy()
     registrar_handlers()
 
      # Importa Blueprints

@@ -2,29 +2,37 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Optional
 
-import salud_tech.modulos.procesamiento.dominio.objetos_valor as ov
-from salud_tech.seedwork.dominio.entidades import AgregacionRaiz
-from .eventos import DatasetCreado
+import anonimacion.modulos.anonimacion.dominio.objetos_valor as ov
+from anonimacion.seedwork.dominio.entidades import AgregacionRaiz
+from .eventos import DicomAnonimizado
 
 @dataclass
-class DatasetMedico(AgregacionRaiz):
+class DicomAnonimo(AgregacionRaiz):
     id: str
+    token: str
+    imagen: ov.Imagen
+    entorno_clinico: ov.EntornoClinico
+    registro_de_diagnostico: Optional[ov.RegistroDeDiagnostico] = None
     fecha_creacion: str
-    registro_de_diagnostico: Optional[ov.RegistroDeDiagnostico] = None    
-    metadata: Optional[ov.Metadata] = None
-    estado: ov.Estado = field(default_factory=lambda: ov.Estado.PENDIENTE)
+    fecha_actualizacion: str
+    contexto_procesal: ov.ContextoProcesal
+    notas_clinicas: Optional[ov.NotasClinicas] = None
+    data: Optional[ov.Data] = None
 
-    def crear_dataset(self, dataset: DatasetMedico):
-        self.registro_de_diagnostico = dataset.registro_de_diagnostico
-        self.metadata = dataset.metadata
-        self.estado = dataset.estado
+    def anonimizar(self):
+        self.token = str(uuid.uuid4()) 
 
-        self.agregar_evento(DatasetCreado(
+        self.agregar_evento(DicomAnonimizado(
             id=self.id,
-            estado=self.estado.nombre if hasattr(self.estado, 'nombre') else str(self.estado),
+            token=self.token,
+            imagen=self.imagen,
+            entorno_clinico=self.entorno_clinico,
+            registro_de_diagnostico=self.registro_de_diagnostico,
             fecha_creacion=self.fecha_creacion,
-            metadata=self.metadata,
-            registro_de_diagnostico=self.registro_de_diagnostico            
+            fecha_actualizacion=self.fecha_actualizacion,
+            contexto_procesal=self.contexto_procesal,
+            notas_clinicas=self.notas_clinicas,
+            data=self.data
         ))
 
 

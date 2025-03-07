@@ -8,12 +8,14 @@ import uuid
 @dataclass
 class DicomAnonimizado(EventoDominio):
     id: uuid.UUID
-    token: uuid.UUID
-    imagen: ov.Imagen
-    entorno_clinico: ov.EntornoClinico
-    registro_de_diagnostico: Optional[ov.RegistroDeDiagnostico]
-    fecha_creacion: datetime
-    fecha_actualizacion: datetime
-    contexto_procesal: ov.ContextoProcesal
-    notas_clinicas: Optional[ov.NotasClinicas] = None
-    data: Optional[ov.Data] = None
+    token: uuid.UUID = None
+    imagen: ov.Imagen = None
+    entorno_clinico: ov.EntornoClinico = None
+    registro_de_diagnostico: Optional[ov.RegistroDeDiagnostico] = field(default=None)
+    fecha_creacion: datetime = None
+    fecha_actualizacion: datetime = None
+    contexto_procesal: ov.ContextoProcesal = None
+
+
+    notas_clinicas: Optional[ov.NotasClinicas] = field(default=None)
+    data: Optional[ov.Data] = field(default=None)

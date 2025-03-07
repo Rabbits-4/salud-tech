@@ -2,8 +2,8 @@ from flask import Response, request
 import json
 
 import anonimacion.seedwork.presentacion.api as api
-from anonimacion.modulos.anonimacion.aplicacion.mapeadores import MappeadorDatasetMedicoDTOJson
-from anonimacion.modulos.anonimacion.aplicacion.comandos.create_dataset import CreateDatasetMedico
+from anonimacion.modulos.anonimacion.aplicacion.mapeadores import MapeadorDicomAnonimoDTOJson
+from anonimacion.modulos.anonimacion.aplicacion.comandos.anonimizar import Anonimizar
 from anonimacion.seedwork.aplicacion.comandos import ejecutar_commando
 from anonimacion.seedwork.dominio.excepciones import ExcepcionDominio
 import logging

@@ -22,3 +22,6 @@ kill_all:
 
 recreate_salud_tech_container:
 	docker compose --profile salud_tech down -v && docker compose --profile salud_tech up --build --force-recreate 
+
+recreate_anonimacion_container:
+	docker compose --profile anonimacion down -v && docker compose --profile anonimacion up --build --force-recreate 

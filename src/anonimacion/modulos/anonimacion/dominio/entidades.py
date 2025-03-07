@@ -9,13 +9,13 @@ from .eventos import DicomAnonimizado
 @dataclass
 class DicomAnonimo(AgregacionRaiz):
     id: str
-    token: str
-    imagen: ov.Imagen
-    entorno_clinico: ov.EntornoClinico
+    token: str = None
+    imagen: ov.Imagen = None
+    entorno_clinico: ov.EntornoClinico = None
     registro_de_diagnostico: Optional[ov.RegistroDeDiagnostico] = None
-    fecha_creacion: str
-    fecha_actualizacion: str
-    contexto_procesal: ov.ContextoProcesal
+    fecha_creacion: str = None
+    fecha_actualizacion: str = None
+    contexto_procesal: ov.ContextoProcesal = None
     notas_clinicas: Optional[ov.NotasClinicas] = None
     data: Optional[ov.Data] = None
 

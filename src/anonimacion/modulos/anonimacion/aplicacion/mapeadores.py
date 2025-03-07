@@ -1,8 +1,8 @@
-from salud_tech.seedwork.aplicacion.dto import Mapeador as AppMap
-from salud_tech.seedwork.dominio.repositorios import Mapeador as RepMap
+from anonimacion.seedwork.aplicacion.dto import Mapeador as AppMap
+from anonimacion.seedwork.dominio.repositorios import Mapeador as RepMap
 
-from salud_tech.modulos.procesamiento.dominio.entidades import DatasetMedico
-from salud_tech.modulos.procesamiento.dominio.objetos_valor import Estado, RegistroDeDiagnostico, Metadata
+from anonimacion.modulos.anonimacion.dominio.entidades import DatasetMedico
+from anonimacion.modulos.anonimacion.dominio.objetos_valor import Estado, RegistroDeDiagnostico, Metadata
 
 from .dto import DatasetMedicoDto, MetadataDto
 import logging

@@ -30,8 +30,7 @@ class AnonimizarHandler(CrearBaseHandler):
     def handle(self, comando: Anonimizar):
 
         dataset_anonimo_dto = DatasetAnonimoDto(
-            packet_id=comando.packet_id,
-            historial_paciente_id=comando.historial_paciente_id,
+            token=comando.token,
             img:comando.img,
             entorno_clinico=comando.entorno_clinico,
             registro_de_diagnostico=comando.registro_de_diagnostico,

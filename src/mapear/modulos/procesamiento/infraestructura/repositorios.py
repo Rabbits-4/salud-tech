@@ -35,7 +35,6 @@ class RepositorioDatasetMedicoPostgress(RepositorioDatasetMedico):
 
     def agregar(self, dataset_medico: DatasetMedico):
         from salud_tech.config.db import db
-        logging.error("**** monda: ", dataset_medico)
         dataset_medico_dto = self.fabrica_procesamiento.crear_objeto(dataset_medico, MapeadorDatasetMedico())
         db.session.add(dataset_medico_dto)
 

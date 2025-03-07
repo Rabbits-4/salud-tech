@@ -24,7 +24,6 @@ def suscribirse_a_eventos():
 
         cliente.close()
     except:
-        logging.error('ERROR: Suscribiendose al tópico de eventos!')
         traceback.print_exc()
         if cliente:
             cliente.close()
@@ -43,7 +42,6 @@ def suscribirse_a_comandos():
             
         cliente.close()
     except:
-        logging.error('ERROR: Suscribiendose al tópico de comandos!')
         traceback.print_exc()
         if cliente:
             cliente.close()

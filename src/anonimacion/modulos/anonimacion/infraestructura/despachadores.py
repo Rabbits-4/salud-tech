@@ -22,7 +22,6 @@ class Despachador:
 
     def publicar_evento(self, evento, topico):
         # TODO Debe existir un forma de crear el Payload en Avro con base al tipo del evento
-        logging.error("***** publish", evento)
         payload = DatasetMedicoCreadoPayload(
             id_dataset_medico=str(evento.id), 
             fecha_creacion=int(unix_time_millis(evento.fecha_creacion))

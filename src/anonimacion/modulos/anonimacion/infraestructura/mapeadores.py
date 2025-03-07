@@ -18,7 +18,6 @@ class MapeadorDatasetMedico(Mapeador):
         return DatasetMedico.__class__
 
     def entidad_a_dto(self, entidad: DatasetMedico) -> DatasetMedicoDTO:
-        logging.error("**** entidad a DTO", entidad)
         id = str(entidad.id)
         region_anatomica= entidad.registro_de_diagnostico.region_anatomica
         modalidad = entidad.registro_de_diagnostico.modalidad

@@ -1,175 +1,81 @@
-version: "3"
+version: "3.8"
 networks:
   pulsar:
     driver: bridge
-  sidecar:
-    driver: bridge
   db_network:
     driver: bridge
+  db_2_network:
+    driver: bridge
+
 services:
-  # Start zookeeper
-  zookeeper:
+  # Apache Pulsar en modo standalone
+  pulsar:
     image: apachepulsar/pulsar:latest
+    container_name: pulsar
     profiles: ["pulsar"]
-    container_name: zookeeper
-    restart: on-failure
-    networks:
-      - pulsar
-    volumes:
-      - ./data/zookeeper:/pulsar/data/zookeeper
-    environment:
-      - metadataStoreUrl=zk:zookeeper:2181
-    command: >
-      bash -c "bin/apply-config-from-env.py conf/zookeeper.conf && \
-             bin/generate-zookeeper-config.sh conf/zookeeper.conf && \
-             exec bin/pulsar zookeeper"
-    healthcheck:
-      test: ["CMD", "bin/pulsar-zookeeper-ruok.sh"]
-      interval: 10s
-      timeout: 5s
-      retries: 30
-
-  # Init cluster metadata
-  pulsar-init:
-    container_name: pulsar-init
-    hostname: pulsar-init
-    image: apachepulsar/pulsar:latest
-    profiles: ["pulsar"]
-    networks:
-      - pulsar
-    command: bin/pulsar initialize-cluster-metadata --cluster cluster-a --zookeeper zookeeper:2181 --configuration-store zookeeper:2181 --web-service-url http://broker:8080 --broker-service-url pulsar://broker:6650
-    depends_on:
-      zookeeper:
-        condition: service_healthy
-
-  # Start bookie
-  bookie:
-    image: apachepulsar/pulsar:latest
-    profiles: ["pulsar"]
-    container_name: bookie
-    restart: on-failure
-    networks:
-      - pulsar
-    environment:
-      - clusterName=cluster-a
-      - zkServers=zookeeper:2181
-      - metadataServiceUri=metadata-store:zk:zookeeper:2181
-    depends_on:
-      zookeeper:
-        condition: service_healthy
-      pulsar-init:
-        condition: service_completed_successfully
-    # Map the local directory to the container to avoid bookie startup failure due to insufficient container disks.
-    volumes:
-      - ./data/bookkeeper:/pulsar/data/bookkeeper
-    command: bash -c "bin/apply-config-from-env.py conf/bookkeeper.conf
-      && exec bin/pulsar bookie"
-
-  # Start broker
-  broker:
-    image: apachepulsar/pulsar:latest
-    profiles: ["pulsar"]
-    container_name: broker
     hostname: broker
     restart: on-failure
     networks:
       - pulsar
-    environment:
-      - metadataStoreUrl=zk:zookeeper:2181
-      - zookeeperServers=zookeeper:2181
-      - clusterName=cluster-a
-      - managedLedgerDefaultEnsembleSize=1
-      - managedLedgerDefaultWriteQuorum=1
-      - managedLedgerDefaultAckQuorum=1
-      - advertisedAddress=broker
-      - advertisedListeners=external:pulsar://127.0.0.1:6650
-    depends_on:
-      zookeeper:
-        condition: service_healthy
-      bookie:
-        condition: service_started
     ports:
       - "6650:6650"
       - "8080:8080"
-    command: bash -c "bin/apply-config-from-env.py conf/broker.conf
-      &&  exec bin/pulsar broker"
+    environment:
+      - PULSAR_MEM=-Xms512m -Xmx1g
+    command: bin/pulsar standalone
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: "1.5G"
 
   # Servicios de Salud Tech
   salud_tech:
+    build:
+      context: .
+      dockerfile: src/salud_tech/Dockerfile
     container_name: salud_tech
     hostname: salud_tech
-    image: salud_tech/flask
-    profiles: ["salud_tech", "monolito"]
+    profiles: ["salud_tech"]
     networks:
-      - sidecar
       - pulsar
       - db_network
-    labels:
-      SidecarDiscover: "false"
-    depends_on:
-      - broker
     environment:
+      - FLASK_APP=src.salud_tech.api
+      - FLASK_ENV=development
+      - FLASK_DEBUG=1
       - HOST_ADDRESS=salud_tech
       - PULSAR_ADDRESS=broker
+      - BROKER_HOST=broker
     ports:
       - "5000:5000"
 
-  adaptador:
-    image: "salud_tech/adaptador"
-    profiles: ["salud_tech", "monolito"]
-    container_name: adaptador
-    hostname: adaptador
-    depends_on:
-      - salud_tech
-    networks:
-      - sidecar
-    environment:
-      - HOST_ADDRESS=salud_tech
-      - PULSAR_ADDRESS=broker
-    ports:
-      - "50051:50051"
-
-  # Servicios de Notificación
-  notificacion:
-    container_name: notificacion
-    hostname: notificacion
-    image: salud_tech/notificacion
-    profiles: ["salud_tech", "notificacion"]
-    depends_on:
-      - salud_tech
-      - broker
-    environment:
-      - HOST_ADDRESS=salud_tech
-      - PULSAR_ADDRESS=broker
-    networks:
-      - pulsar
-  # Servicio UI
-  ui:
-    container_name: ui
-    hostname: ui
-    image: salud_tech/ui
-    profiles: ["salud_tech", "ui"]
-    depends_on:
-      - salud_tech
-      - broker
-    environment:
-      - HOST_ADDRESS=salud_tech
-      - PULSAR_ADDRESS=broker
-    networks:
-      - pulsar
-    ports:
-      - "5678:5678"
-
   salud_tech_db:
     image: postgres:16-alpine
+    profiles: ["db"]
     environment:
       POSTGRES_USER: salud_tech
       POSTGRES_PASSWORD: salud_tech_123
       POSTGRES_DB: rabbit_salud_tech
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U salud_tech"]
       interval: 2s
       timeout: 5s
       retries: 5
     networks:
       - db_network
+
+  anonimacion_db:
+    image: postgres:16-alpine
+    profiles: ["db"]
+    environment:
+      POSTGRES_USER: anonimacion
+      POSTGRES_PASSWORD: anonimacion_123
+      POSTGRES_DB: rabbit_anonimacion
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U anonimacion"]
+      interval: 2s
+      timeout: 5s
+      retries: 5
+    networks:
+      - db_2_network

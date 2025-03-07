@@ -1,15 +1,20 @@
-"""Objetos valor del dominio de procesamiento médico
+"""Objetos valor del dominio de anonimacion
 
-En este archivo usted encontrará los objetos valor del dominio de procesamiento médico
+En este archivo usted encontrará los objetos valor del dominio de anonimacion
 
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from salud_tech.seedwork.dominio.objetos_valor import ObjetoValor
+from anonimacion.seedwork.dominio.objetos_valor import ObjetoValor
 from datetime import datetime
 from enum import Enum
+
+@dataclass(frozen=True)
+class HistorialPacienteIdOriginal(ObjetoValor):
+    historial_id: str
+    condiciones_previas: list[str]
 
 @dataclass(frozen=True)
 class RegionAnatomica(ObjetoValor):

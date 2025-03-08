@@ -2,9 +2,9 @@ import os
 
 from flask import Flask, jsonify, request
 from flask_swagger import swagger
-from salud_tech.modulos.procesamiento.aplicacion.servicios import ServicioDatasetMedico
-from salud_tech.modulos.procesamiento.aplicacion.dto import DatasetMedicoDto
-from salud_tech.modulos.procesamiento.dominio.entidades import DatasetMedico
+from mapear.modulos.procesamiento.aplicacion.servicios import ServicioDatasetMedico
+from mapear.modulos.procesamiento.aplicacion.dto import DatasetMedicoDto
+from mapear.modulos.procesamiento.dominio.entidades import ParquetFile
 
 
 # Identifica el directorio base
@@ -12,11 +12,11 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 def registrar_handlers():
     # Importa los handlers
-    import salud_tech.modulos.procesamiento.aplicacion
+    import mapear.modulos.procesamiento.aplicacion
 
 def importar_modelos_alchemy():
     # Import SQLAlchemy models
-    import salud_tech.modulos.procesamiento.infraestructura.dto
+    import mapear.modulos.procesamiento.infraestructura.dto
 
 def comenzar_consumidor():
     """
@@ -26,7 +26,7 @@ def comenzar_consumidor():
     """
 
     import threading
-    import salud_tech.modulos.procesamiento.infraestructura.consumidores as procesamiento
+    import mapear.modulos.procesamiento.infraestructura.consumidores as procesamiento
 
     # Suscripción a eventos
     threading.Thread(target=procesamiento.suscribirse_a_eventos).start()
@@ -38,10 +38,10 @@ def create_app(configuracion={}):
     # Init la aplicacion de Flask
     app = Flask(__name__, instance_relative_config=True)
     
-    db_user = os.getenv('POSTGRES_USER', 'salud_tech')
-    db_password = os.getenv('POSTGRES_PASSWORD', 'salud_tech_123')
-    db_name = os.getenv('POSTGRES_DB', 'rabbit_salud_tech')
-    db_host = os.getenv('POSTGRES_HOST', 'salud_tech_db')
+    db_user = os.getenv('POSTGRES_USER', 'mapear')
+    db_password = os.getenv('POSTGRES_PASSWORD', 'mapear_123')
+    db_name = os.getenv('POSTGRES_DB', 'rabbit_mapear')
+    db_host = os.getenv('POSTGRES_HOST', 'mapear_db')
     
     app.config['SQLALCHEMY_DATABASE_URI'] =\
             f'postgresql://{db_user}:{db_password}@{db_host}/{db_name}'
@@ -51,7 +51,7 @@ def create_app(configuracion={}):
     app.config['TESTING'] = configuracion.get('TESTING')
 
      # Inicializa la DB
-    from salud_tech.config.db import init_db, db
+    from mapear.config.db import init_db, db
     init_db(app)
      
     with app.app_context():

@@ -6,7 +6,7 @@ En este archivo usted encontrará reglas de negocio del dominio de procesamiento
 
 from salud_tech.seedwork.dominio.reglas import ReglaNegocio
 
-class ImagenConUrlValida(ReglaNegocio):    
+class LasNotasMedicasNoPuedenEstarVacias(ReglaNegocio):    
     url: str
 
     def __init__(self, url, mensaje='La URL de la imagen no es válida'):

@@ -5,7 +5,7 @@ al dominio de procesamiento de datos médicos
 
 """
 
-from salud_tech.seedwork.dominio.excepciones import ExcepcionFabrica
+from mapear.seedwork.dominio.excepciones import ExcepcionFabrica
 
 class TipoObjetoNoExisteEnDominioProcesamientoExcepcion(ExcepcionFabrica):
     def __init__(self, mensaje='No existe una fábrica para el tipo solicitado en el módulo de procesamiento de datos médicos'):

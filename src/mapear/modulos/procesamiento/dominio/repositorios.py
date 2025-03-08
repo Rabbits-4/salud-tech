@@ -6,18 +6,18 @@ del dominio de procesamiento de datos médicos
 """
 
 from abc import ABC, abstractmethod
-from salud_tech.seedwork.dominio.repositorios import Repositorio
-from .entidades import DatasetMedico
+from mapear.seedwork.dominio.repositorios import Repositorio
+from .entidades import ParquetFile
 
-class RepositorioDatasetMedico(Repositorio, ABC):
+class RepositorioParquet(Repositorio, ABC):
     
     @abstractmethod
-    def obtener_por_id(self, id: str) -> DatasetMedico:
+    def obtener_por_id(self, id: str) -> ParquetFile:
         """Obtiene un DatasetMedico por su ID"""
         pass
 
     @abstractmethod
-    def agregar(self, dataset: DatasetMedico) -> None:
+    def agregar(self, dataset: ParquetFile) -> None:
         """Guarda un DatasetMedico en el repositorio"""
         pass
 
@@ -27,6 +27,6 @@ class RepositorioDatasetMedico(Repositorio, ABC):
         pass
 
     @abstractmethod
-    def obtener_todos(self) -> list[DatasetMedico]:
+    def obtener_todos(self) -> list[ParquetFile]:
         """Obtiene todos los DatasetMedico almacenados"""
         pass

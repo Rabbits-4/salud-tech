@@ -6,9 +6,13 @@ from datetime import datetime
 import uuid
 
 @dataclass
-class DatasetCreado(EventoDominio):
-    id_dataset: uuid.UUID = None
-    estado: str = None
+class ParquetCreado(EventoDominio):
+    packet_id: uuid.UUID = None
     fecha_creacion: datetime = None
-    metadata: Metadata = None
+    fecha_actualizacion: datetime = None
     registro_de_diagnostico: RegistroDeDiagnostico = None
+    contexto_procesal: str = None
+    notas_clinicas: str = None
+    data: dict = None
+    estado: str = None    
+    

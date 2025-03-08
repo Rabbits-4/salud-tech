@@ -1,11 +1,11 @@
 from flask import Response, request
 import json
 
-import salud_tech.seedwork.presentacion.api as api
-from salud_tech.modulos.procesamiento.aplicacion.mapeadores import MappeadorDatasetMedicoDTOJson
-from salud_tech.modulos.procesamiento.aplicacion.comandos.create_dataset import CreateDatasetMedico
-from salud_tech.seedwork.aplicacion.comandos import ejecutar_commando
-from salud_tech.seedwork.dominio.excepciones import ExcepcionDominio
+import mapear.seedwork.presentacion.api as api
+from mapear.modulos.procesamiento.aplicacion.mapeadores import MappeadorDatasetMedicoDTOJson
+from mapear.modulos.procesamiento.aplicacion.comandos.create_dataset import CreateDatasetMedico
+from mapear.seedwork.aplicacion.comandos import ejecutar_commando
+from mapear.seedwork.dominio.excepciones import ExcepcionDominio
 import logging
 
 bp = api.crear_blueprint('procesamiento', '/procesamiento')

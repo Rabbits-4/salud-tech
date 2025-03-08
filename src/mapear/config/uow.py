@@ -1,5 +1,5 @@
-from salud_tech.config.db import db
-from salud_tech.seedwork.infraestructura.uow import UnidadTrabajo, Batch
+from mapear.config.db import db
+from mapear.seedwork.infraestructura.uow import UnidadTrabajo, Batch
 
 class UnidadTrabajoSQLAlchemy(UnidadTrabajo):
 

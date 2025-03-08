@@ -37,6 +37,7 @@ class RepositorioParquetPostgress(RepositorioParquet):
         from mapear.config.db import db
         parquet_dto = self.fabrica_parquet.crear_objeto(parquet, MapeadorParquet())
         db.session.add(parquet_dto)
+        db.session.commit()
 
     def actualizar(self, parquet: ParquetFile):
         # TODO

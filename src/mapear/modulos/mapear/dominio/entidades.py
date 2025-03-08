@@ -6,6 +6,9 @@ import mapear.modulos.mapear.dominio.objetos_valor as ov
 from mapear.seedwork.dominio.entidades import AgregacionRaiz
 from .eventos import ParquetCreado
 
+import logging
+import json
+
 @dataclass
 class ParquetFile(AgregacionRaiz):
     id: str
@@ -23,14 +26,14 @@ class ParquetFile(AgregacionRaiz):
 
         self.agregar_evento(ParquetCreado(
             packet_id=self.id,
-            fecha_creacion=parquet.fecha_creacion,
-            fecha_actualizacion=parquet.fecha_actualizacion,
+            fecha_creacion=parquet.fecha_creacion.isoformat(),
+            fecha_actualizacion=parquet.fecha_actualizacion.isoformat(),
             historial_paciente_id=parquet.historial_paciente_id,
             contexto_procesal=parquet.contexto_procesal,
             notas_clinicas=parquet.notas_clinicas,
             registro_de_diagnostico=parquet.registro_de_diagnostico,
             entorno_clinico=parquet.entorno_clinico,
-            data=parquet.data,
+            data=json.dumps(parquet.data),
             estado=parquet.estado.value
         ))
 

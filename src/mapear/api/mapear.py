@@ -20,7 +20,7 @@ def test_procesamiento():
 @bp.route('/create-parquet', methods=['POST'])
 def crear_parquet():
     try:
-        dataset_dict = request.json        
+        dataset_dict = request.json
         map_dataset = MappeadorParquetDTOJson()
         dataset_dto = map_dataset.externo_a_dto(dataset_dict)
 

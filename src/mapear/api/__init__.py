@@ -6,6 +6,8 @@ from mapear.modulos.mapear.aplicacion.servicios import ServicioParquet
 from mapear.modulos.mapear.aplicacion.dto import ParquetDto
 from mapear.modulos.mapear.dominio.entidades import ParquetFile
 
+import logging
+
 
 # Identifica el directorio base
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -42,6 +44,8 @@ def create_app(configuracion={}):
     db_password = os.getenv('POSTGRES_PASSWORD', 'mapear_123')
     db_name = os.getenv('POSTGRES_DB', 'rabbit_mapear')
     db_host = os.getenv('POSTGRES_HOST', 'mapear_db')
+
+    logging.info("**** DATABASE: ", f'postgresql://{db_user}:{db_password}@{db_host}/{db_name}')
     
     app.config['SQLALCHEMY_DATABASE_URI'] =\
             f'postgresql://{db_user}:{db_password}@{db_host}/{db_name}'

@@ -32,7 +32,7 @@ def suscribirse_a_comandos():
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('dicom-anonimizado', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='salud-tech-sub-comandos', schema=AvroSchema(ComandoCrearParquet))
+        consumidor = cliente.subscribe('dicom-anonimo', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='mapear-sub-comandos', schema=AvroSchema(ComandoCrearParquet))
 
         while True:
             mensaje = consumidor.receive()

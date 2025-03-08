@@ -118,9 +118,12 @@ services:
       - FLASK_APP=src.mapear.api
       - FLASK_ENV=development
       - FLASK_DEBUG=1
-      - HOST_ADDRESS=mapear
       - PULSAR_ADDRESS=broker
       - BROKER_HOST=broker
+      - POSTGRES_USER=mapear
+      - POSTGRES_PASSWORD=mapear_123
+      - POSTGRES_DB=rabbit_mapear
+      - POSTGRES_HOST=mapear_db
     depends_on:
       mapear_db:
         condition: service_healthy
@@ -132,6 +135,7 @@ services:
   mapear_db:
     image: postgres:16-alpine
     profiles: ["mapear"]
+    container_name: mapear_db
     environment:
       POSTGRES_USER: mapear
       POSTGRES_PASSWORD: mapear_123

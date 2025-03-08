@@ -13,6 +13,8 @@ from mapear.seedwork.aplicacion.comandos import ejecutar_commando
 
 from mapear.modulos.mapear.infraestructura.repositorios import RepositorioParquet
 
+import logging
+
 @dataclass
 class CreateParquet(Comando):
     entorno_clinico: str
@@ -22,7 +24,7 @@ class CreateParquet(Comando):
     historial_paciente_id: str
     contexto_procesal: str
     notas_clinicas: str
-    data: any
+    data: dict
 
 class CrearParquetHandler(CrearBaseHandler):
 
@@ -39,6 +41,7 @@ class CrearParquetHandler(CrearBaseHandler):
         )
 
         parquet: ParquetFile = self.fabrica_mapear.crear_objeto(parquet_dto, MapeadorParquet())
+
         parquet.crear_parquet(parquet)
 
         repositorio_parquet = self.fabrica_repositorio.crear_objeto(RepositorioParquet.__class__)

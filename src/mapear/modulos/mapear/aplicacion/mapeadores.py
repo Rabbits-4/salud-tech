@@ -2,9 +2,9 @@ from mapear.seedwork.aplicacion.dto import Mapeador as AppMap
 from mapear.seedwork.dominio.repositorios import Mapeador as RepMap
 
 from mapear.modulos.mapear.dominio.entidades import ParquetFile
-from mapear.modulos.mapear.dominio.objetos_valor import Estado, RegistroDeDiagnostico, Metadata
+from mapear.modulos.mapear.dominio.objetos_valor import Estado
 
-from .dto import ParquetDto, MetadataDto
+from .dto import ParquetDto
 
 class MappeadorParquetDTOJson(AppMap):
     def externo_a_dto(self, externo: dict) -> ParquetDto:
@@ -28,33 +28,32 @@ class MappeadorParquetDTOJson(AppMap):
 class MapeadorParquet(RepMap):
 
     def obtener_tipo(self) -> type:
-        return DatasetMedico.__class__
+        return ParquetFile.__class__
     
-    def dto_a_entidad(self, dto: ParquetDto) -> DatasetMedico:
-        registro_dict = dto.metadata.registro_de_diagnostico  
-        dataset = DatasetMedico()
-        dataset.registro_de_diagnostico = RegistroDeDiagnostico(
-            region_anatomica=registro_dict.get('region_anatomica'),
-            modalidad=registro_dict.get('modalidad'),
-            patologia=registro_dict.get('patologia')
-        )
-
-        estado_valor = dto.metadata.estado if hasattr(dto.metadata, 'estado') and dto.metadata.estado else "Pendiente"
-        dataset.estado = Estado(estado_valor)
+    def dto_a_entidad(self, dto: ParquetDto) -> ParquetFile:
+        
+        dataset = ParquetFile()
+        dataset.id = dto.packet_id
+        dataset.fecha_creacion = dto.fecha_creacion
+        dataset.fecha_actualizacion = dto.fecha_actualizacion
+        dataset.registro_de_diagnostico = dto.registro_de_diagnostico
+        dataset.contexto_procesal = dto.contexto_procesal
+        dataset.notas_clinicas = dto.notas_clinicas
+        dataset.data = dto.data
+        dataset.historial_paciente_id = dto.historial_paciente_id
+        dataset.estado = Estado.EN_PROCESO
         return dataset
     
-    def entidad_a_dto(self, entidad: DatasetMedico) -> ParquetDto:
-        metadata_dto = MetadataDto(
-            registro_de_diagnostico=entidad.registro_de_diagnostico.region_anatomica,
+    def entidad_a_dto(self, entidad: ParquetFile) -> ParquetDto:
+        metadata_dto = ParquetDto(
+            packet_id=entidad.id,
             fecha_creacion=entidad.fecha_creacion,
             fecha_actualizacion=entidad.fecha_actualizacion,
-            historial_paciente_id=entidad.historial_paciente_id,
+            registro_de_diagnostico=entidad.registro_de_diagnostico,
             contexto_procesal=entidad.contexto_procesal,
-            notas_clinicas=entidad.notas_clinicas
+            notas_clinicas=entidad.notas_clinicas,
+            data=entidad.data,
+            historial_paciente_id=entidad.historial_paciente_id
         )
-        return ParquetDto(
-            packet_id=entidad.id,
-            entorno_clinico=entidad.entorno_clinico,
-            metadata=metadata_dto,
-            data=entidad.data
-        )
+
+        return metadata_dto

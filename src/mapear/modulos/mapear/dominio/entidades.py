@@ -12,6 +12,7 @@ class ParquetFile(AgregacionRaiz):
     fecha_creacion: datetime
     fecha_actualizacion: datetime
     registro_de_diagnostico: str
+    historial_paciente_id: str
     contexto_procesal: str
     notas_clinicas: str
     data: dict
@@ -23,6 +24,7 @@ class ParquetFile(AgregacionRaiz):
             packet_id=self.id,
             fecha_creacion=parquet.fecha_creacion,
             fecha_actualizacion=parquet.fecha_actualizacion,
+            historial_paciente_id=parquet.historial_paciente_id,
             registro_de_diagnostico=parquet.registro_de_diagnostico,
             contexto_procesal=parquet.contexto_procesal,
             notas_clinicas=parquet.notas_clinicas,

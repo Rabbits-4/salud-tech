@@ -5,7 +5,7 @@ import time
 import logging
 import traceback
 
-from mapear.modulos.mapear.infraestructura.schema.v1.eventos import EventoParquetCreado
+from mapear.modulos.mapear.infraestructura.schema.v1.eventos import EventoDicomAnonimoCreado
 from mapear.modulos.mapear.infraestructura.schema.v1.comandos import ComandoCrearParquet
 from mapear.seedwork.infraestructura import utils
 
@@ -14,7 +14,7 @@ def suscribirse_a_eventos():
     try:
         print(f'pulsar://{utils.broker_host()}:6650')
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('dicom-anonimizado', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='dicom-sub', schema=AvroSchema(EventoParquetCreado))
+        consumidor = cliente.subscribe('dicom-anonimizado', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='dicom-sub', schema=AvroSchema(EventoDicomAnonimoCreado))
 
         while True:
             mensaje = consumidor.receive()            

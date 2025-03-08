@@ -26,6 +26,18 @@ class CreateParquet(Comando):
     notas_clinicas: str
     data: dict
 
+    def to_dict(self):
+        return {
+            "entorno_clinico": self.entorno_clinico,
+            "registro_de_diagnostico": self.registro_de_diagnostico,
+            "fecha_creacion": self.fecha_creacion,
+            "fecha_actualizacion": self.fecha_actualizacion,
+            "historial_paciente_id": self.historial_paciente_id,
+            "contexto_procesal": self.contexto_procesal,
+            "notas_clinicas": self.notas_clinicas,
+            "data": self.data
+        }
+
 class CrearParquetHandler(CrearBaseHandler):
 
     def handle(self, comando: CreateParquet):

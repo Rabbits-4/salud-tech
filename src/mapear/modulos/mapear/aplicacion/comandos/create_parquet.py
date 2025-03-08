@@ -15,7 +15,6 @@ from mapear.modulos.mapear.infraestructura.repositorios import RepositorioParque
 
 @dataclass
 class CreateParquet(Comando):
-    packet_id: str
     entorno_clinico: str
     registro_de_diagnostico: dict
     fecha_creacion: datetime
@@ -29,7 +28,6 @@ class CrearParquetHandler(CrearBaseHandler):
 
     def handle(self, comando: CreateParquet):
         parquet_dto = ParquetDto(
-            packet_id=comando.packet_id,
             entorno_clinico=comando.entorno_clinico,
             registro_de_diagnostico=comando.registro_de_diagnostico,
             fecha_creacion=datetime.now(),

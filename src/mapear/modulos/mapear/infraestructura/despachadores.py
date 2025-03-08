@@ -22,11 +22,13 @@ class Despachador:
 
     def publicar_evento(self, evento, topico):
         # TODO Debe existir un forma de crear el Payload en Avro con base al tipo del evento
+        logging.error("***", evento)
+        logging.error("*** topico", topico)
         payload = ParquetCreadoPayload(
-            id_parquet=str(evento.id), 
-            fecha_creacion=int(unix_time_millis(evento.fecha_creacion))
-            
-            
+            id_parquet=str(evento.id),
+            entorno_clinico=evento.entorno_clinico,
+            registro_de_diagnostico=evento.registro_de_diagnostico,
+
         )
         evento_integracion = EventoParquetCreado(data=payload)
         self._publicar_mensaje(evento_integracion, topico, AvroSchema(EventoParquetCreado))

@@ -18,21 +18,20 @@ def test_procesamiento():
     return Response(json.dumps(response_body), status=200, mimetype='application/json')
 
 @bp.route('/create-parquet', methods=['POST'])
-def crear_dataset_medico():
+def crear_parquet():
     try:
         dataset_dict = request.json        
         map_dataset = MappeadorParquetDTOJson()
         dataset_dto = map_dataset.externo_a_dto(dataset_dict)
 
         comando = CreateParquet(
-            packet_id=dataset_dto.packet_id,
             entorno_clinico=dataset_dto.entorno_clinico,
-            registro_de_diagnostico=dataset_dto.metadata.registro_de_diagnostico,
-            fecha_creacion=dataset_dto.metadata.fecha_creacion,
-            fecha_actualizacion=dataset_dto.metadata.fecha_actualizacion,
-            historial_paciente_id=dataset_dto.metadata.historial_paciente_id,
-            contexto_procesal=dataset_dto.metadata.contexto_procesal,
-            notas_clinicas=dataset_dto.metadata.notas_clinicas,            
+            registro_de_diagnostico=dataset_dto.registro_de_diagnostico,
+            fecha_creacion=dataset_dto.fecha_creacion,
+            fecha_actualizacion=dataset_dto.fecha_actualizacion,
+            historial_paciente_id=dataset_dto.historial_paciente_id,
+            contexto_procesal=dataset_dto.contexto_procesal,
+            notas_clinicas=dataset_dto.notas_clinicas,            
             data=dataset_dto.data
         )
         

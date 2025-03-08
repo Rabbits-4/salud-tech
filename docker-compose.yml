@@ -126,6 +126,8 @@ services:
         condition: service_healthy
     ports:
       - "5002:5000"
+    volumes:
+      - ./src/mapear:/app/src/mapear
 
   mapear_db:
     image: postgres:16-alpine

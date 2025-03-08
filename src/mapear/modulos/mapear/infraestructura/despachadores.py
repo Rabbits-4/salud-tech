@@ -35,6 +35,7 @@ class Despachador:
             estado=evento.estado
         )
         evento_integracion = EventoParquetCreado(data=payload)
+        logging.error("✅ Evento creado, enviando a Pulsar", topico)
         self._publicar_mensaje(evento_integracion, topico, AvroSchema(EventoParquetCreado))
 
     def publicar_comando(self, comando, topico):

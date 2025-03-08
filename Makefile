@@ -10,7 +10,7 @@ clean_folder:
 	if [ -d "./data" ]; then echo "La carpeta data existe, eliminándola..."; rm -rf data; else echo "La carpeta data no existe, continuando..."; fi
 
 start_pulsar_containers:
-	docker compose --profile pulsar up --build -d
+	docker compose --profile pulsar down && docker compose --profile pulsar up --build
 
 start_db_container:
 	docker compose --profile db up --build -d

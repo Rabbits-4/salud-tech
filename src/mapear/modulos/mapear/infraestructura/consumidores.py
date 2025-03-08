@@ -15,8 +15,9 @@ def suscribirse_a_eventos():
     try:
         print(f'pulsar://{utils.broker_host()}:6650')
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
+        topico = 'dicom-anonimizado'
         consumidor = cliente.subscribe(
-            'dicom-anonimizado',
+            topico,
             consumer_type=_pulsar.ConsumerType.Shared,subscription_name='dicom-sub',
             schema=AvroSchema(EventoDicomAnonimoCreado)
         )
@@ -27,10 +28,9 @@ def suscribirse_a_eventos():
             data = evento.data
 
             print(f'Evento recibido: {mensaje.value().data}')
-            logging.error(f"**** dicom-anonimizado: {evento}")
-            logging.error("**** DATA", vars(data))
+            logging.error(f"📡 Evento dicom-anonimizado recibido: {topico}")
 
-            CreateParquet(
+            comando = CreateParquet(
                 entorno_clinico=data.entorno_clinico,
                 registro_de_diagnostico=data.registro_de_diagnostico,
                 fecha_creacion=data.fecha_creacion,
@@ -40,6 +40,11 @@ def suscribirse_a_eventos():
                 notas_clinicas=data.notas_clinicas,
                 data=data.data
             )
+
+            # from mapear.seedwork.aplicacion.comandos import ejecutar_commando
+
+            logging.error("📦 Ejecutar evento crear parquet")
+            
 
             consumidor.acknowledge(mensaje)     
 

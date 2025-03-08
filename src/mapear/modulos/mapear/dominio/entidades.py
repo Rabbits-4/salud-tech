@@ -15,8 +15,8 @@ class ParquetFile(AgregacionRaiz):
     contexto_procesal: str
     notas_clinicas: str
     data: dict
-    estado: ov.Estado = field(default_factory=lambda: ov.Estado.EN_PROCESO)
     id: str
+    estado: ov.Estado = field(default_factory=lambda: ov.Estado.EN_PROCESO)
 
     def crear_parquet(self, parquet: ParquetFile):
 

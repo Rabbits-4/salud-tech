@@ -127,7 +127,7 @@ services:
     ports:
       - "5002:5000"
     volumes:
-      - ./src/mapear:/app/src/mapear
+      - src/mapear:/app/src/mapear
 
   mapear_db:
     image: postgres:16-alpine

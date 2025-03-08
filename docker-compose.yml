@@ -65,6 +65,27 @@ services:
     networks:
       - db_network
 
+  # Servicios de anonimacion
+  anonimacion:
+    build:
+      context: .
+      dockerfile: src/anonimacion/Dockerfile
+    container_name: anonimacion
+    hostname: anonimacion
+    profiles: ["anonimacion"]
+    networks:
+      - pulsar
+      - db_2_network
+    environment:
+      - FLASK_APP=src.anonimacion.api
+      - FLASK_ENV=development
+      - FLASK_DEBUG=1
+      - HOST_ADDRESS=anonimacion
+      - PULSAR_ADDRESS=broker
+      - BROKER_HOST=broker
+    ports:
+      - "5001:5000"
+
   anonimacion_db:
     image: postgres:16-alpine
     profiles: ["db"]

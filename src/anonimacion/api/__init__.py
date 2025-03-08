@@ -8,11 +8,11 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 def registrar_handlers():
     # Importa los handlers
-    import anonimacion.modulos.procesamiento.aplicacion
+    import anonimacion.modulos.anonimacion.aplicacion
 
 def importar_modelos_alchemy():
     # Import SQLAlchemy models
-    import anonimacion.modulos.procesamiento.infraestructura.dto
+    import anonimacion.modulos.anonimacion.infraestructura.dto
 
 def comenzar_consumidor():
     """
@@ -22,13 +22,13 @@ def comenzar_consumidor():
     """
 
     import threading
-    import anonimacion.modulos.procesamiento.infraestructura.consumidores as procesamiento
+    import anonimacion.modulos.anonimacion.infraestructura.consumidores as anonimacion
 
     # Suscripción a eventos
-    threading.Thread(target=procesamiento.suscribirse_a_eventos).start()
+    threading.Thread(target=anonimacion.suscribirse_a_eventos).start()
 
     # Suscripción a comandos
-    threading.Thread(target=procesamiento.suscribirse_a_comandos).start()
+    threading.Thread(target=anonimacion.suscribirse_a_comandos).start()
 
 def create_app(configuracion={}):
     # Init la aplicacion de Flask
@@ -51,11 +51,11 @@ def create_app(configuracion={}):
     init_db(app)
      
     with app.app_context():
+        importar_modelos_alchemy()
         db.create_all()
         if not app.config.get('TESTING'):
             comenzar_consumidor()
 
-    importar_modelos_alchemy()
     registrar_handlers()
 
      # Importa Blueprints

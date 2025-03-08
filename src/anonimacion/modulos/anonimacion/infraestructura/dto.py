@@ -1,28 +1,33 @@
-"""DTOs para la capa de infrastructura del dominio de procesamiento
+"""
+DTOs para la capa de infraestructura del dominio de anonimación
 
 En este archivo usted encontrará los DTOs (modelos anémicos) de
-la infraestructura del dominio de procesamiento.
+la infraestructura del dominio de anonimación.
 
 """
-
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, DateTime, JSON, Float, String
-from salud_tech.config.db import db
+from sqlalchemy import Column, DateTime, JSON, String
+from anonimacion.config.db import db
 from datetime import datetime
-# Base = db.declarative_base() 
 
-import uuid
-
-class DatasetMedico(db.Model):
-    __tablename__ = "datasets_medicos"
+class DicomAnonimo(db.Model):
+    __tablename__ = "dicoms_anonimizados"
+    
     id = Column(String, primary_key=True)
-    fecha_creacion = Column(DateTime, nullable=True, default=datetime.utcnow)
-    region_anatomica = Column(String, nullable=False)
-    modalidad = Column(String, nullable=False)
-    patologia = Column(String, nullable=False)
+    imagen = Column(String, nullable=False)
     entorno_clinico = Column(String, nullable=False)
-    notas_clinicas = Column(String, nullable=False)
+    registro_de_diagnostico = Column(JSON, nullable=False)
+    fecha_creacion = Column(DateTime, nullable=True, default=datetime.utcnow)
+    fecha_actualizacion = Column(DateTime, nullable=True, default=datetime.utcnow, onupdate=datetime.utcnow)
+    contexto_procesal = Column(String, nullable=False)
+    notas_clinicas = Column(String, nullable=True)
+    data = Column(JSON, nullable=True)
+
+class RelacionPaciente(db.Model):
+    __tablename__ = "relaciones_pacientes"
+
+    token = Column(String, primary_key=True)
     historial_paciente_id = Column(String, nullable=False)
-    condiciones_previas_paciente = Column(String, nullable=False)
-    tipo_contexto_procesal = Column(String, nullable=False)
-    estado = Column(String, nullable=False)
+    nombre = Column(String, nullable=False)
+    direccion = Column(String, nullable=False)
+    telefono = Column(String, nullable=False)

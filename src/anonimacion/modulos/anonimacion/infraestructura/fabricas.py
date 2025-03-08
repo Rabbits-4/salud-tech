@@ -1,23 +1,23 @@
-""" Fábricas para la creación de objetos en la capa de infrastructura del dominio de vuelos
+""" Fábricas para la creación de objetos en la capa de infraestructura del dominio de anonimación
 
 En este archivo usted encontrará las diferentes fábricas para crear
-objetos complejos en la capa de infraestructura del dominio de vuelos
+objetos complejos en la capa de infraestructura del dominio de anonimación.
 
 """
 
 from dataclasses import dataclass
-from salud_tech.seedwork.dominio.fabricas import Fabrica
-from salud_tech.seedwork.dominio.repositorios import Repositorio
+from anonimacion.seedwork.dominio.fabricas import Fabrica
+from anonimacion.seedwork.dominio.repositorios import Repositorio
 
-from salud_tech.modulos.procesamiento.dominio.repositorios import RepositorioDatasetMedico
-from .repositorios import RepositorioDatasetMedicoPostgress
+from anonimacion.modulos.anonimacion.dominio.repositorios import RepositorioDicomAnonimo
+from .repositorios import RepositorioDicomAnonimoPostgres
 
 from .excepciones import ExcepcionFabrica
 
 @dataclass
 class FabricaRepositorio(Fabrica):
     def crear_objeto(self, obj: type, mapeador: any = None) -> Repositorio:
-        if obj == RepositorioDatasetMedico.__class__:
-            return RepositorioDatasetMedicoPostgress()
+        if obj == RepositorioDicomAnonimo.__class__:
+            return RepositorioDicomAnonimoPostgres()
         else:
             raise ExcepcionFabrica()

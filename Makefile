@@ -18,7 +18,10 @@ start_salud_tech_container:
 	docker compose --profile salud_tech up --build -d
 
 kill_all:
-	docker compose --profile pulsar --profile db --profile salud_tech down -v
+	docker compose --profile pulsar --profile db --profile salud_tech --profile anonimacion down -v
 
 recreate_salud_tech_container:
 	docker compose --profile salud_tech down -v && docker compose --profile salud_tech up --build --force-recreate 
+
+recreate_anonimacion_container:
+	docker compose --profile anonimacion down -v && docker compose --profile anonimacion up --build --force-recreate 

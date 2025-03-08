@@ -10,61 +10,44 @@ from dataclasses import dataclass, field
 from anonimacion.seedwork.dominio.objetos_valor import ObjetoValor
 from datetime import datetime
 from enum import Enum
+from typing import Optional, List, Dict
 
-@dataclass(frozen=True)
-class HistorialPacienteIdOriginal(ObjetoValor):
-    historial_id: str
-    condiciones_previas: list[str]
-
-@dataclass(frozen=True)
-class RegionAnatomica(ObjetoValor):
-    nombre: str
-
-@dataclass(frozen=True)
-class Modalidad(ObjetoValor):
+@dataclass
+class EntornoClinico:
     tipo: str
 
-@dataclass(frozen=True)
-class Patologia(ObjetoValor):
+@dataclass
+class RegionAnatomica:
     nombre: str
 
-@dataclass(frozen=True)
-class RegistroDeDiagnostico(ObjetoValor):
+@dataclass
+class Modalidad:
+    tipo: str
+
+@dataclass
+class Patologia:
+    nombre: str
+
+@dataclass
+class RegistroDeDiagnostico:
     region_anatomica: RegionAnatomica
     modalidad: Modalidad
     patologia: Patologia
 
-@dataclass(frozen=True)
-class EntornoClinico(ObjetoValor):
-    tipo: str
-
-@dataclass(frozen=True)
-class NotasClinicas(ObjetoValor):
+@dataclass
+class NotasClinicas:
     descripcion: str
 
-@dataclass(frozen=True)
-class HistorialPaciente(ObjetoValor):
-    historial_id: str
-    condiciones_previas: list[str]
-
-@dataclass(frozen=True)
-class ContextoProcesal(ObjetoValor):
+@dataclass
+class ContextoProcesal:
     tipo: str
 
-@dataclass(frozen=True)
-class Imagen(ObjetoValor):
+@dataclass
+class Imagen:
     url: str
-    descripcion: str
+    descripcion: Optional[str] = ""
 
-@dataclass(frozen=True)
-class Metadata(ObjetoValor):
-    entorno_clinico: EntornoClinico
-    notas_clinicas: NotasClinicas
-    historial_paciente: HistorialPaciente
-    contexto_procesal: ContextoProcesal
-    imagen: Imagen
-
-class Estado(Enum):
-    PENDIENTE = "Pendiente"
-    EN_PROCESO = "En Proceso"
-    FINALIZADO = "Finalizado"
+@dataclass
+class Data:
+    examenes: List[str]
+    resultados: Dict[str, str]

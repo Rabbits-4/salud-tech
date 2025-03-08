@@ -9,14 +9,14 @@ from .eventos import ParquetCreado
 @dataclass
 class ParquetFile(AgregacionRaiz):
     id: str
-    fecha_creacion: datetime
-    fecha_actualizacion: datetime
-    historial_paciente_id: str
-    contexto_procesal: str
-    registro_de_diagnostico: str
-    entorno_clinico: str
-    notas_clinicas: str
-    data: dict
+    fecha_creacion: datetime = field(default_factory=datetime.now)
+    fecha_actualizacion: datetime = field(default_factory=datetime.now)
+    historial_paciente_id: str = None
+    contexto_procesal: str = None
+    registro_de_diagnostico: str = None
+    entorno_clinico: str = None
+    notas_clinicas: str = None
+    data: dict = field(default_factory=dict)
     estado: ov.Estado = field(default_factory=lambda: ov.Estado.EN_PROCESO)
 
     def crear_parquet(self, parquet: ParquetFile):

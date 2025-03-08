@@ -8,6 +8,7 @@ from .eventos import ParquetCreado
 
 @dataclass
 class ParquetFile(AgregacionRaiz):
+    id: str
     registro_de_diagnostico: str
     fecha_creacion: datetime
     fecha_actualizacion: datetime
@@ -15,7 +16,6 @@ class ParquetFile(AgregacionRaiz):
     contexto_procesal: str
     notas_clinicas: str
     data: dict
-    id: str
     estado: ov.Estado = field(default_factory=lambda: ov.Estado.EN_PROCESO)
 
     def crear_parquet(self, parquet: ParquetFile):

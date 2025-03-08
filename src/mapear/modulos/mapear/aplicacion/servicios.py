@@ -26,7 +26,7 @@ class ServicioParquet(Servicio):
     
     def crear_parquet_medico(self, dataset_dto: ParquetDto) -> ParquetDto:
         parquet: ParquetFile = self.fabrica_procesamiento.crear_objeto(dataset_dto, MapeadorParquet())
-        parquet.crear_dataset(parquet)
+        parquet.crear_parquet(parquet)
 
         repositorio = self.fabrica_repositorio.crear_objeto(RepositorioParquet.__class__)
 

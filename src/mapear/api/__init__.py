@@ -26,13 +26,13 @@ def comenzar_consumidor():
     """
 
     import threading
-    import mapear.modulos.mapear.infraestructura.consumidores as procesamiento
+    import mapear.modulos.mapear.infraestructura.consumidores as mapear
 
     # Suscripción a eventos
-    threading.Thread(target=procesamiento.suscribirse_a_eventos).start()
+    threading.Thread(target=mapear.suscribirse_a_eventos).start()
 
     # Suscripción a comandos
-    threading.Thread(target=procesamiento.suscribirse_a_comandos).start()
+    threading.Thread(target=mapear.suscribirse_a_comandos).start()
 
 def create_app(configuracion={}):
     # Init la aplicacion de Flask

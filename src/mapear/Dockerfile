@@ -15,5 +15,5 @@ ENV FLASK_ENV=development
 ENV FLASK_DEBUG=1
 ENV PYTHONPATH="/app/src"
 
-CMD ["python", "-m", "flask", "run", "--host=0.0.0.0"]
+CMD ["python", "-m", "flask", "run", "--host=0.0.0.0", "--reload"]
 

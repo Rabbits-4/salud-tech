@@ -20,11 +20,9 @@ def test_procesamiento():
 @bp.route('/create-parquet', methods=['POST'])
 def crear_parquet():
     try:
-        dataset_dict = request.json        
+        dataset_dict = request.json
         map_dataset = MappeadorParquetDTOJson()
         dataset_dto = map_dataset.externo_a_dto(dataset_dict)
-
-        logging.error("**** dataset_dto", dataset_dto.fecha_creacion)
 
         comando = CreateParquet(
             entorno_clinico=dataset_dto.entorno_clinico,
@@ -36,8 +34,6 @@ def crear_parquet():
             notas_clinicas=dataset_dto.notas_clinicas,            
             data=dataset_dto.data
         )
-
-        logging.error("**** comando", comando.fecha_creacion)
         
         # TODO: use a real dispacher (see dispacher on infraestructure)
         ejecutar_commando(comando)

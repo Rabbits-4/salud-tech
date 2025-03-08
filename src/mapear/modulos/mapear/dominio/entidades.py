@@ -14,6 +14,7 @@ class ParquetFile(AgregacionRaiz):
     historial_paciente_id: str
     contexto_procesal: str
     registro_de_diagnostico: str
+    entorno_clinico: str
     notas_clinicas: str
     data: dict
     estado: ov.Estado = field(default_factory=lambda: ov.Estado.EN_PROCESO)
@@ -28,6 +29,7 @@ class ParquetFile(AgregacionRaiz):
             contexto_procesal=parquet.contexto_procesal,
             notas_clinicas=parquet.notas_clinicas,
             registro_de_diagnostico=parquet.registro_de_diagnostico,
+            entorno_clinico=parquet.entorno_clinico,
             data=parquet.data,
             estado=parquet.estado.value
         ))

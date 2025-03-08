@@ -11,6 +11,8 @@ class ParquetCreado(EventoDominio):
     fecha_creacion: datetime = None
     fecha_actualizacion: datetime = None
     registro_de_diagnostico: str = None
+    entorno_clinico: str = None
+    historial_paciente_id: str = None
     contexto_procesal: str = None
     notas_clinicas: str = None
     data: dict = None

@@ -24,18 +24,18 @@ class ServicioParquet(Servicio):
     def fabrica_procesamiento(self):
         return self._fabrica_procesamiento       
     
-    def crear_dataset_medico(self, dataset_dto: ParquetDto) -> ParquetDto:
-        dataset: ParquetFile = self.fabrica_procesamiento.crear_objeto(dataset_dto, MapeadorParquet())
-        dataset.crear_dataset(dataset)
+    def crear_parquet_medico(self, dataset_dto: ParquetDto) -> ParquetDto:
+        parquet: ParquetFile = self.fabrica_procesamiento.crear_objeto(dataset_dto, MapeadorParquet())
+        parquet.crear_dataset(parquet)
 
         repositorio = self.fabrica_repositorio.crear_objeto(RepositorioParquet.__class__)
 
-        UnidadTrabajoPuerto.registrar_batch(repositorio.agregar, dataset)
+        UnidadTrabajoPuerto.registrar_batch(repositorio.agregar, parquet)
         UnidadTrabajoPuerto.savepoint()
         UnidadTrabajoPuerto.commit()
 
-        return self.fabrica_procesamiento.crear_objeto(dataset, MapeadorParquet())
+        return self.fabrica_procesamiento.crear_objeto(parquet, MapeadorParquet())
 
-    def obtener_dataset_medico_por_id(self, id) -> ParquetDto:
+    def obtener_parquet_por_id(self, id) -> ParquetDto:
         repositorio = self.fabrica_repositorio.crear_objeto(RepositorioParquet.__class__)
         return self.fabrica_procesamiento.crear_objeto(repositorio.obtener_por_id(id), MapeadorParquet())

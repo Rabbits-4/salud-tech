@@ -28,4 +28,4 @@ recreate_anonimacion_container:
 	docker compose --profile anonimacion down -v && docker compose --profile anonimacion up --build --force-recreate
 
 recreate_mapear_container:
-	docker compose --profile mapear down -v && docker compose --profile mapear up --build --force-recreate
+	docker compose --profile mapear down && docker compose --profile mapear up --build --force-recreate

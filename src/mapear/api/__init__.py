@@ -45,7 +45,7 @@ def create_app(configuracion={}):
     db_name = os.getenv('POSTGRES_DB', 'rabbit_mapear')
     db_host = os.getenv('POSTGRES_HOST', 'mapear_db')
 
-    logging.error("**** DATABASE: ", f'postgresql://{db_user}:{db_password}@{db_host}/{db_name}')
+    logging.info("**** DATABASE: ", f'postgresql://{db_user}:{db_password}@{db_host}/{db_name}')
     
     app.config['SQLALCHEMY_DATABASE_URI'] =\
             f'postgresql://{db_user}:{db_password}@{db_host}/{db_name}'

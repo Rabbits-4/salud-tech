@@ -24,6 +24,8 @@ def crear_parquet():
         map_dataset = MappeadorParquetDTOJson()
         dataset_dto = map_dataset.externo_a_dto(dataset_dict)
 
+        logging.error("**** dataset_dto", dataset_dto.fecha_creacion)
+
         comando = CreateParquet(
             entorno_clinico=dataset_dto.entorno_clinico,
             registro_de_diagnostico=dataset_dto.registro_de_diagnostico,
@@ -34,6 +36,8 @@ def crear_parquet():
             notas_clinicas=dataset_dto.notas_clinicas,            
             data=dataset_dto.data
         )
+
+        logging.error("**** comando", comando.fecha_creacion)
         
         # TODO: use a real dispacher (see dispacher on infraestructure)
         ejecutar_commando(comando)

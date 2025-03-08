@@ -6,6 +6,7 @@ import uuid
 
 @dataclass
 class ParquetCreado(EventoDominio):
+    id: uuid.UUID
     packet_id: uuid.UUID = None
     fecha_creacion: datetime = None
     fecha_actualizacion: datetime = None

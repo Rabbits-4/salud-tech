@@ -18,15 +18,13 @@ class MapeadorParquet(Mapeador):
     def entidad_a_dto(self, entidad: ParquetFile) -> Parquet:
         id = str(entidad.id)
         registro_de_diagnostico = entidad.registro_de_diagnostico
-        contextos_procesales = entidad.contexto_procesal
+        contexto_procesal = entidad.contexto_procesal
         notas_clinicas = entidad.notas_clinicas
         data = entidad.data
 
-
         parquet_dto = Parquet(
-            id=id,
             registro_de_diagnostico=registro_de_diagnostico,
-            contextos_procesales=contextos_procesales,
+            contexto_procesal=contexto_procesal,
             notas_clinicas=notas_clinicas,
             data=data,
             estado = "En Proceso"
@@ -37,8 +35,11 @@ class MapeadorParquet(Mapeador):
     def dto_a_entidad(self, dto: Parquet) -> ParquetFile:
         parquet = ParquetFile(
             id=dto.id,
+            packet_id=dto.id,
+            fecha_creacion=dto.fecha_creacion,
+            fecha_actualizacion=dto.fecha_actualizacion,
             registro_de_diagnostico=dto.registro_de_diagnostico,
-            contextos_procesales=dto.contexto_procesal,
+            contexto_procesal=dto.contexto_procesal,
             notas_clinicas=dto.notas_clinicas,
             data=dto.data,
             estado=dto.estado

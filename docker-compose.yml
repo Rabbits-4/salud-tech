@@ -6,6 +6,8 @@ networks:
     driver: bridge
   db_2_network:
     driver: bridge
+  db_mapear_network:
+    driver: bridge
 
 services:
   # Apache Pulsar en modo standalone
@@ -100,3 +102,39 @@ services:
       retries: 5
     networks:
       - db_2_network
+
+  # Servicios de mapear
+  mapear:
+    build:
+      context: .
+      dockerfile: src/mapear/Dockerfile
+    container_name: mapear
+    hostname: mapear
+    profiles: ["mapear"]
+    networks:
+      - pulsar
+      - db_mapear_network
+    environment:
+      - FLASK_APP=src.mapear.api
+      - FLASK_ENV=development
+      - FLASK_DEBUG=1
+      - HOST_ADDRESS=mapear
+      - PULSAR_ADDRESS=broker
+      - BROKER_HOST=broker
+    ports:
+      - "5001:5000"
+
+  mapear_db:
+    image: postgres:16-alpine
+    profiles: ["db"]
+    environment:
+      POSTGRES_USER: mapear
+      POSTGRES_PASSWORD: mapear_123
+      POSTGRES_DB: rabbit_mapear
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mapear"]
+      interval: 2s
+      timeout: 5s
+      retries: 5
+    networks:
+      - db_mapear_network

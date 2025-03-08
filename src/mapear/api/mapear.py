@@ -8,16 +8,16 @@ from mapear.seedwork.aplicacion.comandos import ejecutar_commando
 from mapear.seedwork.dominio.excepciones import ExcepcionDominio
 import logging
 
-bp = api.crear_blueprint('procesamiento', '/procesamiento')
+bp = api.crear_blueprint('mapear', '/mapear')
 
-@bp.route('/test_procesamiento', methods=['GET'])
+@bp.route('/test_mapear', methods=['GET'])
 def test_procesamiento():
     response_body = {
         "message": "Get request processed succesfully"
     }
     return Response(json.dumps(response_body), status=200, mimetype='application/json')
 
-@bp.route('/crear-dataset-medico-comando', methods=['POST'])
+@bp.route('/create-parquet', methods=['POST'])
 def crear_dataset_medico():
     try:
         dataset_dict = request.json        

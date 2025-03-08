@@ -7,7 +7,7 @@ persistir objetos dominio (agregaciones) en la capa de infraestructura del domin
 
 # from mapear.config.db import db
 
-from mapear.modulos.mapear.dominio.fabricas import FabricaProcesamiento
+from mapear.modulos.mapear.dominio.fabricas import FabricaMapear
 from mapear.modulos.mapear.dominio.entidades import ParquetFile
 from mapear.modulos.mapear.dominio.repositorios import RepositorioParquet
 
@@ -18,30 +18,30 @@ from uuid import UUID
 class RepositorioParquetPostgress(RepositorioParquet):
 
     def __init__(self):
-        self._fabrica_procesamiento: FabricaProcesamiento = FabricaProcesamiento()
+        self._fabrica_parquet: FabricaMapear = FabricaMapear()
 
     @property
-    def fabrica_procesamiento(self):
-        return self._fabrica_procesamiento
+    def fabrica_parquet(self):
+        return self._fabrica_parquet
 
     def obtener_por_id(self, id: UUID) -> ParquetFile:
         from mapear.config.db import db
-        dataset_medico_dto = db.session.query(Parquet).filter_by(id=str(id)).one()
-        return self.fabrica_procesamiento.crear_objeto(dataset_medico_dto, MapeadorParquet())
+        parquet_dto = db.session.query(Parquet).filter_by(id=str(id)).one()
+        return self.fabrica_parquet.crear_objeto(parquet_dto, MapeadorParquet())
 
     def obtener_todos(self) -> list[ParquetFile]:
         # TODO
         raise NotImplementedError
 
-    def agregar(self, dataset_medico: ParquetFile):
+    def agregar(self, parquet: ParquetFile):
         from mapear.config.db import db
-        dataset_medico_dto = self.fabrica_procesamiento.crear_objeto(dataset_medico, MapeadorParquet())
-        db.session.add(dataset_medico_dto)
+        parquet_dto = self.fabrica_parquet.crear_objeto(parquet, MapeadorParquet())
+        db.session.add(parquet_dto)
 
-    def actualizar(self, dataset_medico: ParquetFile):
+    def actualizar(self, parquet: ParquetFile):
         # TODO
         raise NotImplementedError
 
-    def eliminar(self, dataset_medico_id: UUID):
+    def eliminar(self, parquet_id: UUID):
         # TODO
         raise NotImplementedError

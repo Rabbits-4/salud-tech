@@ -6,7 +6,6 @@ encargados de la transformación entre formatos de dominio y DTOs
 """
 
 from mapear.seedwork.dominio.repositorios import Mapeador
-from mapear.modulos.mapear.dominio.objetos_valor import RegionAnatomica, Modalidad, Patologia, EntornoClinico, NotasClinicas, HistorialPaciente, ContextoProcesal, Imagen, Metadata, RegistroDeDiagnostico
 from mapear.modulos.mapear.dominio.entidades import ParquetFile
 from .dto import Parquet
 
@@ -22,7 +21,6 @@ class MapeadorParquet(Mapeador):
         contextos_procesales = entidad.contexto_procesal
         notas_clinicas = entidad.notas_clinicas
         data = entidad.data
-        estado = entidad.estado
 
 
         parquet_dto = Parquet(
@@ -40,7 +38,7 @@ class MapeadorParquet(Mapeador):
         parquet = ParquetFile(
             id=dto.id,
             registro_de_diagnostico=dto.registro_de_diagnostico,
-            contextos_procesales=dto.contextos_procesales,
+            contextos_procesales=dto.contexto_procesal,
             notas_clinicas=dto.notas_clinicas,
             data=dto.data,
             estado=dto.estado

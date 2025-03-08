@@ -42,6 +42,10 @@ services:
     networks:
       - pulsar
       - db_network
+    depends_on:
+      salud_tech_db:
+        condition: service_healthy
+      
     environment:
       - FLASK_APP=src.salud_tech.api
       - FLASK_ENV=development
@@ -54,7 +58,7 @@ services:
 
   salud_tech_db:
     image: postgres:16-alpine
-    profiles: ["db"]
+    profiles: ["salud_tech"]
     environment:
       POSTGRES_USER: salud_tech
       POSTGRES_PASSWORD: salud_tech_123
@@ -87,10 +91,13 @@ services:
       - BROKER_HOST=broker
     ports:
       - "5001:5000"
+    depends_on:
+      anonimacion_db:
+        condition: service_healthy
 
   anonimacion_db:
     image: postgres:16-alpine
-    profiles: ["db"]
+    profiles: ["anonimacion"]
     environment:
       POSTGRES_USER: anonimacion
       POSTGRES_PASSWORD: anonimacion_123

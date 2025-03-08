@@ -5,11 +5,10 @@ encargados de la transformación entre formatos de dominio y DTOs
 
 """
 
-from salud_tech.seedwork.dominio.repositorios import Mapeador
-from salud_tech.modulos.procesamiento.dominio.objetos_valor import RegionAnatomica, Modalidad, Patologia, EntornoClinico, NotasClinicas, HistorialPaciente, ContextoProcesal, Imagen, Metadata, RegistroDeDiagnostico
-from salud_tech.modulos.procesamiento.dominio.entidades import DatasetMedico
+from mapear.seedwork.dominio.repositorios import Mapeador
+from mapear.modulos.procesamiento.dominio.objetos_valor import RegionAnatomica, Modalidad, Patologia, EntornoClinico, NotasClinicas, HistorialPaciente, ContextoProcesal, Imagen, Metadata, RegistroDeDiagnostico
+from mapear.modulos.procesamiento.dominio.entidades import DatasetMedico
 from .dto import DatasetMedico as DatasetMedicoDTO
-import logging
 
 class MapeadorDatasetMedico(Mapeador):
     _FORMATO_FECHA = '%Y-%m-%dT%H:%M:%SZ'

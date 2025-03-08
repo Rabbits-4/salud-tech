@@ -1,41 +1,36 @@
-from salud_tech.seedwork.aplicacion.dto import Mapeador as AppMap
-from salud_tech.seedwork.dominio.repositorios import Mapeador as RepMap
+from mapear.seedwork.aplicacion.dto import Mapeador as AppMap
+from mapear.seedwork.dominio.repositorios import Mapeador as RepMap
 
-from salud_tech.modulos.procesamiento.dominio.entidades import DatasetMedico
-from salud_tech.modulos.procesamiento.dominio.objetos_valor import Estado, RegistroDeDiagnostico, Metadata
+from mapear.modulos.procesamiento.dominio.entidades import ParquetFile
+from mapear.modulos.procesamiento.dominio.objetos_valor import Estado, RegistroDeDiagnostico, Metadata
 
-from .dto import DatasetMedicoDto, MetadataDto
-import logging
+from .dto import ParquetDto, MetadataDto
 
-from datetime import datetime
-
-class MappeadorDatasetMedicoDTOJson(AppMap):
-    def externo_a_dto(self, externo: dict) -> DatasetMedicoDto:
-        dataset_medico_dto = DatasetMedicoDto(
+class MappeadorParquetDTOJson(AppMap):
+    def externo_a_dto(self, externo: dict) -> ParquetDto:
+        dataset_medico_dto = ParquetDto(
             packet_id=externo.get('packet_id'),
-            entorno_clinico=externo.get('entorno_clinico'),
-            metadata=MetadataDto(
-                registro_de_diagnostico=externo.get('registro_de_diagnostico'),
-                fecha_creacion=externo.get('fecha_creacion'),
-                fecha_actualizacion=externo.get('fecha_actualizacion'),
-                historial_paciente_id=externo.get('historial_paciente_id'),
-                contexto_procesal=externo.get('contexto_procesal'),
-                notas_clinicas=externo.get('notas_clinicas'),                
-            ),
+            entorno_clinico=externo.get('entorno_clinico'),            
+            registro_de_diagnostico=externo.get('registro_de_diagnostico'),
+            fecha_creacion=externo.get('fecha_creacion'),
+            fecha_actualizacion=externo.get('fecha_actualizacion'),
+            historial_paciente_id=externo.get('historial_paciente_id'),
+            contexto_procesal=externo.get('contexto_procesal'),
+            notas_clinicas=externo.get('notas_clinicas'),            
             data=externo.get('data')
         )
 
         return dataset_medico_dto
 
-    def dto_a_externo(self, dto: DatasetMedicoDto) -> dict:
+    def dto_a_externo(self, dto: ParquetDto) -> dict:
         return dto.__dict__
 
-class MapeadorDatasetMedico(RepMap):
+class MapeadorParquet(RepMap):
 
     def obtener_tipo(self) -> type:
         return DatasetMedico.__class__
     
-    def dto_a_entidad(self, dto: DatasetMedicoDto) -> DatasetMedico:
+    def dto_a_entidad(self, dto: ParquetDto) -> DatasetMedico:
         registro_dict = dto.metadata.registro_de_diagnostico  
         dataset = DatasetMedico()
         dataset.registro_de_diagnostico = RegistroDeDiagnostico(
@@ -48,7 +43,7 @@ class MapeadorDatasetMedico(RepMap):
         dataset.estado = Estado(estado_valor)
         return dataset
     
-    def entidad_a_dto(self, entidad: DatasetMedico) -> DatasetMedicoDto:
+    def entidad_a_dto(self, entidad: DatasetMedico) -> ParquetDto:
         metadata_dto = MetadataDto(
             registro_de_diagnostico=entidad.registro_de_diagnostico.region_anatomica,
             fecha_creacion=entidad.fecha_creacion,
@@ -57,7 +52,7 @@ class MapeadorDatasetMedico(RepMap):
             contexto_procesal=entidad.contexto_procesal,
             notas_clinicas=entidad.notas_clinicas
         )
-        return DatasetMedicoDto(
+        return ParquetDto(
             packet_id=entidad.id,
             entorno_clinico=entidad.entorno_clinico,
             metadata=metadata_dto,

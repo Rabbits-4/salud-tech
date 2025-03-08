@@ -2,7 +2,7 @@ from flask import Response, request
 import json
 
 import mapear.seedwork.presentacion.api as api
-from mapear.modulos.procesamiento.aplicacion.mapeadores import MappeadorDatasetMedicoDTOJson
+from mapear.modulos.procesamiento.aplicacion.mapeadores import MappeadorParquetDTOJson
 from mapear.modulos.procesamiento.aplicacion.comandos.create_dataset import CreateDatasetMedico
 from mapear.seedwork.aplicacion.comandos import ejecutar_commando
 from mapear.seedwork.dominio.excepciones import ExcepcionDominio
@@ -21,7 +21,7 @@ def test_procesamiento():
 def crear_dataset_medico():
     try:
         dataset_dict = request.json        
-        map_dataset = MappeadorDatasetMedicoDTOJson()
+        map_dataset = MappeadorParquetDTOJson()
         dataset_dto = map_dataset.externo_a_dto(dataset_dict)
 
         comando = CreateDatasetMedico(

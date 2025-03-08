@@ -1,12 +1,12 @@
-from salud_tech.seedwork.aplicacion.servicios import Servicio
-from salud_tech.modulos.procesamiento.dominio.entidades import DatasetMedico
-from salud_tech.modulos.procesamiento.dominio.fabricas import FabricaProcesamiento
-from salud_tech.modulos.procesamiento.infraestructura.fabricas import FabricaRepositorio
-from salud_tech.modulos.procesamiento.infraestructura.repositorios import RepositorioDatasetMedico
-from salud_tech.seedwork.infraestructura.uow import UnidadTrabajoPuerto
-from .mapeadores import MapeadorDatasetMedico
+from mapear.seedwork.aplicacion.servicios import Servicio
+from mapear.modulos.procesamiento.dominio.entidades import DatasetMedico
+from mapear.modulos.procesamiento.dominio.fabricas import FabricaProcesamiento
+from mapear.modulos.procesamiento.infraestructura.fabricas import FabricaRepositorio
+from mapear.modulos.procesamiento.infraestructura.repositorios import RepositorioDatasetMedico
+from mapear.seedwork.infraestructura.uow import UnidadTrabajoPuerto
+from .mapeadores import MapeadorParquet
 
-from .dto import DatasetMedicoDto
+from .dto import ParquetDto
 
 import asyncio
 
@@ -24,8 +24,8 @@ class ServicioDatasetMedico(Servicio):
     def fabrica_procesamiento(self):
         return self._fabrica_procesamiento       
     
-    def crear_dataset_medico(self, dataset_dto: DatasetMedicoDto) -> DatasetMedicoDto:
-        dataset: DatasetMedico = self.fabrica_procesamiento.crear_objeto(dataset_dto, MapeadorDatasetMedico())
+    def crear_dataset_medico(self, dataset_dto: ParquetDto) -> ParquetDto:
+        dataset: DatasetMedico = self.fabrica_procesamiento.crear_objeto(dataset_dto, MapeadorParquet())
         dataset.crear_dataset(dataset)
 
         repositorio = self.fabrica_repositorio.crear_objeto(RepositorioDatasetMedico.__class__)
@@ -34,8 +34,8 @@ class ServicioDatasetMedico(Servicio):
         UnidadTrabajoPuerto.savepoint()
         UnidadTrabajoPuerto.commit()
 
-        return self.fabrica_procesamiento.crear_objeto(dataset, MapeadorDatasetMedico())
+        return self.fabrica_procesamiento.crear_objeto(dataset, MapeadorParquet())
 
-    def obtener_dataset_medico_por_id(self, id) -> DatasetMedicoDto:
+    def obtener_dataset_medico_por_id(self, id) -> ParquetDto:
         repositorio = self.fabrica_repositorio.crear_objeto(RepositorioDatasetMedico.__class__)
-        return self.fabrica_procesamiento.crear_objeto(repositorio.obtener_por_id(id), MapeadorDatasetMedico())
+        return self.fabrica_procesamiento.crear_objeto(repositorio.obtener_por_id(id), MapeadorParquet())

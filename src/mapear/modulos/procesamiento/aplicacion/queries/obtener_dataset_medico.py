@@ -1,6 +1,6 @@
-from salud_tech.seedwork.aplicacion.queries import Query, QueryHandler, QueryResultado
-from salud_tech.seedwork.aplicacion.queries import ejecutar_query as query
-from salud_tech.modulos.procesamiento.infraestructura.repositorios import RepositorioDatasetMedico
+from mapear.seedwork.aplicacion.queries import Query, QueryHandler, QueryResultado
+from mapear.seedwork.aplicacion.queries import ejecutar_query as query
+from mapear.modulos.procesamiento.infraestructura.repositorios import RepositorioDatasetMedico
 from dataclasses import dataclass
 from .base import QueryBaseHandler
 import uuid

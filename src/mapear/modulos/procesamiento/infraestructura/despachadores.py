@@ -1,9 +1,9 @@
 import pulsar
 from pulsar.schema import *
 
-from salud_tech.modulos.procesamiento.infraestructura.schema.v1.eventos import EventoDatasetMedicoCreado, DatasetMedicoCreadoPayload
-from salud_tech.modulos.procesamiento.infraestructura.schema.v1.comandos import ComandoCrearDatasetMedico, ComandoCrearDatasetMedicoPayload
-from salud_tech.seedwork.infraestructura import utils
+from mapear.modulos.procesamiento.infraestructura.schema.v1.eventos import EventoDatasetMedicoCreado, DatasetMedicoCreadoPayload
+from mapear.modulos.procesamiento.infraestructura.schema.v1.comandos import ComandoCrearDatasetMedico, ComandoCrearDatasetMedicoPayload
+from mapear.seedwork.infraestructura import utils
 
 import datetime
 import logging

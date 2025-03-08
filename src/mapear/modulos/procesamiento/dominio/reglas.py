@@ -4,7 +4,7 @@ En este archivo usted encontrará reglas de negocio del dominio de procesamiento
 
 """
 
-from salud_tech.seedwork.dominio.reglas import ReglaNegocio
+from mapear.seedwork.dominio.reglas import ReglaNegocio
 
 class LasNotasMedicasNoPuedenEstarVacias(ReglaNegocio):    
     url: str

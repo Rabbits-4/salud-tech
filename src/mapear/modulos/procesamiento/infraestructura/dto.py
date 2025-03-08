@@ -7,7 +7,7 @@ la infraestructura del dominio de procesamiento.
 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, DateTime, JSON, Float, String
-from salud_tech.config.db import db
+from mapear.config.db import db
 from datetime import datetime
 # Base = db.declarative_base() 
 

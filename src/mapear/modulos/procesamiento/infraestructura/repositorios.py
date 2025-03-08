@@ -5,11 +5,11 @@ persistir objetos dominio (agregaciones) en la capa de infraestructura del domin
 
 """
 
-# from salud_tech.config.db import db
+# from mapear.config.db import db
 
-from salud_tech.modulos.procesamiento.dominio.fabricas import FabricaProcesamiento
-from salud_tech.modulos.procesamiento.dominio.entidades import DatasetMedico
-from salud_tech.modulos.procesamiento.dominio.repositorios import RepositorioDatasetMedico
+from mapear.modulos.procesamiento.dominio.fabricas import FabricaProcesamiento
+from mapear.modulos.procesamiento.dominio.entidades import DatasetMedico
+from mapear.modulos.procesamiento.dominio.repositorios import RepositorioDatasetMedico
 
 from .dto import DatasetMedico as DatasetMedicoDTO
 from .mapeadores import MapeadorDatasetMedico
@@ -34,7 +34,7 @@ class RepositorioDatasetMedicoPostgress(RepositorioDatasetMedico):
         raise NotImplementedError
 
     def agregar(self, dataset_medico: DatasetMedico):
-        from salud_tech.config.db import db
+        from mapear.config.db import db
         dataset_medico_dto = self.fabrica_procesamiento.crear_objeto(dataset_medico, MapeadorDatasetMedico())
         db.session.add(dataset_medico_dto)
 

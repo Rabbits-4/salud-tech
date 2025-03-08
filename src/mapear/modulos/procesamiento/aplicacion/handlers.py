@@ -1,5 +1,5 @@
-from salud_tech.seedwork.aplicacion.handlers import Handler
-from salud_tech.modulos.procesamiento.infraestructura.despachadores import Despachador
+from mapear.seedwork.aplicacion.handlers import Handler
+from mapear.modulos.procesamiento.infraestructura.despachadores import Despachador
 
 class HandlerDatasetMedicoIntegracion(Handler):
     

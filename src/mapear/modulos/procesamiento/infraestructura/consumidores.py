@@ -5,9 +5,9 @@ import time
 import logging
 import traceback
 
-from salud_tech.modulos.procesamiento.infraestructura.schema.v1.eventos import EventoDatasetMedicoCreado
-from salud_tech.modulos.procesamiento.infraestructura.schema.v1.comandos import ComandoCrearDatasetMedico
-from salud_tech.seedwork.infraestructura import utils
+from mapear.modulos.procesamiento.infraestructura.schema.v1.eventos import EventoDatasetMedicoCreado
+from mapear.modulos.procesamiento.infraestructura.schema.v1.comandos import ComandoCrearDatasetMedico
+from mapear.seedwork.infraestructura import utils
 
 def suscribirse_a_eventos():
     cliente = None

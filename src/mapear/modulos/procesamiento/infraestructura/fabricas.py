@@ -6,10 +6,10 @@ objetos complejos en la capa de infraestructura del dominio de vuelos
 """
 
 from dataclasses import dataclass
-from salud_tech.seedwork.dominio.fabricas import Fabrica
-from salud_tech.seedwork.dominio.repositorios import Repositorio
+from mapear.seedwork.dominio.fabricas import Fabrica
+from mapear.seedwork.dominio.repositorios import Repositorio
 
-from salud_tech.modulos.procesamiento.dominio.repositorios import RepositorioDatasetMedico
+from mapear.modulos.procesamiento.dominio.repositorios import RepositorioDatasetMedico
 from .repositorios import RepositorioDatasetMedicoPostgress
 
 from .excepciones import ExcepcionFabrica

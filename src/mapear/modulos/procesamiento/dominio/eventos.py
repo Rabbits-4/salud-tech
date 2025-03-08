@@ -1,7 +1,7 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
-from salud_tech.seedwork.dominio.eventos import EventoDominio
-from salud_tech.modulos.procesamiento.dominio.objetos_valor import RegistroDeDiagnostico, Metadata
+from mapear.seedwork.dominio.eventos import EventoDominio
+from mapear.modulos.procesamiento.dominio.objetos_valor import RegistroDeDiagnostico, Metadata
 from datetime import datetime
 import uuid
 

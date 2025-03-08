@@ -2,8 +2,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from datetime import datetime
 
-import salud_tech.modulos.procesamiento.dominio.objetos_valor as ov
-from salud_tech.seedwork.dominio.entidades import AgregacionRaiz
+import mapear.modulos.procesamiento.dominio.objetos_valor as ov
+from mapear.seedwork.dominio.entidades import AgregacionRaiz
 from .eventos import ParquetCreado
 
 @dataclass

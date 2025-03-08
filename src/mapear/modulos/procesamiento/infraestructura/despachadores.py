@@ -1,8 +1,8 @@
 import pulsar
 from pulsar.schema import *
 
-from mapear.modulos.procesamiento.infraestructura.schema.v1.eventos import EventoDatasetMedicoCreado, DatasetMedicoCreadoPayload
-from mapear.modulos.procesamiento.infraestructura.schema.v1.comandos import ComandoCrearDatasetMedico, ComandoCrearDatasetMedicoPayload
+from mapear.modulos.procesamiento.infraestructura.schema.v1.eventos import EventoParquetCreado, ParquetCreadoPayload
+from mapear.modulos.procesamiento.infraestructura.schema.v1.comandos import ComandoCrearParquet, ComandoCrearParquetPayload
 from mapear.seedwork.infraestructura import utils
 
 import datetime
@@ -16,23 +16,25 @@ def unix_time_millis(dt):
 class Despachador:
     def _publicar_mensaje(self, mensaje, topico, schema):
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        publicador = cliente.create_producer(topico, schema=AvroSchema(EventoDatasetMedicoCreado))
+        publicador = cliente.create_producer(topico, schema=AvroSchema(EventoParquetCreado))
         publicador.send(mensaje)
         cliente.close()
 
     def publicar_evento(self, evento, topico):
         # TODO Debe existir un forma de crear el Payload en Avro con base al tipo del evento
-        payload = DatasetMedicoCreadoPayload(
-            id_dataset_medico=str(evento.id), 
+        payload = ParquetCreadoPayload(
+            id_parquet=str(evento.id), 
             fecha_creacion=int(unix_time_millis(evento.fecha_creacion))
+            
+            
         )
-        evento_integracion = EventoDatasetMedicoCreado(data=payload)
-        self._publicar_mensaje(evento_integracion, topico, AvroSchema(EventoDatasetMedicoCreado))
+        evento_integracion = EventoParquetCreado(data=payload)
+        self._publicar_mensaje(evento_integracion, topico, AvroSchema(EventoParquetCreado))
 
     def publicar_comando(self, comando, topico):
         # TODO Debe existir un forma de crear el Payload en Avro con base al tipo del comando
-        payload = ComandoCrearDatasetMedicoPayload(
+        payload = ComandoCrearParquetPayload(
             packet_id=str(comando.packet_id)            
         )
-        comando_integracion = ComandoCrearDatasetMedico(data=payload)
-        self._publicar_mensaje(comando_integracion, topico, AvroSchema(ComandoCrearDatasetMedico))
+        comando_integracion = ComandoCrearParquet(data=payload)
+        self._publicar_mensaje(comando_integracion, topico, AvroSchema(ComandoCrearParquet))

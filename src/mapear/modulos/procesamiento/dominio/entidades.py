@@ -17,17 +17,17 @@ class ParquetFile(AgregacionRaiz):
     data: dict
     estado: ov.Estado = field(default_factory=lambda: ov.Estado.EN_PROCESO)
 
-    def crear_parquet(self, dataset: ParquetFile):
+    def crear_parquet(self, parquet: ParquetFile):
 
         self.agregar_evento(ParquetCreado(
             packet_id=self.id,
-            fecha_creacion=dataset.fecha_creacion,
-            fecha_actualizacion=dataset.fecha_actualizacion,
-            registro_de_diagnostico=dataset.registro_de_diagnostico,
-            contexto_procesal=dataset.contexto_procesal,
-            notas_clinicas=dataset.notas_clinicas,
-            data=dataset.data,
-            estado=dataset.estado.value
+            fecha_creacion=parquet.fecha_creacion,
+            fecha_actualizacion=parquet.fecha_actualizacion,
+            registro_de_diagnostico=parquet.registro_de_diagnostico,
+            contexto_procesal=parquet.contexto_procesal,
+            notas_clinicas=parquet.notas_clinicas,
+            data=parquet.data,
+            estado=parquet.estado.value
         ))
 
 

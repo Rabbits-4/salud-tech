@@ -18,8 +18,8 @@ class _FabricaParquet(Fabrica):
         if isinstance(obj, Entidad):
             return mapeador.entidad_a_dto(obj)
         else:
-            dataset_medico: ParquetFile = mapeador.dto_a_entidad(obj)
-            return dataset_medico
+            parquet: ParquetFile = mapeador.dto_a_entidad(obj)
+            return parquet
 
 @dataclass
 class FabricaMapear(Fabrica):

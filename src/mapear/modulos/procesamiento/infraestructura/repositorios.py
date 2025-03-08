@@ -8,11 +8,11 @@ persistir objetos dominio (agregaciones) en la capa de infraestructura del domin
 # from mapear.config.db import db
 
 from mapear.modulos.procesamiento.dominio.fabricas import FabricaProcesamiento
-from mapear.modulos.procesamiento.dominio.entidades import DatasetMedico
+from mapear.modulos.procesamiento.dominio.entidades import ParquetFile
 from mapear.modulos.procesamiento.dominio.repositorios import RepositorioParquet
 
-from .dto import DatasetMedico as DatasetMedicoDTO
-from .mapeadores import MapeadorDatasetMedico
+from .dto import Parquet as Parquet
+from .mapeadores import MapeadorParquet
 from uuid import UUID
 
 class RepositorioParquetPostgress(RepositorioParquet):
@@ -24,21 +24,21 @@ class RepositorioParquetPostgress(RepositorioParquet):
     def fabrica_procesamiento(self):
         return self._fabrica_procesamiento
 
-    def obtener_por_id(self, id: UUID) -> DatasetMedico:
+    def obtener_por_id(self, id: UUID) -> ParquetFile:
         from mapear.config.db import db
-        dataset_medico_dto = db.session.query(DatasetMedicoDTO).filter_by(id=str(id)).one()
-        return self.fabrica_procesamiento.crear_objeto(dataset_medico_dto, MapeadorDatasetMedico())
+        dataset_medico_dto = db.session.query(Parquet).filter_by(id=str(id)).one()
+        return self.fabrica_procesamiento.crear_objeto(dataset_medico_dto, MapeadorParquet())
 
-    def obtener_todos(self) -> list[DatasetMedico]:
+    def obtener_todos(self) -> list[ParquetFile]:
         # TODO
         raise NotImplementedError
 
-    def agregar(self, dataset_medico: DatasetMedico):
+    def agregar(self, dataset_medico: ParquetFile):
         from mapear.config.db import db
-        dataset_medico_dto = self.fabrica_procesamiento.crear_objeto(dataset_medico, MapeadorDatasetMedico())
+        dataset_medico_dto = self.fabrica_procesamiento.crear_objeto(dataset_medico, MapeadorParquet())
         db.session.add(dataset_medico_dto)
 
-    def actualizar(self, dataset_medico: DatasetMedico):
+    def actualizar(self, dataset_medico: ParquetFile):
         # TODO
         raise NotImplementedError
 

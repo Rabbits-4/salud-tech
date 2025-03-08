@@ -5,8 +5,8 @@ import time
 import logging
 import traceback
 
-from mapear.modulos.procesamiento.infraestructura.schema.v1.eventos import EventoDatasetMedicoCreado
-from mapear.modulos.procesamiento.infraestructura.schema.v1.comandos import ComandoCrearDatasetMedico
+from mapear.modulos.procesamiento.infraestructura.schema.v1.eventos import EventoParquetCreado
+from mapear.modulos.procesamiento.infraestructura.schema.v1.comandos import ComandoCrearParquet
 from mapear.seedwork.infraestructura import utils
 
 def suscribirse_a_eventos():
@@ -14,7 +14,7 @@ def suscribirse_a_eventos():
     try:
         print(f'pulsar://{utils.broker_host()}:6650')
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('eventos-dataset-medico', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='salud-tech-sub-eventos', schema=AvroSchema(EventoDatasetMedicoCreado))
+        consumidor = cliente.subscribe('eventos-dataset-medico', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='salud-tech-sub-eventos', schema=AvroSchema(EventoParquetCreado))
 
         while True:
             mensaje = consumidor.receive()
@@ -32,7 +32,7 @@ def suscribirse_a_comandos():
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('comandos-dataset-medico', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='salud-tech-sub-comandos', schema=AvroSchema(ComandoCrearDatasetMedico))
+        consumidor = cliente.subscribe('comandos-dataset-medico', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='salud-tech-sub-comandos', schema=AvroSchema(ComandoCrearParquet))
 
         while True:
             mensaje = consumidor.receive()

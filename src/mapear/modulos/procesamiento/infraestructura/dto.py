@@ -5,24 +5,19 @@ la infraestructura del dominio de procesamiento.
 
 """
 
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, DateTime, JSON, Float, String
+from sqlalchemy import Column, DateTime, JSON, String
 from mapear.config.db import db
 from datetime import datetime
-# Base = db.declarative_base() 
 
 import uuid
 
-class DatasetMedico(db.Model):
-    __tablename__ = "datasets_medicos"
+class Parquet(db.Model):
+    __tablename__ = "parquets"
     id = Column(String, primary_key=True)
     fecha_creacion = Column(DateTime, nullable=True, default=datetime.utcnow)
-    region_anatomica = Column(String, nullable=False)
-    modalidad = Column(String, nullable=False)
-    patologia = Column(String, nullable=False)
-    entorno_clinico = Column(String, nullable=False)
-    notas_clinicas = Column(String, nullable=False)
-    historial_paciente_id = Column(String, nullable=False)
-    condiciones_previas_paciente = Column(String, nullable=False)
-    tipo_contexto_procesal = Column(String, nullable=False)
-    estado = Column(String, nullable=False)
+    fecha_actualizacion = Column(DateTime, nullable=True, default=datetime.utcnow)
+    registro_de_diagnostico = Column(String, nullable=True)
+    contexto_procesal = Column(String, nullable=True)
+    notas_clinicas = Column(String, nullable=True)
+    data = Column(JSON, nullable=True)
+    estado = Column(String, nullable=True)

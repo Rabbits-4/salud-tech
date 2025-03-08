@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from mapear.seedwork.dominio.fabricas import Fabrica
 from mapear.seedwork.dominio.repositorios import Repositorio
 
-from mapear.modulos.procesamiento.dominio.repositorios import RepositorioDatasetMedico
+from mapear.modulos.procesamiento.dominio.repositorios import RepositorioParquet
 from .repositorios import RepositorioParquetPostgress
 
 from .excepciones import ExcepcionFabrica
@@ -17,7 +17,7 @@ from .excepciones import ExcepcionFabrica
 @dataclass
 class FabricaRepositorio(Fabrica):
     def crear_objeto(self, obj: type, mapeador: any = None) -> Repositorio:
-        if obj == RepositorioDatasetMedico.__class__:
+        if obj == RepositorioParquet.__class__:
             return RepositorioParquetPostgress()
         else:
             raise ExcepcionFabrica()

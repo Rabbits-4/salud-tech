@@ -126,7 +126,7 @@ services:
 
   mapear_db:
     image: postgres:16-alpine
-    profiles: ["mapear"]
+    profiles: ["db"]
     environment:
       POSTGRES_USER: mapear
       POSTGRES_PASSWORD: mapear_123

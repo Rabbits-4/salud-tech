@@ -9,7 +9,7 @@ tasks:
   - name: Iniciar pulsar
     init: >
       make start_pulsar_containers
-  - name: Iniciar procesamiento
-    init: >
-      make recreate_salud_tech_container
+  # - name: Iniciar procesamiento
+  #   init: >
+  #     make recreate_salud_tech_container
 

@@ -2,9 +2,9 @@ import os
 
 from flask import Flask, jsonify, request
 from flask_swagger import swagger
-from mapear.modulos.procesamiento.aplicacion.servicios import ServicioParquet
-from mapear.modulos.procesamiento.aplicacion.dto import ParquetDto
-from mapear.modulos.procesamiento.dominio.entidades import ParquetFile
+from mapear.modulos.mapear.aplicacion.servicios import ServicioParquet
+from mapear.modulos.mapear.aplicacion.dto import ParquetDto
+from mapear.modulos.mapear.dominio.entidades import ParquetFile
 
 
 # Identifica el directorio base
@@ -12,11 +12,11 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 def registrar_handlers():
     # Importa los handlers
-    import mapear.modulos.procesamiento.aplicacion
+    import mapear.modulos.mapear.aplicacion
 
 def importar_modelos_alchemy():
     # Import SQLAlchemy models
-    import mapear.modulos.procesamiento.infraestructura.dto
+    import mapear.modulos.mapear.infraestructura.dto
 
 def comenzar_consumidor():
     """
@@ -26,7 +26,7 @@ def comenzar_consumidor():
     """
 
     import threading
-    import mapear.modulos.procesamiento.infraestructura.consumidores as procesamiento
+    import mapear.modulos.mapear.infraestructura.consumidores as procesamiento
 
     # Suscripción a eventos
     threading.Thread(target=procesamiento.suscribirse_a_eventos).start()
@@ -64,10 +64,10 @@ def create_app(configuracion={}):
     registrar_handlers()
 
      # Importa Blueprints
-    from . import procesamiento
+    from . import mapear
 
     # Registro de Blueprints
-    app.register_blueprint(procesamiento.bp)
+    app.register_blueprint(mapear.bp)
 
     @app.route("/spec")
     def spec():

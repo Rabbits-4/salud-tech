@@ -2,8 +2,8 @@ from flask import Response, request
 import json
 
 import mapear.seedwork.presentacion.api as api
-from mapear.modulos.procesamiento.aplicacion.mapeadores import MappeadorParquetDTOJson
-from mapear.modulos.procesamiento.aplicacion.comandos.create_dataset import CreateParquet
+from mapear.modulos.mapear.aplicacion.mapeadores import MappeadorParquetDTOJson
+from mapear.modulos.mapear.aplicacion.comandos.create_parquet import CreateParquet
 from mapear.seedwork.aplicacion.comandos import ejecutar_commando
 from mapear.seedwork.dominio.excepciones import ExcepcionDominio
 import logging

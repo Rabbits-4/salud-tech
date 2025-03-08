@@ -15,14 +15,20 @@ def suscribirse_a_eventos():
     try:
         print(f'pulsar://{utils.broker_host()}:6650')
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('dicom-anonimizado', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='dicom-sub', schema=AvroSchema(EventoDicomAnonimoCreado))
+        consumidor = cliente.subscribe(
+            'dicom-anonimizado',
+            consumer_type=_pulsar.ConsumerType.Shared,subscription_name='dicom-sub',
+            schema=AvroSchema(EventoDicomAnonimoCreado)
+        )
 
         while True:
-            mensaje = consumidor.receive()            
+            mensaje = consumidor.receive()
+            evento = mensaje.value()
+            data = evento.data
+
             print(f'Evento recibido: {mensaje.value().data}')
-            logging.error("**** dicom-anonimizado")
-            data = mensaje.value().data
-            logging.error("**** DATA", data)
+            logging.error(f"**** dicom-anonimizado: {evento}")
+            logging.error("**** DATA", vars(data))
 
             CreateParquet(
                 entorno_clinico=data.entorno_clinico,

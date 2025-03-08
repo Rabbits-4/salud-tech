@@ -121,12 +121,15 @@ services:
       - HOST_ADDRESS=mapear
       - PULSAR_ADDRESS=broker
       - BROKER_HOST=broker
+    depends_on:
+      mapear_db:
+        condition: service_healthy
     ports:
-      - "5001:5000"
+      - "5002:5000"
 
   mapear_db:
     image: postgres:16-alpine
-    profiles: ["db"]
+    profiles: ["mapear"]
     environment:
       POSTGRES_USER: mapear
       POSTGRES_PASSWORD: mapear_123

@@ -7,7 +7,7 @@ from typing import Optional, Dict
 class ParquetDto(DTO):
     packet_id: str = field(default_factory=str)
     entorno_clinico: str = field(default_factory=str)
-    registro_de_diagnostico: Dict = field(default_factory=dict)
+    registro_de_diagnostico: str = field(default_factory=str)
     fecha_creacion: datetime = field(default_factory=datetime.now)
     fecha_actualizacion: datetime = field(default_factory=datetime.now)
     historial_paciente_id: str = field(default_factory=str)

@@ -1,7 +1,7 @@
 from pydispatch import dispatcher
 
-from .handlers import HandlerDatasetAnonimoIntegracion
+from .handlers import HandlerDicomAnonimoIntegracion
 
-from anonimacion.modulos.anonimacion.dominio.eventos import AnonimacionRealizada
+from anonimacion.modulos.anonimacion.dominio.eventos import DicomAnonimizado
 
-dispatcher.connect(HandlerDatasetAnonimoIntegracion.handle_dataset_anonimo_creado, signal=f'{AnonimacionRealizada.__name__}Integracion')
+dispatcher.connect(HandlerDicomAnonimoIntegracion.handle_dicom_anonimo_creado, signal=f'{DicomAnonimizado.__name__}Integracion')

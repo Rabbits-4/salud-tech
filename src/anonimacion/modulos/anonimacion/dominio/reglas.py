@@ -4,7 +4,7 @@ En este archivo usted encontrará reglas de negocio del dominio de procesamiento
 
 """
 
-from salud_tech.seedwork.dominio.reglas import ReglaNegocio
+from anonimacion.seedwork.dominio.reglas import ReglaNegocio
 
 class ImagenConUrlValida(ReglaNegocio):    
     url: str

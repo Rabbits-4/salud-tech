@@ -1,7 +1,7 @@
-"""Mixins del dominio de procesamiento de datos médicos
+"""Mixins del dominio de Anonimacion de datos médicos
 
 En este archivo usted encontrará Mixins con capacidades 
-reusables en el dominio de procesamiento de datos médicos
+reusables en el dominio de Anonimacion de datos médicos
 
 """
 

@@ -2,7 +2,7 @@ import os
 
 from flask import Flask, jsonify, request
 from flask_swagger import swagger
-from mapear.modulos.procesamiento.aplicacion.servicios import ServicioDatasetMedico
+from mapear.modulos.procesamiento.aplicacion.servicios import ServicioParquet
 from mapear.modulos.procesamiento.aplicacion.dto import ParquetDto
 from mapear.modulos.procesamiento.dominio.entidades import ParquetFile
 

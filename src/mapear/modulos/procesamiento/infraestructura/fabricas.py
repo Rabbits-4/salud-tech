@@ -10,7 +10,7 @@ from mapear.seedwork.dominio.fabricas import Fabrica
 from mapear.seedwork.dominio.repositorios import Repositorio
 
 from mapear.modulos.procesamiento.dominio.repositorios import RepositorioDatasetMedico
-from .repositorios import RepositorioDatasetMedicoPostgress
+from .repositorios import RepositorioParquetPostgress
 
 from .excepciones import ExcepcionFabrica
 
@@ -18,6 +18,6 @@ from .excepciones import ExcepcionFabrica
 class FabricaRepositorio(Fabrica):
     def crear_objeto(self, obj: type, mapeador: any = None) -> Repositorio:
         if obj == RepositorioDatasetMedico.__class__:
-            return RepositorioDatasetMedicoPostgress()
+            return RepositorioParquetPostgress()
         else:
             raise ExcepcionFabrica()

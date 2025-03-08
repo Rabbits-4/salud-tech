@@ -1,16 +1,16 @@
 from mapear.seedwork.aplicacion.queries import QueryHandler
 from mapear.modulos.procesamiento.infraestructura.fabricas import FabricaRepositorio
-from mapear.modulos.procesamiento.dominio.fabricas import FabricaProcesamiento
+from mapear.modulos.procesamiento.dominio.fabricas import FabricaMapear
 
 class QueryBaseHandler(QueryHandler):
     def __init__(self):
         self._fabrica_repositorio: FabricaRepositorio = FabricaRepositorio()
-        self._fabrica_procesamiento: FabricaProcesamiento = FabricaProcesamiento()
+        self._fabrica_mapear: FabricaMapear = FabricaMapear()
 
     @property
     def fabrica_repositorio(self):
         return self._fabrica_repositorio
     
     @property
-    def fabrica_procesamiento(self):
-        return self._fabrica_procesamiento
+    def fabrica_mapear(self):
+        return self._fabrica_mapear

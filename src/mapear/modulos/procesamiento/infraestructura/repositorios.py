@@ -9,14 +9,13 @@ persistir objetos dominio (agregaciones) en la capa de infraestructura del domin
 
 from mapear.modulos.procesamiento.dominio.fabricas import FabricaProcesamiento
 from mapear.modulos.procesamiento.dominio.entidades import DatasetMedico
-from mapear.modulos.procesamiento.dominio.repositorios import RepositorioDatasetMedico
+from mapear.modulos.procesamiento.dominio.repositorios import RepositorioParquet
 
 from .dto import DatasetMedico as DatasetMedicoDTO
 from .mapeadores import MapeadorDatasetMedico
 from uuid import UUID
-import logging
 
-class RepositorioDatasetMedicoPostgress(RepositorioDatasetMedico):
+class RepositorioParquetPostgress(RepositorioParquet):
 
     def __init__(self):
         self._fabrica_procesamiento: FabricaProcesamiento = FabricaProcesamiento()
@@ -26,6 +25,7 @@ class RepositorioDatasetMedicoPostgress(RepositorioDatasetMedico):
         return self._fabrica_procesamiento
 
     def obtener_por_id(self, id: UUID) -> DatasetMedico:
+        from mapear.config.db import db
         dataset_medico_dto = db.session.query(DatasetMedicoDTO).filter_by(id=str(id)).one()
         return self.fabrica_procesamiento.crear_objeto(dataset_medico_dto, MapeadorDatasetMedico())
 

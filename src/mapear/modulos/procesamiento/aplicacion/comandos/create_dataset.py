@@ -1,20 +1,20 @@
 from mapear.seedwork.aplicacion.comandos import Comando
 from datetime import datetime
 from .base import CrearBaseHandler
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
-from mapear.modulos.procesamiento.aplicacion.mapeadores import MapeadorDatasetMedico
-from mapear.modulos.procesamiento.aplicacion.dto import MetadataDto, DatasetMedicoDto
+from mapear.modulos.procesamiento.aplicacion.mapeadores import MapeadorParquet
+from mapear.modulos.procesamiento.aplicacion.dto import ParquetDto
 
-from mapear.modulos.procesamiento.dominio.entidades import DatasetMedico
+from mapear.modulos.procesamiento.dominio.entidades import ParquetFile
 from mapear.seedwork.infraestructura.uow import UnidadTrabajoPuerto
 
 from mapear.seedwork.aplicacion.comandos import ejecutar_commando
 
-from mapear.modulos.procesamiento.infraestructura.repositorios import RepositorioDatasetMedico
+from mapear.modulos.procesamiento.infraestructura.repositorios import RepositorioParquet
 
 @dataclass
-class CreateDatasetMedico(Comando):
+class CreateParquet(Comando):
     packet_id: str
     entorno_clinico: str
     registro_de_diagnostico: dict
@@ -25,35 +25,31 @@ class CreateDatasetMedico(Comando):
     notas_clinicas: str
     data: any
 
-class CreateDatasetHandler(CrearBaseHandler):
+class CrearParquetHandler(CrearBaseHandler):
 
-    def handle(self, comando: CreateDatasetMedico):
-        metadata_dto = MetadataDto(
+    def handle(self, comando: CreateParquet):
+        parquet_dto = ParquetDto(
+            packet_id=comando.packet_id,
+            entorno_clinico=comando.entorno_clinico,
             registro_de_diagnostico=comando.registro_de_diagnostico,
             fecha_creacion=datetime.now(),
             fecha_actualizacion=datetime.now(),
             historial_paciente_id=comando.historial_paciente_id,
             contexto_procesal=comando.contexto_procesal,
-            notas_clinicas=comando.notas_clinicas
-        )
-
-        dataset_dto = DatasetMedicoDto(
-            packet_id=comando.packet_id,
-            entorno_clinico=comando.entorno_clinico,
-            metadata=metadata_dto,
+            notas_clinicas=comando.notas_clinicas,
             data=comando.data
         )
 
-        dataset: DatasetMedico = self.fabrica_procesamiento.crear_objeto(dataset_dto, MapeadorDatasetMedico())
-        dataset.crear_dataset(dataset)
+        parquet: ParquetFile = self.fabrica_mapear.crear_objeto(parquet_dto, MapeadorParquet())
+        parquet.crear_parquet(parquet)
 
-        repositorio_dataset = self.fabrica_repositorio.crear_objeto(RepositorioDatasetMedico.__class__)
+        repositorio_parquet = self.fabrica_repositorio.crear_objeto(RepositorioParquet.__class__)
 
-        UnidadTrabajoPuerto.registrar_batch(repositorio_dataset.agregar, dataset)
+        UnidadTrabajoPuerto.registrar_batch(repositorio_parquet.agregar, parquet)
         UnidadTrabajoPuerto.savepoint() # que hace?
         UnidadTrabajoPuerto.commit()
 
-@ejecutar_commando.register(CreateDatasetMedico)
-def ejecutar_commando_create_dataset_medico(comando: CreateDatasetMedico):
-    handler = CreateDatasetHandler()
+@ejecutar_commando.register(CreateParquet)
+def ejecutar_commando_create_parquet(comando: CreateParquet):
+    handler = CrearParquetHandler()
     return handler.handle(comando)

@@ -1,9 +1,9 @@
 from mapear.seedwork.aplicacion.handlers import Handler
 from mapear.modulos.procesamiento.infraestructura.despachadores import Despachador
 
-class HandlerDatasetMedicoIntegracion(Handler):
+class HandlerParquetIntegracion(Handler):
     
     @staticmethod
-    def handle_dataset_medico_creado(evento):
+    def handle_parquet_creado(evento):
         despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-dataset-medico')
+        despachador.publicar_evento(evento, 'eventos-parquet')

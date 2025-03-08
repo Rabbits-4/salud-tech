@@ -1,5 +1,6 @@
 Build_and_start_Container_Salud_tech: 
 	docker build . -f src/salud_tech/Dockerfile -t salud_tech/flask && docker compose --profile salud_tech up --build
+
 Delete_Data_Folder:
 	sudo rm -r data
 Create_Data_Folder:
@@ -24,4 +25,7 @@ recreate_salud_tech_container:
 	docker compose --profile salud_tech down -v && docker compose --profile salud_tech up --build --force-recreate 
 
 recreate_anonimacion_container:
-	docker compose --profile anonimacion down -v && docker compose --profile anonimacion up --build --force-recreate 
+	docker compose --profile anonimacion down -v && docker compose --profile anonimacion up --build --force-recreate
+
+recreate_mapear_container:
+	docker compose --profile mapear down -v && docker compose --profile mapear up --build --force-recreate

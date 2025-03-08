@@ -1,5 +1,5 @@
 from pulsar.schema import String, Long, Record
-from salud_tech.seedwork.infraestructura.schema.v1.eventos import EventoIntegracion
+from mapear.seedwork.infraestructura.schema.v1.eventos import EventoIntegracion
 
 class ParquetCreadoPayload(Record):
     id_dataset_medico = String()

@@ -6,4 +6,4 @@ class HandlerParquetIntegracion(Handler):
     @staticmethod
     def handle_parquet_creado(evento):
         despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-parquet')
+        despachador.publicar_evento(evento, 'eventos-parquet')structura.schema.v1.eventos

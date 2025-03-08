@@ -30,6 +30,9 @@ def comenzar_consumidor():
     # Suscripción a comandos
     threading.Thread(target=anonimacion.suscribirse_a_comandos).start()
 
+    # Suscripción a rollback
+    threading.Thread(target=anonimacion.suscribirse_a_rollback).start()
+
 def create_app(configuracion={}):
     # Init la aplicacion de Flask
     app = Flask(__name__, instance_relative_config=True)

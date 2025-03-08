@@ -33,16 +33,14 @@ class MapeadorParquet(RepMap):
     def dto_a_entidad(self, dto: ParquetDto) -> ParquetFile:
         
         parquet = ParquetFile()
-        parquet.crear_parquet(
-            id=dto.packet_id,
-            fecha_creacion=dto.fecha_creacion,
-            fecha_actualizacion=dto.fecha_actualizacion,
-            registro_de_diagnostico=dto.registro_de_diagnostico,
-            contexto_procesal=dto.contexto_procesal,
-            notas_clinicas=dto.notas_clinicas,
-            data=dto.data,
-            historial_paciente_id=dto.historial_paciente_id
-        )
+        parquet.fecha_actualizacion=dto.fecha_creacion,
+        parquet.fecha_actualizacion=dto.fecha_actualizacion,
+        parquet.contexto_procesal=dto.contexto_procesal,
+        parquet.registro_de_diagnostico=dto.registro_de_diagnostico,
+        parquet.notas_clinicas=dto.notas_clinicas,
+        parquet.data=dto.data,
+        parquet.historial_paciente_id=dto.historial_paciente_id
+        
         return parquet
     
     def entidad_a_dto(self, entidad: ParquetFile) -> ParquetDto:

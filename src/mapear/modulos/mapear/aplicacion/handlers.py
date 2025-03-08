@@ -1,5 +1,5 @@
 from mapear.seedwork.aplicacion.handlers import Handler
-from mapear.modulos.procesamiento.infraestructura.despachadores import Despachador
+from mapear.modulos.mapear.infraestructura.despachadores import Despachador
 
 class HandlerParquetIntegracion(Handler):
     

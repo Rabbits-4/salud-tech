@@ -7,9 +7,9 @@ persistir objetos dominio (agregaciones) en la capa de infraestructura del domin
 
 # from mapear.config.db import db
 
-from mapear.modulos.procesamiento.dominio.fabricas import FabricaProcesamiento
-from mapear.modulos.procesamiento.dominio.entidades import ParquetFile
-from mapear.modulos.procesamiento.dominio.repositorios import RepositorioParquet
+from mapear.modulos.mapear.dominio.fabricas import FabricaProcesamiento
+from mapear.modulos.mapear.dominio.entidades import ParquetFile
+from mapear.modulos.mapear.dominio.repositorios import RepositorioParquet
 
 from .dto import Parquet as Parquet
 from .mapeadores import MapeadorParquet

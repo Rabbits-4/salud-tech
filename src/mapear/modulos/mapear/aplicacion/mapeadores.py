@@ -1,8 +1,8 @@
 from mapear.seedwork.aplicacion.dto import Mapeador as AppMap
 from mapear.seedwork.dominio.repositorios import Mapeador as RepMap
 
-from mapear.modulos.procesamiento.dominio.entidades import ParquetFile
-from mapear.modulos.procesamiento.dominio.objetos_valor import Estado, RegistroDeDiagnostico, Metadata
+from mapear.modulos.mapear.dominio.entidades import ParquetFile
+from mapear.modulos.mapear.dominio.objetos_valor import Estado, RegistroDeDiagnostico, Metadata
 
 from .dto import ParquetDto, MetadataDto
 

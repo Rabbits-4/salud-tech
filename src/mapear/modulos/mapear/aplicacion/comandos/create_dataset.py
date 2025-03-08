@@ -3,15 +3,15 @@ from datetime import datetime
 from .base import CrearBaseHandler
 from dataclasses import dataclass
 
-from mapear.modulos.procesamiento.aplicacion.mapeadores import MapeadorParquet
-from mapear.modulos.procesamiento.aplicacion.dto import ParquetDto
+from mapear.modulos.mapear.aplicacion.mapeadores import MapeadorParquet
+from mapear.modulos.mapear.aplicacion.dto import ParquetDto
 
-from mapear.modulos.procesamiento.dominio.entidades import ParquetFile
+from mapear.modulos.mapear.dominio.entidades import ParquetFile
 from mapear.seedwork.infraestructura.uow import UnidadTrabajoPuerto
 
 from mapear.seedwork.aplicacion.comandos import ejecutar_commando
 
-from mapear.modulos.procesamiento.infraestructura.repositorios import RepositorioParquet
+from mapear.modulos.mapear.infraestructura.repositorios import RepositorioParquet
 
 @dataclass
 class CreateParquet(Comando):

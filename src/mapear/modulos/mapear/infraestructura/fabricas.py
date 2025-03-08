@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from mapear.seedwork.dominio.fabricas import Fabrica
 from mapear.seedwork.dominio.repositorios import Repositorio
 
-from mapear.modulos.procesamiento.dominio.repositorios import RepositorioParquet
+from mapear.modulos.mapear.dominio.repositorios import RepositorioParquet
 from .repositorios import RepositorioParquetPostgress
 
 from .excepciones import ExcepcionFabrica

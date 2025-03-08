@@ -1,8 +1,8 @@
 import pulsar
 from pulsar.schema import *
 
-from mapear.modulos.procesamiento.infraestructura.schema.v1.eventos import EventoParquetCreado, ParquetCreadoPayload
-from mapear.modulos.procesamiento.infraestructura.schema.v1.comandos import ComandoCrearParquet, ComandoCrearParquetPayload
+from mapear.modulos.mapear.infraestructura.schema.v1.eventos import EventoParquetCreado, ParquetCreadoPayload
+from mapear.modulos.mapear.infraestructura.schema.v1.comandos import ComandoCrearParquet, ComandoCrearParquetPayload
 from mapear.seedwork.infraestructura import utils
 
 import datetime

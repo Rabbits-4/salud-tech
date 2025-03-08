@@ -1,6 +1,6 @@
 from mapear.seedwork.aplicacion.queries import Query, QueryHandler, QueryResultado
 from mapear.seedwork.aplicacion.queries import ejecutar_query as query
-from mapear.modulos.procesamiento.infraestructura.repositorios import RepositorioParquet
+from mapear.modulos.mapear.infraestructura.repositorios import RepositorioParquet
 from dataclasses import dataclass
 from .base import QueryBaseHandler
 import uuid

@@ -1,8 +1,8 @@
 from mapear.seedwork.aplicacion.servicios import Servicio
-from mapear.modulos.procesamiento.dominio.entidades import ParquetFile
-from mapear.modulos.procesamiento.dominio.fabricas import FabricaMapear
-from mapear.modulos.procesamiento.infraestructura.fabricas import FabricaRepositorio
-from mapear.modulos.procesamiento.infraestructura.repositorios import RepositorioParquet
+from mapear.modulos.mapear.dominio.entidades import ParquetFile
+from mapear.modulos.mapear.dominio.fabricas import FabricaMapear
+from mapear.modulos.mapear.infraestructura.fabricas import FabricaRepositorio
+from mapear.modulos.mapear.infraestructura.repositorios import RepositorioParquet
 from mapear.seedwork.infraestructura.uow import UnidadTrabajoPuerto
 from .mapeadores import MapeadorParquet
 

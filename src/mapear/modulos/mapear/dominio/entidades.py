@@ -2,7 +2,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from datetime import datetime
 
-import mapear.modulos.procesamiento.dominio.objetos_valor as ov
+import mapear.modulos.mapear.dominio.objetos_valor as ov
 from mapear.seedwork.dominio.entidades import AgregacionRaiz
 from .eventos import ParquetCreado
 

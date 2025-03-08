@@ -5,8 +5,8 @@ import time
 import logging
 import traceback
 
-from mapear.modulos.procesamiento.infraestructura.schema.v1.eventos import EventoParquetCreado
-from mapear.modulos.procesamiento.infraestructura.schema.v1.comandos import ComandoCrearParquet
+from mapear.modulos.mapear.infraestructura.schema.v1.eventos import EventoParquetCreado
+from mapear.modulos.mapear.infraestructura.schema.v1.comandos import ComandoCrearParquet
 from mapear.seedwork.infraestructura import utils
 
 def suscribirse_a_eventos():

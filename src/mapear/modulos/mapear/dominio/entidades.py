@@ -22,12 +22,12 @@ class ParquetFile(AgregacionRaiz):
 
         self.agregar_evento(ParquetCreado(
             packet_id=self.id,
-            registro_de_diagnostico=parquet.registro_de_diagnostico,
             fecha_creacion=parquet.fecha_creacion,
             fecha_actualizacion=parquet.fecha_actualizacion,
             historial_paciente_id=parquet.historial_paciente_id,
             contexto_procesal=parquet.contexto_procesal,
             notas_clinicas=parquet.notas_clinicas,
+            registro_de_diagnostico=parquet.registro_de_diagnostico,
             data=parquet.data,
             estado=parquet.estado.value
         ))

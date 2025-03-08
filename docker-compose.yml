@@ -118,7 +118,6 @@ services:
       - FLASK_APP=src.mapear.api
       - FLASK_ENV=development
       - FLASK_DEBUG=1
-      - HOST_ADDRESS=mapear
       - PULSAR_ADDRESS=broker
       - BROKER_HOST=broker
     depends_on:

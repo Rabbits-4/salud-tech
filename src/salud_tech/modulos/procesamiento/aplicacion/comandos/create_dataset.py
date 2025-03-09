@@ -4,15 +4,18 @@ from .base import CrearBaseHandler
 from dataclasses import dataclass, field
 import json
 import logging
+import uuid
 
 from salud_tech.modulos.procesamiento.aplicacion.mapeadores import MapeadorDatasetMedico
 from salud_tech.modulos.procesamiento.aplicacion.dto import MetadataDto, DatasetMedicoDto
 from salud_tech.modulos.procesamiento.dominio.entidades import DatasetMedico
 from salud_tech.seedwork.infraestructura.uow import UnidadTrabajoPuerto
 from salud_tech.seedwork.aplicacion.comandos import ejecutar_commando
+from salud_tech.modulos.procesamiento.infraestructura.despachadores import Despachador
 from salud_tech.modulos.procesamiento.infraestructura.repositorios import RepositorioDatasetMedico
-
-
+from salud_tech.modulos.procesamiento.infraestructura.schema.v1.eventos import (
+    ProcesamientoIniciado, ProcesamientoIniciadoPayload
+)
 
 @dataclass
 class CreateDatasetMedico(Comando):
@@ -30,6 +33,9 @@ class CreateDatasetHandler(CrearBaseHandler):
 
     def handle(self, comando: CreateDatasetMedico):
         logging.info("🚀 [Procesamiento] Iniciando proceso de creación de Dataset...")
+
+        id_saga = str(uuid.uuid4())
+        self.publicar_evento_saga_log(id_saga, "  ProcesamientoIniciado")
 
         metadata_dto = MetadataDto(
             registro_de_diagnostico=comando.registro_de_diagnostico,
@@ -64,13 +70,27 @@ class CreateDatasetHandler(CrearBaseHandler):
                     repositorio_dataset.agregar(dataset)
                     uow.commit()
                     logging.info(f"✅ [Procesamiento] Dataset `{dataset.id}` guardado exitosamente.")
-                
+                    self.publicar_evento_saga_log(id_saga, "  DatasetCreado")
+
             except Exception as e:
                 logging.error(f"❌ [Procesamiento] Error guardando Dataset en BD: {e}")
                 raise e
             finally:
                 db.session.close()
                 logging.info("🚀 db session cerrada exitosamente")
+   
+    def publicar_evento_saga_log(self, id_saga, paso, topico="eventos-saga"):
+        """ 
+        Publica un evento en Pulsar y lo registra en el log.
+        """
+        despachador = Despachador()
+        evento = ProcesamientoIniciadoPayload(
+            id_saga=id_saga,
+            paso=paso
+        )
+        
+        logging.info(f"📡 [ANONIMIZACION] Publicado evento `{paso}` con id `{id_saga}` en `{topico}`")
+        despachador.publicar_evento_saga(evento)
                 
 @ejecutar_commando.register(CreateDatasetMedico)
 def ejecutar_commando_create_dataset_medico(comando: CreateDatasetMedico):

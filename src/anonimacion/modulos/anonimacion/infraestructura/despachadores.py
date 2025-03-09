@@ -27,7 +27,6 @@ class Despachador:
             cliente.close()
 
     def publicar_evento(self, evento, topico="dicom-anonimizado"):
-        """ Publica eventos en el broker Pulsar. """
         payload = DicomAnonimoCreadoPayload(
             id_dicom_anonimo=str(evento.id),
             imagen=evento.imagen,
@@ -46,7 +45,6 @@ class Despachador:
 
     def publicar_evento_saga(self, evento, topico="eventos-saga"):
         """ Publica eventos en el broker Pulsar. """
-        logging.info(f"✅ recibiendo evento 4`{evento}`.")
         payload = AnonimacionIniciadaPayload(
             id_saga=str(evento.id_saga),
             paso=str(evento.paso)

@@ -1,15 +1,13 @@
 tasks:
-  - name: Crear folder para datos y asigna permisos
+  - name: Iniciar Pulsar
     init: >
       make clean_folder && 
-      make Create_Data_Folder
-  # - name: Iniciar db
-  #   init: >
-  #     make start_db_container
-  - name: Iniciar pulsar
-    init: >
+      make Create_Data_Folder && 
       make start_pulsar_containers
-  # - name: Iniciar procesamiento
-  #   init: >
-  #     make recreate_salud_tech_container
+  - name: Iniciar Todos los Microservicios
+    init: >
+      echo "Presiona ENTER para iniciar los microservicios..." && 
+      read -r _ && 
+      make start_all
+ 
 

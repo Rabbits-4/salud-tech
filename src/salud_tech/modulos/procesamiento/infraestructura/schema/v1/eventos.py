@@ -21,3 +21,10 @@ class ParquetCreadoPayload(Record):
 
 class EventoParquetCreado(EventoIntegracion):
     data = ParquetCreadoPayload()
+
+class ProcesamientoIniciadoPayload(Record):
+    id_saga = String()
+    paso = String()
+
+class ProcesamientoIniciado(EventoIntegracion):
+    data = ProcesamientoIniciadoPayload()

@@ -37,7 +37,7 @@ class AnonimizarHandler(CrearBaseHandler):
         
         # Mensaje de inicio saga
         id_saga = str(uuid.uuid4())
-        self.publicar_evento_saga_log(id_saga, "AnonimacionIniciada")
+        self.publicar_evento_saga_log(id_saga, "  AnonimacionIniciada")
 
         # 1. Generar un token único para el paciente
         token_paciente = str(uuid.uuid4())
@@ -71,7 +71,7 @@ class AnonimizarHandler(CrearBaseHandler):
         # 6. Publicar el evento con el Dicom Anonimizado
         self.publicar_evento_dicom_anonimizado(dicom_anonimo)
 
-        self.publicar_evento_saga_log(id_saga, "DicomAnonimizado")
+        self.publicar_evento_saga_log(id_saga, "  DicomAnonimizado")
 
     def guardar_relacion_paciente(self, token_paciente, comando):
         """

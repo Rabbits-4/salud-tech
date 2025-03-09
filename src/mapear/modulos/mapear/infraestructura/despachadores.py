@@ -1,7 +1,10 @@
 import pulsar
 from pulsar.schema import *
 
-from mapear.modulos.mapear.infraestructura.schema.v1.eventos import EventoParquetCreado, ParquetCreadoPayload
+from mapear.modulos.mapear.infraestructura.schema.v1.eventos import ( 
+    EventoParquetCreado, ParquetCreadoPayload,
+    MapeoIniciadoPayload, MapeoIniciado 
+)
 from mapear.modulos.mapear.infraestructura.schema.v1.comandos import ComandoCrearParquet, ComandoCrearParquetPayload
 from mapear.seedwork.infraestructura import utils
 
@@ -48,4 +51,16 @@ class Despachador:
         )
         comando_integracion = ComandoCrearParquet(data=payload)
         logging.info(f"📢 Publicando comando `{comando.__class__.__name__}` en `{topico}`.")
-        self._publicar_mensaje(comando_integracion, topico, ComandoCrearParquet)  
+        self._publicar_mensaje(comando_integracion, topico, ComandoCrearParquet) 
+
+    def publicar_evento_saga(self, evento, topico="eventos-saga"):
+        """ Publica eventos en el broker Pulsar. """
+        payload = MapeoIniciadoPayload(
+            id_saga=str(evento.id_saga),
+            paso=str(evento.paso)
+        )
+        evento_a_publicar = MapeoIniciado(data=payload)
+        topico = "eventos-saga"
+
+        logging.info(f"✅ Publicando evento `{evento.__class__.__name__}` en `{topico}`.")
+        self._publicar_mensaje(evento_a_publicar, topico, evento_a_publicar.__class__)

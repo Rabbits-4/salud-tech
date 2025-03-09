@@ -4,7 +4,7 @@ import uuid
 import time
 import logging
 import traceback
-# import requests
+import requests
 
 from mapear.modulos.mapear.infraestructura.schema.v1.eventos import EventoDicomAnonimoCreado
 from mapear.modulos.mapear.infraestructura.schema.v1.comandos import ComandoCrearParquet
@@ -42,9 +42,11 @@ def suscribirse_a_eventos():
                 data=data.data
             )
 
-            # from mapear.seedwork.aplicacion.comandos import ejecutar_commando
+            from mapear.seedwork.aplicacion.comandos import ejecutar_commando
 
             logging.error("📦 Ejecutar evento: crear parquet")
+
+            ejecutar_commando(comando)
 
             # requests.post('http://localhost:5002/mapear/create-parquet', json=comando.to_dict())
 

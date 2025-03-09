@@ -52,6 +52,8 @@ class CrearParquetHandler(CrearBaseHandler):
             data=comando.data
         )
 
+        logging.error("🚀 Run handler by rest api")
+
         parquet: ParquetFile = self.fabrica_mapear.crear_objeto(parquet_dto, MapeadorParquet())
 
         parquet.crear_parquet(parquet)

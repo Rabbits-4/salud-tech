@@ -38,7 +38,7 @@ def create_app(configuracion={}):
     # Init la aplicacion de Flask
     app = Flask(__name__, instance_relative_config=True)
     
-    db_user = os.getenv('POSTGRES_USER', 'salud_tech')
+    db_user = os.getenv('POSTGRES_USER', 'postgres')
     db_password = os.getenv('POSTGRES_PASSWORD', 'salud_tech_123')
     db_name = os.getenv('POSTGRES_DB', 'rabbit_salud_tech')
     db_host = os.getenv('POSTGRES_HOST', 'salud_tech_db')

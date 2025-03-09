@@ -2,10 +2,10 @@ from pulsar.schema import String, Long, Record
 from mapear.seedwork.infraestructura.schema.v1.eventos import EventoIntegracion
 
 class ParquetCreadoPayload(Record):
-    id_dicom_anonimo = String()
-    imagen = String()
+    packet_id = String()
     entorno_clinico = String()
     registro_de_diagnostico = String()
+    historial_paciente_id = String()
     fecha_creacion = String()
     fecha_actualizacion = String()
     contexto_procesal = String()

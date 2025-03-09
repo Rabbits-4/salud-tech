@@ -98,11 +98,13 @@ def flask_uow():
         registrar_unidad_de_trabajo(uow_serialized)
         return uow_serialized
 
+from flask import has_request_context
+
 def unidad_de_trabajo() -> UnidadTrabajo:
-    if is_flask():
+    if has_request_context():  # 🔹 Solo usa `session` si estamos en un request HTTP
         return pickle.loads(flask_uow())
     else:
-        raise Exception('No hay unidad de trabajo')
+        return UnidadTrabajoSQLAlchemy()  # 🔹 Si estamos en un evento de Pulsar, creamos una nueva UoW manualmente
 
 def guardar_unidad_trabajo(uow: UnidadTrabajo):
     if is_flask():

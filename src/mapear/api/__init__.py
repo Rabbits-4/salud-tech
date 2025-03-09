@@ -38,14 +38,13 @@ def comenzar_consumidor():
 
 def create_app(configuracion={}):
     # Init la aplicacion de Flask
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
     app = Flask(__name__, instance_relative_config=True)
     
     db_user = os.getenv('POSTGRES_USER', 'postgres')
     db_password = os.getenv('POSTGRES_PASSWORD', 'mapear_123')
     db_name = os.getenv('POSTGRES_DB', 'rabbit_mapear')
     db_host = os.getenv('POSTGRES_HOST', 'mapear_db')
-
-    logging.info("**** DATABASE: ", f'postgresql://{db_user}:{db_password}@{db_host}/{db_name}')
     
     app.config['SQLALCHEMY_DATABASE_URI'] =\
             f'postgresql://{db_user}:{db_password}@{db_host}/{db_name}'
@@ -63,7 +62,6 @@ def create_app(configuracion={}):
         if not app.config.get('TESTING'):
             comenzar_consumidor()
 
-    print(db, "db despues de inicializar db")
     importar_modelos_alchemy()
     registrar_handlers()
 

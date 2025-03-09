@@ -1,12 +1,9 @@
 from mapear.seedwork.aplicacion.handlers import Handler
 from mapear.modulos.mapear.infraestructura.despachadores import Despachador
-from mapear.modulos.mapear.aplicacion.dto import ParquetDto
-from mapear.modulos.mapear.dominio.fabricas import FabricaMapear
-from mapear.modulos.mapear.infraestructura.fabricas import FabricaRepositorio
-from mapear.modulos.mapear.aplicacion.mapeadores import MapeadorParquet
-from mapear.modulos.mapear.infraestructura.repositorios import RepositorioParquet
+from mapear.modulos.mapear.aplicacion.comandos.create_parquet import CreateParquet
+from mapear.seedwork.aplicacion.comandos import ejecutar_commando
+
 import logging
-from datetime import datetime 
 
 class HandlerParquetIntegracion(Handler):
     
@@ -15,27 +12,24 @@ class HandlerParquetIntegracion(Handler):
         despachador = Despachador()
         despachador.publicar_evento(evento, 'mapear.parquet.creado')
 
-class HandlerCrearParquetDominio(Handler):
-    @staticmethod
-    def handle_crear_parquet(comando):
-        parquet_dto = ParquetDto(
-            entorno_clinico=comando["entorno_clinico"],
-            registro_de_diagnostico=comando["registro_de_diagnostico"],
-            fecha_creacion=datetime.now(),
-            fecha_actualizacion=datetime.now(),
-            historial_paciente_id=comando["historial_paciente_id"],
-            contexto_procesal=comando["contexto_procesal"],
-            notas_clinicas=comando["notas_clinicas"],
-            data=comando["data"]
+class HandlerEventoDicomAnonimizado(Handler):
+    """
+    Maneja eventos de integración recibidos de Pulsar.
+    """
+
+    def handle(self, evento):
+        logging.info(f"📡 [MAPEO] Procesando evento en el Handler: {evento}")
+
+        comando = CreateParquet(
+            entorno_clinico=evento["entorno_clinico"],
+            registro_de_diagnostico=evento["registro_de_diagnostico"],
+            fecha_creacion=evento["fecha_creacion"],
+            fecha_actualizacion=evento["fecha_actualizacion"],
+            historial_paciente_id=evento["id_dicom_anonimo"],
+            contexto_procesal=evento["contexto_procesal"],
+            notas_clinicas=evento["notas_clinicas"],
+            data=evento["data"]
         )
 
-        logging.error("🚀 Run handler by rest api")
-        _fabrica_mapear: FabricaMapear = FabricaMapear()
-        _fabrica_repositorio: FabricaRepositorio = FabricaRepositorio()
-
-        parquet: ParquetFile = _fabrica_mapear.crear_objeto(parquet_dto, MapeadorParquet())
-        parquet.crear_parquet(parquet)
-
-        repositorio_parquet = _fabrica_repositorio.crear_objeto(RepositorioParquet.__class__)
-
-        repositorio_parquet.agregar(parquet)
+        logging.info("✅ [MAPEO] Enviando comando `CreateParquet` para procesar los datos.")
+        ejecutar_commando(comando)  # 🔹 Enviamos el comando para procesarlo

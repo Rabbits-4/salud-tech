@@ -14,3 +14,12 @@ class DicomAnonimoCreadoPayload(Record):
 
 class EventoDicomAnonimoCreado(EventoIntegracion):
     data = DicomAnonimoCreadoPayload()
+
+# 🔹 Payload para evento de inicio de anonimización
+class AnonimacionIniciadaPayload(Record):
+    id_saga = String()
+    paso = String()
+
+# 🔹 Evento de integración para indicar que el proceso de anonimización ha comenzado
+class AnonimacionIniciada(EventoIntegracion):
+    data = AnonimacionIniciadaPayload()

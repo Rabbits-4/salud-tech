@@ -62,7 +62,7 @@ class CrearParquetHandler(CrearBaseHandler):
         from mapear.config.db import db
         from mapear.api import create_app
 
-        app = create_app()  # 🔹 Creamos la instancia de Flask para contexto
+        app = create_app({"TESTING": True})  # 🔹 Creamos la instancia de Flask para contexto
 
         with app.app_context():
             try:

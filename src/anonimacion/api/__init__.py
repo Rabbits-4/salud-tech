@@ -1,4 +1,5 @@
 import os
+import logging
 
 from flask import Flask, jsonify, request
 from flask_swagger import swagger
@@ -32,6 +33,7 @@ def comenzar_consumidor():
 
 def create_app(configuracion={}):
     # Init la aplicacion de Flask
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
     app = Flask(__name__, instance_relative_config=True)
     
     db_user = os.getenv('POSTGRES_USER', 'postgres')

@@ -2,16 +2,17 @@ from salud_tech.seedwork.aplicacion.comandos import Comando
 from datetime import datetime
 from .base import CrearBaseHandler
 from dataclasses import dataclass, field
+import json
+import logging
 
 from salud_tech.modulos.procesamiento.aplicacion.mapeadores import MapeadorDatasetMedico
 from salud_tech.modulos.procesamiento.aplicacion.dto import MetadataDto, DatasetMedicoDto
-
 from salud_tech.modulos.procesamiento.dominio.entidades import DatasetMedico
 from salud_tech.seedwork.infraestructura.uow import UnidadTrabajoPuerto
-
 from salud_tech.seedwork.aplicacion.comandos import ejecutar_commando
-
 from salud_tech.modulos.procesamiento.infraestructura.repositorios import RepositorioDatasetMedico
+
+
 
 @dataclass
 class CreateDatasetMedico(Comando):
@@ -28,6 +29,8 @@ class CreateDatasetMedico(Comando):
 class CreateDatasetHandler(CrearBaseHandler):
 
     def handle(self, comando: CreateDatasetMedico):
+        logging.info("🚀 [Procesamiento] Iniciando proceso de creación de Dataset...")
+
         metadata_dto = MetadataDto(
             registro_de_diagnostico=comando.registro_de_diagnostico,
             fecha_creacion=datetime.now(),
@@ -48,11 +51,27 @@ class CreateDatasetHandler(CrearBaseHandler):
         dataset.crear_dataset(dataset)
 
         repositorio_dataset = self.fabrica_repositorio.crear_objeto(RepositorioDatasetMedico.__class__)
+        
+        from salud_tech.config.uow import UnidadTrabajoSQLAlchemy
+        from salud_tech.config.db import db
+        from salud_tech.api import create_app
 
-        UnidadTrabajoPuerto.registrar_batch(repositorio_dataset.agregar, dataset)
-        UnidadTrabajoPuerto.savepoint() # que hace?
-        UnidadTrabajoPuerto.commit()
+        app = create_app()  # 🔹 Creamos la instancia de Flask para contexto
 
+        with app.app_context():
+            try:
+                with UnidadTrabajoSQLAlchemy() as uow:
+                    repositorio_dataset.agregar(dataset)
+                    uow.commit()
+                    logging.info(f"✅ [Procesamiento] Dataset `{dataset.id}` guardado exitosamente.")
+                
+            except Exception as e:
+                logging.error(f"❌ [Procesamiento] Error guardando Dataset en BD: {e}")
+                raise e
+            finally:
+                db.session.close()
+                logging.info("🚀 db session cerrada exitosamente")
+                
 @ejecutar_commando.register(CreateDatasetMedico)
 def ejecutar_commando_create_dataset_medico(comando: CreateDatasetMedico):
     handler = CreateDatasetHandler()

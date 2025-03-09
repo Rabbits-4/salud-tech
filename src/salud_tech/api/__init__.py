@@ -5,6 +5,7 @@ from flask_swagger import swagger
 from salud_tech.modulos.procesamiento.aplicacion.servicios import ServicioDatasetMedico
 from salud_tech.modulos.procesamiento.aplicacion.dto import DatasetMedicoDto
 from salud_tech.modulos.procesamiento.dominio.entidades import DatasetMedico
+import logging
 
 
 # Identifica el directorio base
@@ -36,6 +37,7 @@ def comenzar_consumidor():
 
 def create_app(configuracion={}):
     # Init la aplicacion de Flask
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
     app = Flask(__name__, instance_relative_config=True)
     
     db_user = os.getenv('POSTGRES_USER', 'postgres')

@@ -39,7 +39,6 @@ class Despachador:
             estado=evento.estado
         )
         evento_integracion = EventoParquetCreado(data=payload)
-        logging.info(f"✅ Publicando evento `{evento.__class__.__name__}` en `{topico}`.")
         self._publicar_mensaje(evento_integracion, topico, EventoParquetCreado) 
 
     def publicar_comando(self, comando, topico):

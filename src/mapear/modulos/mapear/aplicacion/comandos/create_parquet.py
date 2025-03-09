@@ -18,8 +18,6 @@ from mapear.modulos.mapear.infraestructura.schema.v1.eventos import EventoParque
 class CreateParquet(Comando):
     entorno_clinico: str
     registro_de_diagnostico: dict
-    fecha_creacion: datetime
-    fecha_actualizacion: datetime
     historial_paciente_id: str
     contexto_procesal: str
     notas_clinicas: str
@@ -29,8 +27,6 @@ class CreateParquet(Comando):
         return {
             "entorno_clinico": self.entorno_clinico,
             "registro_de_diagnostico": self.registro_de_diagnostico,
-            "fecha_creacion": self.fecha_creacion,
-            "fecha_actualizacion": self.fecha_actualizacion,
             "historial_paciente_id": self.historial_paciente_id,
             "contexto_procesal": self.contexto_procesal,
             "notas_clinicas": self.notas_clinicas,
@@ -39,8 +35,7 @@ class CreateParquet(Comando):
 
 class CrearParquetHandler(CrearBaseHandler):
 
-    def handle(self, comando: CreateParquet):
-        logging.info("🚀 [MAPEO] Iniciando proceso de creación de Parquet...")
+    def handle(self, comando: CreateParquet):        
 
         parquet_dto = ParquetDto(
             entorno_clinico=comando.entorno_clinico,
@@ -62,14 +57,13 @@ class CrearParquetHandler(CrearBaseHandler):
         from mapear.config.db import db
         from mapear.api import create_app
 
-        app = create_app()  # 🔹 Creamos la instancia de Flask para contexto
+        app = create_app({"TESTING": True})  # 🔹 Creamos la instancia de Flask para contexto
 
         with app.app_context():
             try:
                 with UnidadTrabajoSQLAlchemy() as uow:
                     repositorio_parquet.agregar(parquet)
                     uow.commit()
-                    logging.info(f"✅ [MAPEO] Parquet `{parquet.id}` guardado exitosamente.")
                 
             except Exception as e:
                 logging.error(f"❌ [MAPEO] Error guardando Parquet en BD: {e}")
@@ -80,7 +74,6 @@ class CrearParquetHandler(CrearBaseHandler):
 
             # 📡 **Publicar evento de integración en Pulsar**
             try:
-                logging.info(f"📡 [MAPEO] Preparando evento de integración para publicación...")
                 despachador = Despachador()
                 despachador.publicar_evento(parquet, "parquet-creado")
                 

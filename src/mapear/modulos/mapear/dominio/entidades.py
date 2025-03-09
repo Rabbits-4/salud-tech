@@ -12,7 +12,7 @@ import uuid
 
 @dataclass
 class ParquetFile(AgregacionRaiz):
-    id: str = field(default_factory=lambda: str(uuid.uuid4()))
+    id: str
     fecha_creacion: datetime = field(default_factory=datetime.now)
     fecha_actualizacion: datetime = field(default_factory=datetime.now)
     historial_paciente_id: str = None
@@ -26,7 +26,7 @@ class ParquetFile(AgregacionRaiz):
     def crear_parquet(self, parquet: ParquetFile):
 
         self.agregar_evento(ParquetCreado(
-            packet_id=self.id,
+            id=self.id,
             fecha_creacion=parquet.fecha_creacion.isoformat(),
             fecha_actualizacion=parquet.fecha_actualizacion.isoformat(),
             historial_paciente_id=parquet.historial_paciente_id,

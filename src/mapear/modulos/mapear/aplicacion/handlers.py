@@ -18,18 +18,14 @@ class HandlerEventoDicomAnonimizado(Handler):
     """
 
     def handle(self, evento):
-        logging.info(f"📡 [MAPEO] Procesando evento en el Handler: {evento}")
 
         comando = CreateParquet(
             entorno_clinico=evento["entorno_clinico"],
             registro_de_diagnostico=evento["registro_de_diagnostico"],
-            fecha_creacion=evento["fecha_creacion"],
-            fecha_actualizacion=evento["fecha_actualizacion"],
             historial_paciente_id=evento["id_dicom_anonimo"],
             contexto_procesal=evento["contexto_procesal"],
             notas_clinicas=evento["notas_clinicas"],
             data=evento["data"]
         )
-
-        logging.info("✅ [MAPEO] Enviando comando `CreateParquet` para procesar los datos.")
+        
         ejecutar_commando(comando)  # 🔹 Enviamos el comando para procesarlo

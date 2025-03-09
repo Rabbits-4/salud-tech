@@ -7,14 +7,13 @@ import uuid
 @dataclass
 class ParquetCreado(EventoDominio):
     id: uuid.UUID
-    packet_id: uuid.UUID = None
     fecha_creacion: datetime = None
     fecha_actualizacion: datetime = None
-    registro_de_diagnostico: str = None
-    entorno_clinico: str = None
     historial_paciente_id: str = None
     contexto_procesal: str = None
     notas_clinicas: str = None
+    registro_de_diagnostico: dict = None
+    entorno_clinico: str = None
     data: dict = None
     estado: str = None    
     

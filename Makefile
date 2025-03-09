@@ -29,3 +29,6 @@ recreate_anonimacion_container:
 
 recreate_mapear_container:
 	docker compose --profile mapear down -v && docker compose --profile mapear up --build --force-recreate
+
+entrar_maper_db:
+	docker exec -it mapear_db psql -U postgres -d rabbit_mapear

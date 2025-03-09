@@ -31,40 +31,40 @@ def suscribirse_a_eventos():
             evento = mensaje.value()
             data = evento.data
 
-            # from mapear.modulos.mapear.dominio.eventos import ParquetCreado
+            from mapear.modulos.mapear.dominio.eventos import ParquetCreado
 
-            HandlerCrearParquetDominio.handle_crear_parquet({
-                "entorno_clinico": "data.entorno_clinico",
-                "registro_de_diagnostico": "data.registro_de_diagnostico",
-                "fecha_creacion": "data.fecha_creacion",
-                "fecha_actualizacion": "data.fecha_actualizacion",
-                "historial_paciente_id": str(uuid.uuid4()),
-                "contexto_procesal": "data.contexto_procesal",
-                "notas_clinicas": "data.notas_clinicas",
-                "data": "data.data"
-            })
+            # HandlerCrearParquetDominio.handle_crear_parquet({
+            #     "entorno_clinico": "data.entorno_clinico",
+            #     "registro_de_diagnostico": "data.registro_de_diagnostico",
+            #     "fecha_creacion": "data.fecha_creacion",
+            #     "fecha_actualizacion": "data.fecha_actualizacion",
+            #     "historial_paciente_id": str(uuid.uuid4()),
+            #     "contexto_procesal": "data.contexto_procesal",
+            #     "notas_clinicas": "data.notas_clinicas",
+            #     "data": "data.data"
+            # })
 
 
             # with current_app.app_context():
-            #     print(f'Evento recibido: {mensaje.value().data}')
-            #     logging.error(f"📡 Evento dicom-anonimizado recibido: {topico}")
+            print(f'Evento recibido: {mensaje.value().data}')
+            logging.error(f"📡 Evento dicom-anonimizado recibido: {topico}")
 
-            #     comando = CreateParquet(
-            #         entorno_clinico=data.entorno_clinico,
-            #         registro_de_diagnostico=data.registro_de_diagnostico,
-            #         fecha_creacion=data.fecha_creacion,
-            #         fecha_actualizacion=data.fecha_actualizacion,
-            #         historial_paciente_id=str(uuid.uuid4()),
-            #         contexto_procesal=data.contexto_procesal,
-            #         notas_clinicas=data.notas_clinicas,
-            #         data=data.data
-            #     )
+            comando = CreateParquet(
+                entorno_clinico=data.entorno_clinico,
+                registro_de_diagnostico=data.registro_de_diagnostico,
+                fecha_creacion=data.fecha_creacion,
+                fecha_actualizacion=data.fecha_actualizacion,
+                historial_paciente_id=str(uuid.uuid4()),
+                contexto_procesal=data.contexto_procesal,
+                notas_clinicas=data.notas_clinicas,
+                data=data.data
+            )
 
-            #     from mapear.seedwork.aplicacion.comandos import ejecutar_commando
+            from mapear.seedwork.aplicacion.comandos import ejecutar_commando
 
-            #     logging.error("📦 Ejecutar evento: crear parquet")
+            logging.error("📦 Ejecutar evento: crear parquet")
 
-            #     ejecutar_commando(comando)
+            ejecutar_commando(comando)
 
             # requests.post('http://localhost:5002/mapear/create-parquet', json=comando.to_dict())
 

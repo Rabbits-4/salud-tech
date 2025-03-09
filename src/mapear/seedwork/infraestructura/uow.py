@@ -81,17 +81,19 @@ def is_flask():
 
 def registrar_unidad_de_trabajo(serialized_obj):
     from mapear.config.uow import UnidadTrabajoSQLAlchemy
+    logging.error('** registrar_unidad_de_trabajo')
     from flask import session
     
-
+    logging.error('** update session')
     session['uow'] = serialized_obj
 
 def flask_uow():
     from flask import session
     from mapear.config.uow import UnidadTrabajoSQLAlchemy
-    if session.get('uow'):
+    if session and session.get('uow'):
         return session['uow']
     else:
+        logging.error('** No hay unidad de trabajo en la sesión')
         uow_serialized = pickle.dumps(UnidadTrabajoSQLAlchemy())
         registrar_unidad_de_trabajo(uow_serialized)
         return uow_serialized

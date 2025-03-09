@@ -65,12 +65,10 @@ class UnidadTrabajo(ABC):
         self._publicar_eventos_dominio(batch)
 
     def _publicar_eventos_dominio(self, batch):
-        logging.error(f'🔥 Publicando eventos dominio')
         for evento in self._obtener_eventos(batches=[batch]):
             dispatcher.send(signal=f'{type(evento).__name__}Dominio', evento=evento)
 
     def _publicar_eventos_post_commit(self):
-        logging.error(f'🔥 Publicando eventos integracion')
         for evento in self._obtener_eventos():
             dispatcher.send(signal=f'{type(evento).__name__}Integracion', evento=evento)
 

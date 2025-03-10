@@ -8,6 +8,7 @@ from .eventos import ParquetCreado
 
 import logging
 import json
+import uuid
 
 @dataclass
 class ParquetFile(AgregacionRaiz):
@@ -25,7 +26,7 @@ class ParquetFile(AgregacionRaiz):
     def crear_parquet(self, parquet: ParquetFile):
 
         self.agregar_evento(ParquetCreado(
-            packet_id=self.id,
+            id=self.id,
             fecha_creacion=parquet.fecha_creacion.isoformat(),
             fecha_actualizacion=parquet.fecha_actualizacion.isoformat(),
             historial_paciente_id=parquet.historial_paciente_id,

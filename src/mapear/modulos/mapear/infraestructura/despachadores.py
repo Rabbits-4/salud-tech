@@ -1,7 +1,10 @@
 import pulsar
 from pulsar.schema import *
 
-from mapear.modulos.mapear.infraestructura.schema.v1.eventos import EventoParquetCreado, ParquetCreadoPayload
+from mapear.modulos.mapear.infraestructura.schema.v1.eventos import ( 
+    EventoParquetCreado, ParquetCreadoPayload,
+    MapeoIniciadoPayload, MapeoIniciado 
+)
 from mapear.modulos.mapear.infraestructura.schema.v1.comandos import ComandoCrearParquet, ComandoCrearParquetPayload
 from mapear.seedwork.infraestructura import utils
 
@@ -15,17 +18,21 @@ def unix_time_millis(dt):
 
 class Despachador:
     def _publicar_mensaje(self, mensaje, topico, schema):
-        cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        publicador = cliente.create_producer(topico, schema=AvroSchema(EventoParquetCreado))
-        publicador.send(mensaje)
-        cliente.close()
+        try:
+            cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
+            publicador = cliente.create_producer(topico, schema=AvroSchema(schema)) 
+            publicador.send(mensaje)
+            logging.info(f"📡 Mensaje enviado a `{topico}` exitosamente.")
+        except Exception as e:
+            logging.error(f"❌ Error publicando mensaje en `{topico}`: {e}")
+        finally:
+            cliente.close()
 
-    def publicar_evento(self, evento, topico):
-        # TODO Debe existir un forma de crear el Payload en Avro con base al tipo del evento
+    def publicar_evento(self, evento, topico="parquet-creado"):
         payload = ParquetCreadoPayload(
-            packet_id=str(evento.packet_id),
-            fecha_creacion=evento.fecha_creacion,
-            fecha_actualizacion=evento.fecha_actualizacion,
+            packet_id=str(evento.id),
+            fecha_creacion=str(evento.fecha_creacion),
+            fecha_actualizacion=str(evento.fecha_actualizacion),
             registro_de_diagnostico=evento.registro_de_diagnostico,
             entorno_clinico=evento.entorno_clinico or "XXX",
             historial_paciente_id=evento.historial_paciente_id,
@@ -35,12 +42,24 @@ class Despachador:
             estado=evento.estado
         )
         evento_integracion = EventoParquetCreado(data=payload)
-        self._publicar_mensaje(evento_integracion, topico, AvroSchema(EventoParquetCreado))
+        self._publicar_mensaje(evento_integracion, topico, EventoParquetCreado) 
 
     def publicar_comando(self, comando, topico):
-        # TODO Debe existir un forma de crear el Payload en Avro con base al tipo del comando
         payload = ComandoCrearParquetPayload(
             packet_id=str(comando.packet_id)            
         )
         comando_integracion = ComandoCrearParquet(data=payload)
-        self._publicar_mensaje(comando_integracion, topico, AvroSchema(ComandoCrearParquet))
+        logging.info(f"📢 Publicando comando `{comando.__class__.__name__}` en `{topico}`.")
+        self._publicar_mensaje(comando_integracion, topico, ComandoCrearParquet) 
+
+    def publicar_evento_saga(self, evento, topico="eventos-saga"):
+        """ Publica eventos en el broker Pulsar. """
+        payload = MapeoIniciadoPayload(
+            id_saga=str(evento.id_saga),
+            paso=str(evento.paso)
+        )
+        evento_a_publicar = MapeoIniciado(data=payload)
+        topico = "eventos-saga"
+
+        logging.info(f"✅ Publicando evento `{evento.__class__.__name__}` en `{topico}`.")
+        self._publicar_mensaje(evento_a_publicar, topico, evento_a_publicar.__class__)

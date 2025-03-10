@@ -1,19 +1,20 @@
 from anonimacion.seedwork.aplicacion.comandos import Comando
-from datetime import datetime
-import uuid
 from .base import CrearBaseHandler
 from dataclasses import dataclass, field
-
 from anonimacion.modulos.anonimacion.aplicacion.mapeadores import MapeadorDicomAnonimo
 from anonimacion.modulos.anonimacion.aplicacion.dto import DicomAnonimoDto
-
 from anonimacion.modulos.anonimacion.dominio.entidades import DicomAnonimo
 from anonimacion.seedwork.infraestructura.uow import UnidadTrabajoPuerto
-
 from anonimacion.seedwork.aplicacion.comandos import ejecutar_commando
 from anonimacion.modulos.anonimacion.infraestructura.repositorios import RepositorioDicomAnonimo
-
+from anonimacion.modulos.anonimacion.infraestructura.despachadores import Despachador
+from anonimacion.modulos.anonimacion.infraestructura.schema.v1.eventos import (
+    AnonimacionIniciada, EventoDicomAnonimoCreado, AnonimacionIniciadaPayload
+)
+from datetime import datetime
+import uuid
 import logging
+
 
 @dataclass
 class Anonimizar(Comando):
@@ -31,9 +32,13 @@ class Anonimizar(Comando):
     data: any
 
 class AnonimizarHandler(CrearBaseHandler):
-
+    
     def handle(self, comando: Anonimizar):
         
+        # Mensaje de inicio saga
+        id_saga = str(uuid.uuid4())
+        self.publicar_evento_saga_log(id_saga, "  AnonimacionIniciada")
+
         # 1. Generar un token único para el paciente
         token_paciente = str(uuid.uuid4())
 
@@ -66,6 +71,8 @@ class AnonimizarHandler(CrearBaseHandler):
         # 6. Publicar el evento con el Dicom Anonimizado
         self.publicar_evento_dicom_anonimizado(dicom_anonimo)
 
+        self.publicar_evento_saga_log(id_saga, "  DicomAnonimizado")
+
     def guardar_relacion_paciente(self, token_paciente, comando):
         """
         Guarda la relación entre el token generado y los datos originales del paciente
@@ -79,12 +86,24 @@ class AnonimizarHandler(CrearBaseHandler):
         db.session.commit()
 
     def publicar_evento_dicom_anonimizado(self, dicom_anonimo):
+        despachador = Despachador()
         """
         Publica un evento con el DicomAnonimo ya anonimizado para que sea procesado en la siguiente fase.
         """
-        from anonimacion.modulos.anonimacion.infraestructura.despachadores import Despachador
-        despachador = Despachador()
         despachador.publicar_evento(dicom_anonimo)
+
+    def publicar_evento_saga_log(self, id_saga, paso, topico="eventos-saga"):
+        """ 
+        Publica un evento en Pulsar y lo registra en el log.
+        """
+        despachador = Despachador()
+        evento = AnonimacionIniciadaPayload(
+            id_saga=id_saga,
+            paso=paso
+        )
+        
+        logging.info(f"📡 [ANONIMIZACION] Publicado evento `{paso}` con id `{id_saga}` en `{topico}`")
+        despachador.publicar_evento_saga(evento)
         
 @ejecutar_commando.register(Anonimizar)
 def ejecutar_commando_anonimizar(comando: Anonimizar):

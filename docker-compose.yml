@@ -42,6 +42,10 @@ services:
     networks:
       - pulsar
       - db_network
+    depends_on:
+      salud_tech_db:
+        condition: service_healthy
+      
     environment:
       - FLASK_APP=src.salud_tech.api
       - FLASK_ENV=development
@@ -54,13 +58,14 @@ services:
 
   salud_tech_db:
     image: postgres:16-alpine
-    profiles: ["db"]
+    profiles: ["salud_tech"]
+    container_name: procesamiento_db
     environment:
-      POSTGRES_USER: salud_tech
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: salud_tech_123
       POSTGRES_DB: rabbit_salud_tech
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U salud_tech"]
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 2s
       timeout: 5s
       retries: 5
@@ -87,16 +92,20 @@ services:
       - BROKER_HOST=broker
     ports:
       - "5001:5000"
+    depends_on:
+      anonimacion_db:
+        condition: service_healthy
 
   anonimacion_db:
     image: postgres:16-alpine
-    profiles: ["db"]
+    profiles: ["anonimacion"]
+    container_name: anonimacion_db
     environment:
-      POSTGRES_USER: anonimacion
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: anonimacion_123
       POSTGRES_DB: rabbit_anonimacion
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U anonimacion"]
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 2s
       timeout: 5s
       retries: 5
@@ -120,7 +129,7 @@ services:
       - FLASK_DEBUG=1
       - PULSAR_ADDRESS=broker
       - BROKER_HOST=broker
-      - POSTGRES_USER=mapear
+      - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=mapear_123
       - POSTGRES_DB=rabbit_mapear
       - POSTGRES_HOST=mapear_db
@@ -137,13 +146,22 @@ services:
     profiles: ["mapear"]
     container_name: mapear_db
     environment:
-      POSTGRES_USER: mapear
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: mapear_123
       POSTGRES_DB: rabbit_mapear
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U mapear"]
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 2s
       timeout: 5s
       retries: 5
     networks:
       - db_mapear_network
+
+  saga-coordinator:
+    profiles: ["sagas"]
+    build: 
+      context: .
+      dockerfile: src/sagas/Dockerfile 
+    restart: always
+    networks:
+    - pulsar

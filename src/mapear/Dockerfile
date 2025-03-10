@@ -1,7 +1,6 @@
 FROM python:3.10
 
 WORKDIR /app
-EXPOSE 5000/tcp
 
 COPY requirements.txt .
 RUN pip install --upgrade --no-cache-dir "pip<24.1" setuptools wheel
@@ -15,5 +14,9 @@ ENV FLASK_ENV=development
 ENV FLASK_DEBUG=1
 ENV PYTHONPATH="/app/src"
 
-CMD ["python", "-m", "flask", "run", "--host=0.0.0.0", "--reload"]
+RUN pip install requests==2.28.2
+
+EXPOSE 5000
+
+CMD ["flask", "run", "--host=0.0.0.0", "--reload"]
 

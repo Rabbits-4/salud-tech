@@ -1,30 +1,53 @@
-"""Pruebas para archivo de Servicios de Seedwork
-
-En este archivo usted encontrará las diferentes pruebas de validacióm para los Servicios base y reusables definidas en el seedwork
-
-"""
-
 import pytest
-from aeroalpes.seedwork.dominio.servicios import Servicio
+from salud_tech.seedwork.dominio.servicios import Servicio
+from salud_tech.seedwork.dominio.reglas import ReglaNegocio
+from salud_tech.seedwork.dominio.excepciones import ReglaNegocioExcepcion
 
 
-"""
-    Clases de Soporte para validar el seedwork
-"""
+# Reglas de negocio de prueba
+class ReglaValida(ReglaNegocio):
+    def es_valido(self) -> bool:
+        return True
 
-class ServicioImpl(Servicio):
-    ...
-
-"""
-    Pruebas
-"""
-
-def test_crear_servicio_desde_base():
-    # Dada un nuevo Servicio
-    servicio = ServicioImpl()
-
-    # El Servicio es correcto y no tiene fallos en la creación
-    assert servicio is not None
+    def __str__(self):
+        return "Regla válida"
 
 
+class ReglaInvalida(ReglaNegocio):
+    def es_valido(self) -> bool:
+        return False
 
+    def __str__(self):
+        return "Regla inválida"
+
+
+# Implementación de prueba de un servicio
+class ServicioPrueba(Servicio):
+    def ejecutar(self):
+        return "Servicio ejecutado"
+
+
+def test_servicio_instanciacion():
+    """Prueba que un servicio puede ser instanciado correctamente"""
+    servicio = ServicioPrueba()
+    assert isinstance(servicio, Servicio)
+
+
+def test_servicio_validar_regla_valida():
+    """Prueba que validar_regla no lanza excepción si la regla es válida"""
+    servicio = ServicioPrueba()
+    regla = ReglaValida(mensaje="Regla válida")
+
+    # No debe lanzar excepción
+    servicio.validar_regla(regla)
+
+
+def test_servicio_validar_regla_invalida():
+    """Prueba que validar_regla lanza ReglaNegocioExcepcion si la regla es inválida"""
+    servicio = ServicioPrueba()
+    regla = ReglaInvalida(mensaje="Regla inválida")
+
+    with pytest.raises(ReglaNegocioExcepcion) as exc:
+        servicio.validar_regla(regla)
+
+    assert str(exc.value) == "Regla inválida"

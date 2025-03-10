@@ -4,6 +4,7 @@ from .base import CrearBaseHandler
 from dataclasses import dataclass
 import json
 import logging
+import uuid
 
 from mapear.modulos.mapear.aplicacion.mapeadores import MapeadorParquet
 from mapear.modulos.mapear.aplicacion.dto import ParquetDto
@@ -12,7 +13,10 @@ from mapear.seedwork.infraestructura.uow import UnidadTrabajoPuerto
 from mapear.seedwork.aplicacion.comandos import ejecutar_commando
 from mapear.modulos.mapear.infraestructura.repositorios import RepositorioParquet
 from mapear.modulos.mapear.infraestructura.despachadores import Despachador
-from mapear.modulos.mapear.infraestructura.schema.v1.eventos import EventoParquetCreado, ParquetCreadoPayload
+from mapear.modulos.mapear.infraestructura.schema.v1.eventos import ( 
+    EventoParquetCreado, ParquetCreadoPayload,
+    MapeoIniciado, MapeoIniciadoPayload 
+)
 
 @dataclass
 class CreateParquet(Comando):
@@ -36,6 +40,9 @@ class CreateParquet(Comando):
 class CrearParquetHandler(CrearBaseHandler):
 
     def handle(self, comando: CreateParquet):        
+
+        id_saga = str(uuid.uuid4())
+        self.publicar_evento_saga_log(id_saga, "  MapeoIniciado")
 
         parquet_dto = ParquetDto(
             entorno_clinico=comando.entorno_clinico,
@@ -76,9 +83,23 @@ class CrearParquetHandler(CrearBaseHandler):
             try:
                 despachador = Despachador()
                 despachador.publicar_evento(parquet, "parquet-creado")
+                self.publicar_evento_saga_log(id_saga, "  ParquetMapeado")
                 
             except Exception as e:
                 logging.error(f"❌ [MAPEO] Error publicando evento `parquet-creado`: {e}")
+   
+    def publicar_evento_saga_log(self, id_saga, paso, topico="eventos-saga"):
+        """ 
+        Publica un evento en Pulsar y lo registra en el log.
+        """
+        despachador = Despachador()
+        evento = MapeoIniciadoPayload(
+            id_saga=id_saga,
+            paso=paso
+        )
+        
+        logging.info(f"📡 [ANONIMIZACION] Publicado evento `{paso}` con id `{id_saga}` en `{topico}`")
+        despachador.publicar_evento_saga(evento)
 
 @ejecutar_commando.register(CreateParquet)
 def ejecutar_commando_create_parquet(comando: CreateParquet):

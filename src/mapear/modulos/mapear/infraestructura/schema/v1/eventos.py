@@ -28,3 +28,10 @@ class EventoDicomAnonimoCreado(EventoIntegracion):
 
 class EventoParquetCreado(EventoIntegracion):
     data = ParquetCreadoPayload()
+
+class MapeoIniciadoPayload(Record):
+    id_saga = String()
+    paso = String()
+
+class MapeoIniciado(EventoIntegracion):
+    data = MapeoIniciadoPayload()

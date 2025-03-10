@@ -19,7 +19,7 @@ start_salud_tech_container:
 	docker compose --profile salud_tech up --build -d
 
 kill_all:
-	docker compose --profile pulsar --profile db --profile salud_tech --profile anonimacion down -v
+	docker compose --profile pulsar --profile db --profile salud_tech --profile anonimacion --profile mapear --profile sagas down -v
 
 recreate_salud_tech_container:
 	docker compose --profile salud_tech down -v && docker compose --profile salud_tech up --build --force-recreate 
@@ -32,3 +32,10 @@ recreate_mapear_container:
 
 entrar_maper_db:
 	docker exec -it mapear_db psql -U postgres -d rabbit_mapear
+
+recreate_sagas_container:
+	docker compose --profile sagas down -v && docker compose --profile sagas up --build --force-recreate
+
+start_all:
+	docker compose --profile pulsar --profile db --profile salud_tech --profile anonimacion --profile mapear --profile sagas down -v && docker compose --profile pulsar --profile db --profile salud_tech --profile anonimacion --profile mapear --profile sagas up --build -d
+

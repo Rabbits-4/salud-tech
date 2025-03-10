@@ -2,9 +2,6 @@ import pytest
 import json
 from mapear.api.__init__ import create_app  # Importamos la aplicación Flask sin modificarla
 from mapear.seedwork.dominio.excepciones import ExcepcionDominio
-from mapear.modulos.mapear.aplicacion.servicios import ServicioParquet
-from mapear.modulos.mapear.aplicacion.dto import ParquetDto
-from mapear.modulos.mapear.dominio.entidades import ParquetFile
 
 
 @pytest.fixture
@@ -15,8 +12,8 @@ def client(mocker):
     mocker.patch('mapear.config.db.db.create_all', return_value=None)
 
     # Mockear los consumidores para que no se inicien en pruebas
-    mocker.patch('mapear.modulos.mapear.infraestructura.consumidores.suscribirse_a_eventos', return_value=None)
-    mocker.patch('mapear.modulos.mapear.infraestructura.consumidores.suscribirse_a_comandos', return_value=None)
+    #mocker.patch('mapear.modulos.mapear.infraestructura.consumidores.suscribirse_a_eventos', return_value=None)
+    #mocker.patch('mapear.modulos.mapear.infraestructura.consumidores.suscribirse_a_comandos', return_value=None)
 
     app = create_app({"TESTING": True})  # Creamos la app sin conexión real
     client = app.test_client()

@@ -1,38 +1,54 @@
-"""Pruebas para archivo de fábrica de Seedwork
-
-En este archivo usted encontrará las diferentes pruebas de validacióm para las fábricas base y reusables definidas en el seedwork
-
-"""
-
 import pytest
-from aeroalpes.seedwork.dominio.fabricas import Fabrica
+from abc import ABC, abstractmethod
+from salud_tech.seedwork.dominio.fabricas import Fabrica
+from salud_tech.seedwork.dominio.repositorios import Mapeador
 
 
-"""
-    Clases de Soporte para validar el seedwork
-"""
+# Implementación de prueba para la fábrica
+class FabricaPrueba(Fabrica):
+    def crear_objeto(self, obj: any, mapeador: Mapeador = None) -> any:
+        if mapeador:
+            return mapeador.mapear(obj)
+        return obj
 
-class FabricaImplementada(Fabrica):
-    def crear_objeto(self, obj: any, mapeador: any) -> any:
-        return "Mi Objeto"
 
-class FabricaSinImplementar(Fabrica):
-    ...
+# Implementación concreta de Mapeador
+class MapeadorPrueba(Mapeador):
+    def mapear(self, obj):
+        return {"mapeado": obj}
 
-"""
-    Pruebas
-"""
+    def dto_a_entidad(self, dto):
+        return {"entidad": dto}
 
-def test_crear_fabrica_sin_implementacion():
+    def entidad_a_dto(self, entidad):
+        return {"dto": entidad}
+
+    def obtener_tipo(self):
+        return "tipo_prueba"
+
+
+def test_fabrica_es_abstracta():
+    """Prueba que Fabrica no puede instanciarse directamente"""
     with pytest.raises(TypeError):
-        fabrica = FabricaSinImplementar()
-
-def test_crear_fabrica_con_implementacion():
-    # Dada un nueva fabrica
-    fabrica = FabricaImplementada()
-
-    # Con metodo creacional
-    assert fabrica.crear_objeto({}, {}) is not None
+        Fabrica()
 
 
+def test_fabrica_crear_objeto_sin_mapeador():
+    """Prueba que FabricaPrueba crea un objeto sin mapeador"""
+    fabrica = FabricaPrueba()
+    objeto = {"clave": "valor"}
 
+    resultado = fabrica.crear_objeto(objeto)
+
+    assert resultado == objeto
+
+
+def test_fabrica_crear_objeto_con_mapeador():
+    """Prueba que FabricaPrueba usa un Mapeador para transformar el objeto"""
+    fabrica = FabricaPrueba()
+    objeto = {"clave": "valor"}
+    mapeador = MapeadorPrueba()
+
+    resultado = fabrica.crear_objeto(objeto, mapeador)
+
+    assert resultado == {"mapeado": objeto}

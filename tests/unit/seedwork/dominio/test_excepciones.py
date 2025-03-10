@@ -1,80 +1,47 @@
-"""Pruebas para archivo de excepciones de Seedwork
-
-En este archivo usted encontrará las diferentes pruebas de validacióm para las excepciones base y reusables definidas en el seedwork
-
-"""
-
-from aeroalpes.seedwork.dominio.excepciones import (
-    ExcepcionDominio, 
-    IdDebeSerInmutableExcepcion, 
-    ReglaNegocioExcepcion,
-    ExcepcionFabrica)
 import pytest
+from salud_tech.seedwork.dominio.excepciones import (
+    ExcepcionDominio,
+    IdDebeSerInmutableExcepcion,
+    ReglaNegocioExcepcion,
+    ExcepcionFabrica
+)
+from salud_tech.seedwork.dominio.reglas import ReglaNegocio
 
-"""
-    Clases de Soporte para validar el seedwork
-"""
 
-class ExcepcionPrueba(ExcepcionDominio):
-    ...
+def test_excepcion_dominio():
+    """Prueba que ExcepcionDominio sea una subclase de Exception"""
+    assert issubclass(ExcepcionDominio, Exception)
 
-def regla_de_negocio(valor="ReglaNegocio"):
-    class ReglaNegocio:
+
+def test_id_debe_ser_inmutable_excepcion():
+    """Prueba la inicialización y mensaje de IdDebeSerInmutableExcepcion"""
+    with pytest.raises(IdDebeSerInmutableExcepcion) as exc:
+        raise IdDebeSerInmutableExcepcion()
+
+    assert str(exc.value) == "El identificador debe ser inmutable"
+
+
+def test_regla_negocio_excepcion():
+    """Prueba la inicialización y mensaje de ReglaNegocioExcepcion"""
+    
+    class ReglaPrueba(ReglaNegocio):
+        def es_valido(self):
+            return False
+
         def __str__(self):
-            return valor
-    return ReglaNegocio()
+            return "Regla de negocio no cumplida"
 
-"""
-    Pruebas
-"""
+    regla = ReglaPrueba(mensaje="La regla de negocio es invalida")
 
-def test_excepcion_heredada_es_creable_y_ejecutable():
-    with pytest.raises(ExcepcionPrueba):
-        # Dada una nuevo excepcióm
-        excepcion = ExcepcionPrueba()
+    with pytest.raises(ReglaNegocioExcepcion) as exc:
+        raise ReglaNegocioExcepcion(regla)
 
-        # Entonces es lanzada exitosamente
-        raise excepcion
-
-def test_IdDebeSerInmutableExcepcion_es_creable_y_ejecutable():
-    with pytest.raises(ExcepcionDominio):
-        # Dada una nuevo excepcióm
-        mensaje='El identificador debe ser inmutable'
-        excepcion = IdDebeSerInmutableExcepcion(mensaje=mensaje)
-
-        # Es covnertible a Str
-        assert str(excepcion) == mensaje
-        
-        # Entonces es lanzada exitosamente
-        raise excepcion
-
-def test_ReglaNegocioExcepcion_es_creable_y_ejecutable():
-    with pytest.raises(ExcepcionDominio):
-        # Dada una nuevo excepcióm
-        regla_negocio = regla_de_negocio(valor="ReglaNegocio")
-        excepcion = ReglaNegocioExcepcion(regla_negocio)
-
-        # Es covnertible a Str
-        assert str(excepcion) == "ReglaNegocio"
-        
-        # Entonces es lanzada exitosamente
-        raise excepcion
-
-def test_ExcepcionFabrica_es_creable_y_ejecutable():
-    with pytest.raises(ExcepcionDominio):
-        # Dada una nuevo excepcióm
-        mensaje='Excepción Fábrica'
-        regla_negocio = regla_de_negocio(valor="ReglaNegocio")
-        excepcion = ReglaNegocioExcepcion(regla_negocio)
-
-        # Es covnertible a Str
-        assert str(excepcion) == "ReglaNegocio"
-        
-        # Entonces es lanzada exitosamente
-        raise excepcion
+    assert str(exc.value) == "Regla de negocio no cumplida"
 
 
+def test_excepcion_fabrica():
+    """Prueba la inicialización y mensaje de ExcepcionFabrica"""
+    with pytest.raises(ExcepcionFabrica) as exc:
+        raise ExcepcionFabrica("Error en la fábrica de objetos")
 
-
-
-
+    assert str(exc.value) == "Error en la fábrica de objetos"

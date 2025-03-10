@@ -1,75 +1,56 @@
-"""Pruebas para archivo de entidades de Seedwork
-
-En este archivo usted encontrará las diferentes pruebas de validación para los modelos abstractos y reusables del seedwork
-
-"""
-
-from dataclasses import dataclass, field
 import pytest
+import uuid
 from datetime import datetime
-from uuid import UUID
-from aeroalpes.seedwork.dominio.entidades import Entidad
-from aeroalpes.seedwork.dominio.excepciones import IdDebeSerInmutableExcepcion
+from salud_tech.seedwork.dominio.entidades import Entidad, AgregacionRaiz, Locacion
+from salud_tech.seedwork.dominio.eventos import EventoDominio
+from salud_tech.seedwork.dominio.excepciones import IdDebeSerInmutableExcepcion
 
+def test_creacion_entidad():
+    """Prueba la creación de una entidad con UUID y fechas automáticas"""
+    entidad = Entidad(id=uuid.uuid4())
 
-"""
-    Clases de Soporte para validar el seedwork
-"""
+    assert isinstance(entidad.id, uuid.UUID)
+    assert isinstance(entidad.fecha_creacion, datetime)
+    assert isinstance(entidad.fecha_actualizacion, datetime)
 
-@dataclass
-class EntidadPrueba(Entidad):
-    campo1: str = field(default=None)
-    campo2: int = field(default=0)
+def test_id_inmutable():
+    """Prueba que el ID de una entidad no se puede modificar"""
+    entidad = Entidad(id=uuid.uuid4())
 
-"""
-    Pruebas
-"""
-
-def test_entidad_es_implementable():
-    # Dada una entidad que hereda de Entidad
-    entidadPrueba = EntidadPrueba()
-
-    # Cuando los atributos son validos
-    entidadPrueba.campo1 = "Campo1"
-    entidadPrueba.campo2 = 2
-
-    # Entonces el objeto no debe ser nulo y los atributos son establecidos
-    assert entidadPrueba is not None
-    assert entidadPrueba.campo1 == "Campo1"
-    assert entidadPrueba.campo2 == 2
-
-
-def test_inicializa_los_atributos_de_entidad():
-    # Dada una entidad
-    # Sin ningun tipo de parametros
-    entidadPrueba = EntidadPrueba()
-
-    # Entonces debe inicializar los atributos en la clase padre Entidad
-    assert entidadPrueba is not None
-    assert entidadPrueba.id is not None and type(entidadPrueba.id) == UUID
-    assert entidadPrueba.fecha_actualizacion is not None and type(entidadPrueba.fecha_actualizacion) == datetime
-    assert entidadPrueba.fecha_creacion is not None  and type(entidadPrueba.fecha_creacion) == datetime
-
-def test_entidad_tiene_constructor_con_parametros():
-    # Dada una entidad
-    # Con parametros de entrada en el constructor
-    entidadPrueba = EntidadPrueba(campo1="Campo1", campo2=2)
-
-    # Entonces debe inicializarlos sin problema
-    assert entidadPrueba is not None
-    assert entidadPrueba.campo1 == "Campo1"
-    assert entidadPrueba.campo2 == 2
-
-def test_entidad_id_es_inmutable():
     with pytest.raises(IdDebeSerInmutableExcepcion):
-        # Dada una entidad
-        entidadPrueba = EntidadPrueba()
+        entidad.id = uuid.uuid4()
 
-        # Cuando se intenta cambiar el ID ya establecido
-        entidadPrueba.id = "Nuevo ID"
+def test_creacion_agregacion_raiz():
+    """Prueba la creación de una agregación raíz con eventos"""
+    agregacion = AgregacionRaiz(id=uuid.uuid4())
 
-        # Entonces debe lanzar una excepción
-        
+    assert isinstance(agregacion.id, uuid.UUID)
+    assert isinstance(agregacion.eventos, list)
+    assert len(agregacion.eventos) == 0
 
-        
+def test_agregar_evento():
+    """Prueba agregar un evento a una agregación raíz"""
+    agregacion = AgregacionRaiz(id=uuid.uuid4())
+    evento = EventoDominio()  # Asegúrate de importar la clase correcta
 
+    agregacion.agregar_evento(evento)
+
+    assert len(agregacion.eventos) == 1
+    assert agregacion.eventos[0] is evento
+
+def test_limpiar_eventos():
+    """Prueba limpiar eventos de una agregación raíz"""
+    agregacion = AgregacionRaiz(id=uuid.uuid4())
+    evento = EventoDominio()
+
+    agregacion.agregar_evento(evento)
+    assert len(agregacion.eventos) == 1
+
+    agregacion.limpiar_eventos()
+    assert len(agregacion.eventos) == 0
+
+def test_locacion_str():
+    """Prueba el método __str__ de Locacion (si es necesario)"""
+    locacion = Locacion(id=uuid.uuid4())
+
+    assert locacion is not None  

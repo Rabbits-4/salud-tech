@@ -6,14 +6,14 @@ from mapear.modulos.mapear.dominio.objetos_valor import Estado
 
 from .dto import ParquetDto
 
+import logging
+
 class MappeadorParquetDTOJson(AppMap):
     def externo_a_dto(self, externo: dict) -> ParquetDto:
         dataset_medico_dto = ParquetDto(
-            entorno_clinico=externo.get('entorno_clinico'),            
-            fecha_creacion=externo.get('fecha_creacion'),
-            fecha_actualizacion=externo.get('fecha_actualizacion'),
+            entorno_clinico=externo.get('entorno_clinico'),
             registro_de_diagnostico=externo.get('registro_de_diagnostico'),
-            historial_paciente_id=externo.get('token'),
+            historial_paciente_id=externo.get('id_dicom_anonimo'),
             contexto_procesal=externo.get('contexto_procesal'),
             notas_clinicas=externo.get('notas_clinicas'),            
             data=externo.get('data')
@@ -29,14 +29,13 @@ class MapeadorParquet(RepMap):
     def obtener_tipo(self) -> type:
         return ParquetFile.__class__
     
-    def dto_a_entidad(self, dto: ParquetDto) -> ParquetFile:
+    def dto_a_entidad(self, dto: ParquetDto) -> ParquetFile:       
         
         parquet = ParquetFile()
-        parquet.fecha_creacion=dto.fecha_creacion
-        parquet.fecha_actualizacion=dto.fecha_actualizacion
+        parquet.entorno_clinico=dto.entorno_clinico
+        parquet.registro_de_diagnostico=dto.registro_de_diagnostico
         parquet.contexto_procesal=dto.contexto_procesal
         parquet.historial_paciente_id=dto.historial_paciente_id
-        parquet.registro_de_diagnostico=dto.registro_de_diagnostico
         parquet.notas_clinicas=dto.notas_clinicas
         parquet.data=dto.data
         parquet.estado=Estado.EN_PROCESO
@@ -44,6 +43,7 @@ class MapeadorParquet(RepMap):
         return parquet
     
     def entidad_a_dto(self, entidad: ParquetFile) -> ParquetDto:
+
         metadata_dto = ParquetDto(    
             entorno_clinico=entidad.entorno_clinico,        
             fecha_creacion=entidad.fecha_creacion,

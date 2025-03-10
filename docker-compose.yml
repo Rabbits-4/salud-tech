@@ -59,6 +59,7 @@ services:
   salud_tech_db:
     image: postgres:16-alpine
     profiles: ["salud_tech"]
+    container_name: procesamiento_db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: salud_tech_123
@@ -98,6 +99,7 @@ services:
   anonimacion_db:
     image: postgres:16-alpine
     profiles: ["anonimacion"]
+    container_name: anonimacion_db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: anonimacion_123

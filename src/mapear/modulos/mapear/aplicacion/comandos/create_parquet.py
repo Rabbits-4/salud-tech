@@ -22,8 +22,6 @@ from mapear.modulos.mapear.infraestructura.schema.v1.eventos import (
 class CreateParquet(Comando):
     entorno_clinico: str
     registro_de_diagnostico: dict
-    fecha_creacion: datetime
-    fecha_actualizacion: datetime
     historial_paciente_id: str
     contexto_procesal: str
     notas_clinicas: str
@@ -33,8 +31,6 @@ class CreateParquet(Comando):
         return {
             "entorno_clinico": self.entorno_clinico,
             "registro_de_diagnostico": self.registro_de_diagnostico,
-            "fecha_creacion": self.fecha_creacion,
-            "fecha_actualizacion": self.fecha_actualizacion,
             "historial_paciente_id": self.historial_paciente_id,
             "contexto_procesal": self.contexto_procesal,
             "notas_clinicas": self.notas_clinicas,
@@ -43,8 +39,7 @@ class CreateParquet(Comando):
 
 class CrearParquetHandler(CrearBaseHandler):
 
-    def handle(self, comando: CreateParquet):
-        logging.info("🚀 [MAPEO] Iniciando proceso de creación de Parquet...")
+    def handle(self, comando: CreateParquet):        
 
         id_saga = str(uuid.uuid4())
         self.publicar_evento_saga_log(id_saga, "  MapeoIniciado")
@@ -76,7 +71,6 @@ class CrearParquetHandler(CrearBaseHandler):
                 with UnidadTrabajoSQLAlchemy() as uow:
                     repositorio_parquet.agregar(parquet)
                     uow.commit()
-                    logging.info(f"✅ [MAPEO] Parquet `{parquet.id}` guardado exitosamente.")
                 
             except Exception as e:
                 logging.error(f"❌ [MAPEO] Error guardando Parquet en BD: {e}")
@@ -87,7 +81,6 @@ class CrearParquetHandler(CrearBaseHandler):
 
             # 📡 **Publicar evento de integración en Pulsar**
             try:
-                logging.info(f"📡 [MAPEO] Preparando evento de integración para publicación...")
                 despachador = Despachador()
                 despachador.publicar_evento(parquet, "parquet-creado")
                 self.publicar_evento_saga_log(id_saga, "  ParquetMapeado")

@@ -62,7 +62,7 @@ class CreateDatasetHandler(CrearBaseHandler):
         from salud_tech.config.db import db
         from salud_tech.api import create_app
 
-        app = create_app({"TESTINT": True})  # 🔹 Creamos la instancia de Flask para contexto
+        app = create_app({"TESTING": True})  # 🔹 Creamos la instancia de Flask para contexto
 
         with app.app_context():
             try:

@@ -30,8 +30,12 @@ recreate_anonimacion_container:
 recreate_mapear_container:
 	docker compose --profile mapear down -v && docker compose --profile mapear up --build --force-recreate
 
+entrar_maper_db:
+	docker exec -it mapear_db psql -U postgres -d rabbit_mapear
+
 recreate_sagas_container:
 	docker compose --profile sagas down -v && docker compose --profile sagas up --build --force-recreate
 
 start_all:
 	docker compose --profile pulsar --profile db --profile salud_tech --profile anonimacion --profile mapear --profile sagas down -v && docker compose --profile pulsar --profile db --profile salud_tech --profile anonimacion --profile mapear --profile sagas up --build -d
+

@@ -44,18 +44,21 @@ def suscribirse_a_eventos():
                 registro_de_diagnostico = evento.data.registro_de_diagnostico
                 data = evento.data.data
                 logging.warning("⚠ [MAPEO] Los datos no están en formato JSON válido, se mantendrán como strings.")
+            
+
+            
 
             # 🔹 Creamos un objeto limpio con los datos transformados
             datos_evento = {
                 "id_dicom_anonimo": evento.data.id_dicom_anonimo,
                 "imagen": evento.data.imagen,
-                "entorno_clinico": evento.data.entorno_clinico,
-                "registro_de_diagnostico": registro_de_diagnostico,
+                "entorno_clinico": evento.data.entorno_clinico, # it isn't save on db
+                "registro_de_diagnostico": registro_de_diagnostico, # dict
                 "fecha_creacion": evento.data.fecha_creacion,
                 "fecha_actualizacion": evento.data.fecha_actualizacion,
                 "contexto_procesal": evento.data.contexto_procesal,
                 "notas_clinicas": evento.data.notas_clinicas,
-                "data": data
+                "data": data #dict
             } 
             
             handler.handle(datos_evento)

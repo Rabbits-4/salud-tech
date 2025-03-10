@@ -30,8 +30,12 @@ class RepositorioParquetPostgress(RepositorioParquet):
         return self.fabrica_parquet.crear_objeto(parquet_dto, MapeadorParquet())
 
     def obtener_todos(self) -> list[ParquetFile]:
-        # TODO
-        raise NotImplementedError
+        from mapear.config.db import db
+        parquet_dtos = db.session.query(Parquet).all()
+        result = [self.fabrica_parquet.crear_objeto(parquet_dto, MapeadorParquet()) for parquet_dto in parquet_dtos]
+        
+        return result
+        
 
     def agregar(self, parquet: ParquetFile):
         from mapear.config.db import db

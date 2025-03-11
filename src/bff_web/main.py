@@ -15,11 +15,15 @@ class RespuestaWeb(BaseModel):
 @app.get("/obtener-parquets", response_model=RespuestaWeb)
 async def obtener_parquets():
     print(f"http://{MAPEAR_URL}/mapear/obtener-parquets")
-    response = requests.get(f"http://{MAPEAR_URL}/mapear/obtener-parquets")
-    print("***** after request")
-    print(f"response: {response.json()}")
+    raw_response = requests.get(f"http://{MAPEAR_URL}/mapear/obtener-parquets")
+    response = raw_response.json()
+
     return {
-        "data": response.json()
+        "data": [{"token":item["historial_paciente_id"], "fecha_creacion": item["fecha_creacion"], "contexto_procesal": item["contexto_procesal"], "notas_clinicas": item["notas_clinicas"], "data": item["data"]} for item in response]
+    }
+
+    return {
+        "data": [{"token":item["historial_paciente_id"], "fecha_creacion": item["fecha_creacion"], "contexto_procesal": item["contexto_procesal"]} for item in response]
     }
 
 if __name__ == "__main__":

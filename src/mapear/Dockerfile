@@ -11,12 +11,11 @@ COPY src/mapear /app/src/mapear
 
 ENV FLASK_APP=src.mapear.api
 ENV FLASK_ENV=development
-ENV FLASK_DEBUG=1
 ENV PYTHONPATH="/app/src"
 
 RUN pip install requests==2.28.2
 
 EXPOSE 5000
 
-CMD ["flask", "run", "--host=0.0.0.0", "--reload"]
+CMD ["flask", "run", "--host=0.0.0.0"]
 

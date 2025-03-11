@@ -37,6 +37,12 @@ class CreateDatasetHandler(CrearBaseHandler):
         id_saga = str(uuid.uuid4())
         self.publicar_evento_saga_log(id_saga, "  ProcesamientoIniciado")
 
+         # 🔹 Validación de fallo simulado
+        if comando.entorno_clinico == "FalloSimuladoProcesamiento":
+            logging.error("❌ [Procesamiento] Error simulado detectado. Publicando evento de error en la saga.")
+            self.publicar_evento_saga_log(id_saga, "ProcesamientoFallido")
+            return  
+
         metadata_dto = MetadataDto(
             registro_de_diagnostico=comando.registro_de_diagnostico,
             fecha_creacion=datetime.now(),
@@ -70,14 +76,13 @@ class CreateDatasetHandler(CrearBaseHandler):
                     repositorio_dataset.agregar(dataset)
                     uow.commit()
                     logging.info(f"✅ [Procesamiento] Dataset `{dataset.id}` guardado exitosamente.")
-                    self.publicar_evento_saga_log(id_saga, "  DatasetCreado")
+                    self.publicar_evento_saga_log(id_saga, "DatasetCreado")
 
             except Exception as e:
                 logging.error(f"❌ [Procesamiento] Error guardando Dataset en BD: {e}")
                 raise e
             finally:
                 db.session.close()
-                logging.info("🚀 db session cerrada exitosamente")
    
     def publicar_evento_saga_log(self, id_saga, paso, topico="eventos-saga"):
         """ 

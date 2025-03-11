@@ -13,7 +13,7 @@ import uuid
 
 class Parquet(db.Model):
     __tablename__ = "parquets"
-    id = Column(String, primary_key=True, default=str(uuid.uuid4()))
+    id = Column(String, primary_key=True)
     fecha_creacion = Column(DateTime, nullable=True, default=datetime.utcnow)
     fecha_actualizacion = Column(DateTime, nullable=True, default=datetime.utcnow)
     historial_paciente_id = Column(String, nullable=True, default="")

@@ -126,7 +126,6 @@ services:
     environment:
       - FLASK_APP=src.mapear.api
       - FLASK_ENV=development
-      - FLASK_DEBUG=1
       - PULSAR_ADDRESS=broker
       - BROKER_HOST=broker
       - POSTGRES_USER=postgres

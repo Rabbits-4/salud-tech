@@ -9,15 +9,17 @@ MAPEAR_URL = os.getenv("MAPEAR_URL")
 app = FastAPI()
 
 class AmorResponse(BaseModel):
-    message: str
+    data: any
 
 @app.get("/obtener-parquets", response_model=AmorResponse)
 async def obtener_parquets():
     print(f"http://{MAPEAR_URL}/mapear/obtener-parquets")
     response = requests.get(f"http://{MAPEAR_URL}/mapear/obtener-parquets")
     print("***** after request")
-    print(f"response: {response}")
-    return response.json()
+    print(f"response: {response.json()}")
+    return {
+        "data":response.json()
+    }
 
 if __name__ == "__main__":
     import uvicorn

@@ -14,7 +14,7 @@ El objetivo principal de esta Prueba de Concepto es demostrar, mediante experime
 
 ## **2. Almacenamiento y Transacciones**
 
-![Vista de Arquitectura](<DDD RABBITS -Puntos de Vista.jpg>)
+![Vista de Arquitectura](<DDD RABBITS - Entrega 5.jpg>)
 
 ### **2.1 Implementación del Patrón de Sagas**
 
@@ -30,6 +30,8 @@ Ejecuta la lógica de negocio para la creación y consulta de registros "parquet
 Facilita la comunicación entre la capa de presentación (API) y la capa de aplicación, manteniendo una arquitectura desacoplada y modular.
 
 - **Servicio de Procesamiento:** El servicio **procesamiento** se encarga de procesar la creación de datasets médicos mediante la recepción de datos en formato JSON, su conversión a un DTO y la ejecución de un comando (CreateDatasetMedico) que encapsula la lógica de negocio correspondiente. La separación de responsabilidades mediante el uso de un mapeador y el Command Pattern, junto con un adecuado manejo de errores, asegura una implementación modular, escalable y mantenible dentro de la arquitectura general del proyecto Salud Tech.
+
+![Flujo de mensajes](image.png)
 
 **Ejemplo de flujo exitoso:**
 1. El Servicio de Anonimización recibe y procesa correctamente los datos.

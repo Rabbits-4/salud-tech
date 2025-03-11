@@ -1,0 +1,169 @@
+{
+	"info": {
+		"_postman_id": "6186a81a-7ed5-4072-a7af-b382cbce8dfd",
+		"name": "No moniliticas",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4604238"
+	},
+	"item": [
+		{
+			"name": "bff-web",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{bff_web}}/obtener-parquets",
+					"host": [
+						"{{bff_web}}"
+					],
+					"path": [
+						"obtener-parquets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Prueba processamiento",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://5000-debug-rabbits4-saludtech-t1n07deknep.ws-us118.gitpod.io/procesamiento/test_procesamiento",
+					"protocol": "https",
+					"host": [
+						"5000-debug-rabbits4-saludtech-t1n07deknep",
+						"ws-us118",
+						"gitpod",
+						"io"
+					],
+					"path": [
+						"procesamiento",
+						"test_procesamiento"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Proc - Create dataset",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"packet_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"entorno_clinico\": \"Ambulatorio\",\n  \"registro_de_diagnostico\": {\n      \"region_anatomica\": \"Torax\",\n      \"modalidad\": \"Radiología\",\n      \"patologia\": \"Neumonía\"\n  },\n  \"fecha_creacion\": \"2025-03-03T12:00:00Z\",\n  \"fecha_actualizacion\": \"2025-03-03T12:30:00Z\",\n  \"historial_paciente_id\": \"HIST-001\",\n  \"contexto_procesal\": \"Consulta médica\",\n  \"notas_clinicas\": \"Paciente con síntomas leves, sin complicaciones.\",\n  \"data\": {\n    \"examenes\": [\"sangre\", \"orina\"],\n    \"resultados\": {\n      \"sangre\": \"normal\",\n      \"orina\": \"normal\"\n    }\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://5000-debug-rabbits4-saludtech-t1n07deknep.ws-us118.gitpod.io/procesamiento/crear-dataset-medico-comando",
+					"protocol": "https",
+					"host": [
+						"5000-debug-rabbits4-saludtech-t1n07deknep",
+						"ws-us118",
+						"gitpod",
+						"io"
+					],
+					"path": [
+						"procesamiento",
+						"crear-dataset-medico-comando"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mapear - crear parquet",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"entorno_clinico\": \"Hospital environemnt\",\n  \"fecha_creacion\": \"2024-03-07T15:30:45.123456\",\n  \"fecha_actualizacion\": \"2024-03-07T15:30:45.123456\",\n  \"registro_de_diagnostico\": \"Es un registro\",\n  \"token\": \"c303282d-f2e6-46ca-a04a-35d3d873712d\",\n  \"contexto_procesal\": \"My context\",\n  \"notas_clinicas\": \"notes\",\n  \"data\": {\n    \"name\": \"pepe\"\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{mapear_url}}/mapear/create-parquet",
+					"host": [
+						"{{mapear_url}}"
+					],
+					"path": [
+						"mapear",
+						"create-parquet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mapear - obtener todos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{mapear_url}}/mapear/obtener-parquets",
+					"host": [
+						"{{mapear_url}}"
+					],
+					"path": [
+						"mapear",
+						"obtener-parquets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Anoni - anonimizar",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"historial_paciente_id\": \"HIST-001\",\n  \"nombre_paciente\": \"Juan Perez\",\n  \"direccion_paciente\": \"Calle 45 carrera 30\",\n  \"telefono_paciente\": \"1234567\",\n  \"img\": \"https://ejemplo.com/imagen-dicom.dcm\",\n  \"entorno_clinico\": \"Ambulatorio\",\n  \"registro_de_diagnostico\": {\n    \"region_anatomica\": \"Torax\",\n    \"modalidad\": \"Radiología\",\n    \"patologia\": \"Neumonía\"\n  },\n  \"fecha_creacion\": \"2025-03-03T12:00:00Z\",\n  \"fecha_actualizacion\": \"2025-03-03T12:30:00Z\",\n  \"contexto_procesal\": \"Consulta externa\",\n  \"notas_clinicas\": \"Paciente con síntomas leves, sin complicaciones.\",\n  \"data\": {\n    \"examenes\": [\"sangre\", \"orina\"],\n    \"resultados\": {\n      \"sangre\": \"normal\",\n      \"orina\": \"normal\"\n    }\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{anonimizacion_url}}/anonimacion/anonimizar_imagen",
+					"host": [
+						"{{anonimizacion_url}}"
+					],
+					"path": [
+						"anonimacion",
+						"anonimizar_imagen"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "bff-mobil",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{bff_mobile}}/obtener-parquets",
+					"host": [
+						"{{bff_mobile}}"
+					],
+					"path": [
+						"obtener-parquets"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

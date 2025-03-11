@@ -24,7 +24,10 @@ Se ha implementado el patrón de sagas para gestionar transacciones distribuidas
 
 **Servicios involucrados:**
 - **Servicio de Anonimización:** Procesa y transforma datos sensibles en versiones anónimas.
-- **Servicio de Notificación:** Gestiona la comunicación de eventos y notifica a otros componentes ante cambios de estado o errores.
+- **Servicio de Validacion y Mapeo:** El servicio de mapear actúa como un intermediario que:
+Transforma datos externos a estructuras internas (y viceversa),
+Ejecuta la lógica de negocio para la creación y consulta de registros "parquet", y
+Facilita la comunicación entre la capa de presentación (API) y la capa de aplicación, manteniendo una arquitectura desacoplada y modular.
 - **Servicio de Base de Datos:** Encargado del almacenamiento persistente y la actualización del estado de las transacciones.
 
 **Ejemplo de flujo exitoso:**

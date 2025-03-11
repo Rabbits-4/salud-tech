@@ -167,13 +167,25 @@ services:
     - pulsar
 
   bff-web:
-      profiles: [“bff”]
-      environment:
-        - MAPEAR_URL=mapear:5000
-      build:
-        context: src/bff_web
-      restart: always
-      networks:
-        - db_mapear_network
-      ports:
-        - “5004:8000"
+    profiles: ["bff"]
+    environment:
+      - MAPEAR_URL=mapear:5000
+    build:
+      context: src/bff_web
+    restart: always
+    networks:
+      - db_mapear_network
+    ports:
+      - "5004:8000"
+
+  bff-mobile:
+    profiles: ["bff"]
+    environment:
+      - MAPEAR_URL=mapear:5000
+    build:
+      context: src/bff_mobile
+    restart: always
+    networks:
+      - db_mapear_network
+    ports:
+      - "5005:8000"

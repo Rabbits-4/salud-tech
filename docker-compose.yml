@@ -165,3 +165,15 @@ services:
     restart: always
     networks:
     - pulsar
+
+  bff-web:
+      profiles: [“bff”]
+      environment:
+        - MAPEAR_URL=mapear:5000
+      build:
+        context: src/bff_web
+      restart: always
+      networks:
+        - db_mapear_network
+      ports:
+        - “5004:8000"

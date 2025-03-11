@@ -87,7 +87,7 @@ Se ha desarrollado un componente **Backend For Frontend (BFF)** que actúa como 
 - **Diagrama de la API:** Representación gráfica que muestra la interacción entre el BFF y los servicios subyacentes.
 - **Capturas de pantalla:** Imágenes de la interfaz y respuestas obtenidas al interactuar con el BFF.
 
-### **3.2 Despliegue en Plataforma**
+### **3.2 Despliegue en Plataforma** ()
 
 El proyecto se despliega utilizando contenedores Docker orquestados mediante **Kubernetes** en la plataforma de **Google Cloud Platform (GCP)**, lo que garantiza escalabilidad, alta disponibilidad y un proceso de despliegue ágil.
 
@@ -107,7 +107,7 @@ Se ha generado una documentación completa de la API utilizando herramientas com
 
 **Detalles:**
 - **Enlace a la documentación API:** [Swagger API Documentation](#)
-- **Enlace a la colección de Postman:** [Postman Collection for Salud Tech](#)
+- **Enlace a la colección de Postman:** [Postman Collection for Salud Tech](postman/No moniliticas.postman_collection.json)
 - **Pruebas de funcionalidad:** Se incluyen ejemplos detallados de request-response para demostrar el correcto funcionamiento y la validación de cada endpoint.
 
 ---
@@ -147,4 +147,3 @@ El refinamiento de la arquitectura se ha basado en:
 
 Este documento consolida la entrega de la Prueba de Concepto del proyecto Salud Tech, demostrando avances significativos en la gestión de transacciones distribuidas, la implementación de mecanismos de compensación y el refinamiento de la arquitectura para satisfacer los escenarios de calidad definidos.
 
-Si se requiere ampliar algún aspecto o profundizar en evidencias específicas, se pueden proporcionar detalles adicionales y documentación complementaria.

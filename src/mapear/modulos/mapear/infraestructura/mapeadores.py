@@ -26,6 +26,7 @@ class MapeadorParquet(Mapeador):
         data = entidad.data
 
         parquet_dto = Parquet(
+            id = id,
             historial_paciente_id=historial_paciente_id,            
             contexto_procesal=contexto_procesal,
             registro_de_diagnostico=registro_de_diagnostico,

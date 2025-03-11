@@ -42,7 +42,12 @@ class CrearParquetHandler(CrearBaseHandler):
     def handle(self, comando: CreateParquet):        
 
         id_saga = str(uuid.uuid4())
-        self.publicar_evento_saga_log(id_saga, "  MapeoIniciado")
+        self.publicar_evento_saga_log(id_saga, "MapeoIniciado")
+
+        if comando.entorno_clinico == "FalloSimuladoMapear":
+            logging.error("❌ [Mapear] Error simulado detectado. Publicando evento de error en la saga.")
+            self.publicar_evento_saga_log(id_saga, "  MapeoFallido")
+            return  
 
         parquet_dto = ParquetDto(
             entorno_clinico=comando.entorno_clinico,
@@ -56,6 +61,7 @@ class CrearParquetHandler(CrearBaseHandler):
         )
 
         parquet: ParquetFile = self.fabrica_mapear.crear_objeto(parquet_dto, MapeadorParquet())
+
         parquet.crear_parquet(parquet)
 
         repositorio_parquet = self.fabrica_repositorio.crear_objeto(RepositorioParquet.__class__)
@@ -83,7 +89,7 @@ class CrearParquetHandler(CrearBaseHandler):
             try:
                 despachador = Despachador()
                 despachador.publicar_evento(parquet, "parquet-creado")
-                self.publicar_evento_saga_log(id_saga, "  ParquetMapeado")
+                self.publicar_evento_saga_log(id_saga, "ParquetMapeado")
                 
             except Exception as e:
                 logging.error(f"❌ [MAPEO] Error publicando evento `parquet-creado`: {e}")

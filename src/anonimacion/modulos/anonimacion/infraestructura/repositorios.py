@@ -63,3 +63,11 @@ class RepositorioDicomAnonimoPostgres(RepositorioDicomAnonimo):
         """
         dtos = DicomAnonimoDTO.query.all()
         return [MapeadorDicomAnonimo().dto_a_entidad(dto) for dto in dtos]
+
+    def existe_historial_paciente(self, historial_paciente_id: str) -> bool:
+        """
+        Verifica si ya existe un historial_paciente_id en la base de datos.
+        """
+        existe = DicomAnonimoDTO.query.filter_by(historial_paciente_id=historial_paciente_id).first() is not None
+        logging.info(f"🔍 [VALIDACIÓN] Historial paciente `{historial_paciente_id}` existe: {existe}")
+        return existe

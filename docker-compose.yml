@@ -45,7 +45,7 @@ services:
     depends_on:
       salud_tech_db:
         condition: service_healthy
-      
+
     environment:
       - FLASK_APP=src.salud_tech.api
       - FLASK_ENV=development
@@ -159,9 +159,22 @@ services:
 
   saga-coordinator:
     profiles: ["sagas"]
-    build: 
+    build:
       context: .
-      dockerfile: src/sagas/Dockerfile 
+      dockerfile: src/sagas/Dockerfile
     restart: always
     networks:
-    - pulsar
+      - pulsar
+
+  bff-web:
+    profiles: ["bff"]
+    environment:
+      - MAPEAR_URL=mapear:5000
+    build:
+      context: .
+      dockerfile: src/bff_web/Dockerfile
+    restart: always
+    networks:
+      - db_mapear_network
+    ports:
+      - "5004:8000"

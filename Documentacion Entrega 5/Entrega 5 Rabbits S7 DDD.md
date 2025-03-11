@@ -20,19 +20,20 @@ El objetivo principal de esta Prueba de Concepto es demostrar, mediante experime
 
 Se ha implementado el patrón de sagas para gestionar transacciones distribuidas, optando por una **coreografía** en la que los servicios se comunican mediante eventos, sin un coordinador centralizado, como broker de mensajes se usa Apache pulsar .
 
-
-
 **Servicios involucrados:**
-- **Servicio de Anonimización:** Procesa y transforma datos sensibles en versiones anónimas.
-- **Servicio de Validacion y Mapeo:** El servicio de mapear actúa como un intermediario que:
+- **Servicio de Anonimización:** El servicio de **anonimacion** es un componente crítico en el proyecto que se encarga de transformar datos sensibles de imágenes DICOM en versiones anónimas. Utiliza un enfoque basado en comandos y mapeo de DTOs para garantizar una separación clara de responsabilidades, lo que mejora la mantenibilidad y escalabilidad del sistema. Además, su robusto manejo de errores y el uso de logs aseguran que se pueda diagnosticar y corregir cualquier incidencia de forma eficiente.
+Esta estructura y enfoque permiten integrar la funcionalidad de anonimización de manera consistente dentro del ecosistema general del proyecto, cumpliendo con los requisitos de seguridad y privacidad en el manejo de datos sensibles.
+
+- **Servicio de Validacion y Mapeo:** El servicio de **mapear** actúa como un intermediario que:
 Transforma datos externos a estructuras internas (y viceversa),
 Ejecuta la lógica de negocio para la creación y consulta de registros "parquet", y
 Facilita la comunicación entre la capa de presentación (API) y la capa de aplicación, manteniendo una arquitectura desacoplada y modular.
-- **Servicio de Base de Datos:** Encargado del almacenamiento persistente y la actualización del estado de las transacciones.
+
+- **Servicio de Procesamiento:** El servicio **procesamiento** se encarga de procesar la creación de datasets médicos mediante la recepción de datos en formato JSON, su conversión a un DTO y la ejecución de un comando (CreateDatasetMedico) que encapsula la lógica de negocio correspondiente. La separación de responsabilidades mediante el uso de un mapeador y el Command Pattern, junto con un adecuado manejo de errores, asegura una implementación modular, escalable y mantenible dentro de la arquitectura general del proyecto Salud Tech.
 
 **Ejemplo de flujo exitoso:**
 1. El Servicio de Anonimización recibe y procesa correctamente los datos.
-2. Se emite un evento de éxito, que es captado por el Servicio de Notificación.
+2. Se emite un evento de éxito, que es captado por el .
 3. El Servicio de Base de Datos actualiza el registro correspondiente a un estado "procesado".
 4. La saga se cierra con éxito, completando la transacción distribuida.
 
@@ -40,7 +41,7 @@ Facilita la comunicación entre la capa de presentación (API) y la capa de apli
 1. Durante el proceso, se detecta un error en la validación de los datos en el Servicio de Anonimización.
 2. Se dispara un evento de error que activa la saga.
 3. El Servicio de Base de Datos procede a revertir los cambios (rollback) realizados.
-4. Se notifica a través del Servicio de Notificación que se ha ejecutado la lógica de compensación para restaurar el estado previo.
+4. Se notifica a través del  que se ha ejecutado la lógica de compensación para restaurar el estado previo.
 
 **Evidencia:**
 - **Capturas de logs:** Registros detallados que muestran la secuencia de eventos y la ejecución de la lógica de compensación.
@@ -49,7 +50,12 @@ Facilita la comunicación entre la capa de presentación (API) y la capa de apli
 
 ### **2.2 Implementación del Saga Log**
 
-El **Saga Log** juega un papel esencial en el seguimiento y monitoreo de las transacciones distribuidas, permitiendo una trazabilidad completa de cada proceso.
+El **Saga Log** juega un papel esencial para la implementación del patrón de sagas en el seguimiento y monitoreo de las transacciones distribuidas, permitiendo una trazabilidad completa de cada proceso en el proyecto Salud Tech. Se encarga de:
+
+Iniciar y coordinar la ejecución de las sagas.
+Escuchar y procesar eventos de los diferentes servicios, aplicando lógica de compensación cuando sea necesario.
+Integrarse con el resto de la arquitectura a través de patrones de comando y eventos, garantizando que las transacciones distribuidas se manejen de manera resiliente y trazable.
+Esta estructura y enfoque permiten que el sistema gestione operaciones complejas distribuidas en múltiples servicios, asegurando la consistencia y recuperación en caso de fallos, lo cual es fundamental en entornos donde se manejan datos críticos y sensibles, como en el sector de la salud.
 
 **Propósito y funcionamiento:**
 - **Registro centralizado:** Almacena cada evento y cambio de estado de la transacción para facilitar auditorías y diagnósticos.

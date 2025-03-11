@@ -3,22 +3,23 @@ from pydantic import BaseModel
 import requests
 import os
 import json
+from typing import List
 
 MAPEAR_URL = os.getenv("MAPEAR_URL")
 
 app = FastAPI()
 
-class AmorResponse(BaseModel):
-    data: any
+class RespuestaWeb(BaseModel):
+    data: List[dict]
 
-@app.get("/obtener-parquets", response_model=AmorResponse)
+@app.get("/obtener-parquets", response_model=RespuestaWeb)
 async def obtener_parquets():
     print(f"http://{MAPEAR_URL}/mapear/obtener-parquets")
     response = requests.get(f"http://{MAPEAR_URL}/mapear/obtener-parquets")
     print("***** after request")
     print(f"response: {response.json()}")
     return {
-        "data":response.json()
+        "data": response.json()
     }
 
 if __name__ == "__main__":

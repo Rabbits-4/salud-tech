@@ -7,6 +7,7 @@ from mapear.modulos.mapear.dominio.objetos_valor import Estado
 from .dto import ParquetDto
 
 import logging
+import uuid
 
 class MappeadorParquetDTOJson(AppMap):
     def externo_a_dto(self, externo: dict) -> ParquetDto:
@@ -39,7 +40,7 @@ class MapeadorParquet(RepMap):
         parquet.notas_clinicas=dto.notas_clinicas
         parquet.data=dto.data
         parquet.estado=Estado.EN_PROCESO
-        
+           
         return parquet
     
     def entidad_a_dto(self, entidad: ParquetFile) -> ParquetDto:

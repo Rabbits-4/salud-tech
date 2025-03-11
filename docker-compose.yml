@@ -171,8 +171,7 @@ services:
     environment:
       - MAPEAR_URL=mapear:5000
     build:
-      context: .
-      dockerfile: src/bff_web/Dockerfile
+      context: src/bff_web
     restart: always
     networks:
       - db_mapear_network
